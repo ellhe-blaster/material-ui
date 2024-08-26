@@ -2,7 +2,11 @@
 # However, in order to prevent issues, they are ignored here.
 .DS_STORE
 .idea
-.vscode
+# IntelliJ IDEA module file
+*.iml
+.vscode/*
+!.vscode/launch.json
+!.vscode/extensions.json
 *.log
 *.tsbuildinfo
 /.eslintcache
@@ -11,11 +15,14 @@
 /coverage
 /docs/.env.local
 /docs/export
+/docs/pages/playground/
+/docs/public/feed/
 /examples/**/.cache
-/packages/material-ui-codemod/lib
-/packages/material-ui-envinfo/*.tgz
-/packages/material-ui-icons/src/*.js
+/packages/mui-codemod/lib
+/packages/mui-envinfo/*.tgz
+/packages/mui-icons-material/src/*.js
 /test/bundling/fixtures/*/yarn.lock
+/test/bundling/fixtures/*/pnpm-lock.yaml
 # created by test/bundling/scripts/createFixture
 /test/bundling/fixtures/**/*.fixture.js
 # created by test/bundling/fixtures/gatsby gatsby build
@@ -24,7 +31,14 @@
 /test/regressions/screenshots
 /tmp
 .next
+# created by netlify dev (to perform local debug)
+.netlify
 build
 node_modules
 package-lock.json
 size-snapshot.json
+docs/public/static/blog/feed/*
+# vale downloaded config
+.github/styles/
+.nx/cache
+.nx/workspace-data

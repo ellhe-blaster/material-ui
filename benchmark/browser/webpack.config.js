@@ -8,7 +8,7 @@ process.env.NODE_ENV = 'production';
 
 module.exports = {
   context: workspaceRoot,
-  entry: 'benchmark/browser/index.js',
+  entry: './benchmark/browser/index.js',
   mode: 'production',
   output: {
     path: path.join(__dirname, 'dist'),
@@ -28,14 +28,14 @@ module.exports = {
       },
       {
         test: /\.(jpg|gif|png)$/,
-        loader: 'url-loader',
+        type: 'asset/inline',
       },
     ],
   },
   resolve: {
-    alias: {
-      'react-dom$': 'react-dom/profiling',
-    },
     extensions: ['.js', '.ts', '.tsx'],
   },
+  // TODO: 'browserslist:modern'
+  // See https://github.com/webpack/webpack/issues/14203
+  target: 'web',
 };

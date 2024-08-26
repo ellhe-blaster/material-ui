@@ -1,22 +1,26 @@
 {
   "name": "eslint-plugin-material-ui",
-  "version": "5.0.0-alpha.35",
+  "version": "5.0.0",
   "private": true,
-  "description": "Custom eslint rules for Material-UI.",
+  "description": "Custom eslint rules for Material UI.",
   "main": "src/index.js",
   "dependencies": {
-    "emoji-regex": "^9.0.0"
+    "emoji-regex": "^10.3.0"
   },
   "devDependencies": {
-    "@types/eslint": "^7.2.0",
-    "@typescript-eslint/parser": "^4.11.1"
+    "@types/eslint": "^8.56.11",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0"
+  },
+  "peerDependencies": {
+    "eslint": "^8.47.0"
   },
   "scripts": {
     "test": "cd ../../ && cross-env NODE_ENV=test mocha 'packages/eslint-plugin-material-ui/**/*.test.js'"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mui-org/material-ui.git"
+    "url": "https://github.com/mui/material-ui.git"
   },
   "license": "MIT"
 }

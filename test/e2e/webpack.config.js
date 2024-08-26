@@ -1,5 +1,5 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpackBaseConfig = require('../../webpackBaseConfig');
 
 module.exports = {
@@ -23,11 +23,23 @@ module.exports = {
   ],
   module: {
     ...webpackBaseConfig.module,
-    rules: webpackBaseConfig.module.rules.concat([
+    rules: [
+      {
+        test: /\.(js|ts|tsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          configFile: path.resolve(__dirname, '../../babel.config.js'),
+          envName: 'regressions',
+        },
+      },
       {
         test: /\.(jpg|gif|png)$/,
-        loader: 'url-loader',
+        type: 'asset/inline',
       },
-    ]),
+    ],
   },
+  // TODO: 'browserslist:modern'
+  target: 'web',
 };

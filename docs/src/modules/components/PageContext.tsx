@@ -1,13 +1,11 @@
 import * as React from 'react';
-import type { MuiPage } from 'docs/src/pages';
+import type { MuiPage } from 'docs/src/MuiPage';
+import type { MuiProductId } from 'docs/src/modules/utils/getProductInfoFromUrl';
 
-/**
- * @type {React.Context<>}
- */
 const PageContext = React.createContext<{
   activePage: MuiPage | null;
   pages: MuiPage[];
-  versions: unknown[];
+  productId: MuiProductId;
 }>(undefined!);
 
 if (process.env.NODE_ENV !== 'production') {

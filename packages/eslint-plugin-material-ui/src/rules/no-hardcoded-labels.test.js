@@ -7,6 +7,7 @@ const ruleTester = new eslint.RuleTester({
     ecmaFeatures: { jsx: true },
   },
 });
+
 ruleTester.run('no-hardcoded-labels', rule, {
   valid: [
     '<button>{42}</button>',
@@ -15,9 +16,12 @@ ruleTester.run('no-hardcoded-labels', rule, {
     '<button>{t("a")}</button>',
     '<button>{166}</button>',
     '<button> <TranslatedLabelAfterWhiteSpace /></button>',
-    { code: '<a>Material-UI</a>', options: [{ allow: 'Material-UI' }] },
+    { code: '<a>MUI</a>', options: [{ allow: 'MUI' }] },
     '<span> ❤️</span>',
     `<button>{t("a")}{' '}</button>`,
+    '<h2>{componentName} API</h2>',
+    '<span>*</span>',
+    '<span>.{className}</span>',
   ],
   invalid: [
     { code: '<button aria-label="a" />', errors: [{ messageId: 'literal-label' }] },

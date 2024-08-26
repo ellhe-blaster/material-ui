@@ -1,27 +1,107 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import * as ReactDOMClient from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import webfontloader from 'webfontloader';
+import { Globals } from '@react-spring/web';
 import TestViewer from './TestViewer';
 
+// Skip charts annimation for screen shots
+Globals.assign({
+  skipAnimation: true,
+});
+
 // Get all the fixtures specifically written for preventing visual regressions.
-const requireRegressionFixtures = require.context('./fixtures', true, /\.(js|ts|tsx)$/);
+const importRegressionFixtures = require.context('./fixtures', true, /\.(js|ts|tsx)$/, 'lazy');
 const regressionFixtures = [];
-requireRegressionFixtures.keys().forEach((path) => {
+importRegressionFixtures.keys().forEach((path) => {
   const [suite, name] = path
     .replace('./', '')
     .replace(/\.\w+$/, '')
     .split('/');
 
-  regressionFixtures.push({
-    path,
-    suite: `regression-${suite}`,
-    name,
-    Component: requireRegressionFixtures(path).default,
-  });
+  // TODO: Why does webpack include a key for the absolute and relative path?
+  // We just want the relative path
+  if (path.startsWith('./')) {
+    regressionFixtures.push({
+      path,
+      suite: `regression-${suite}`,
+      name,
+      Component: React.lazy(() => importRegressionFixtures(path)),
+    });
+  }
 }, []);
 
 const blacklist = [
+  // Blog Components
+  'docs-getting-started-templates-blog/Blog.png',
+  'docs-getting-started-templates-blog-components/AppAppbar.png',
+  'docs-getting-started-templates-blog-components/Footer.png',
+  'docs-getting-started-templates-blog-components/Latest.png',
+  'docs-getting-started-templates-blog-components/SitemarkIcon.png',
+  'docs-getting-started-templates-blog-components/ToggleColorMode.png',
+  // Blog Theme Customizations
+  'docs-getting-started-templates-blog-theme-customizations/buttons.png',
+  'docs-getting-started-templates-blog-theme-customizations/index.png',
+  'docs-getting-started-templates-blog-theme-customizations/inputs.png',
+  'docs-getting-started-templates-blog-theme-customizations/layoutComponents.png',
+  'docs-getting-started-templates-blog-theme-customizations/menus.png',
+  'docs-getting-started-templates-blog-theme-customizations/others.png',
+  // Dashboard template components and theme customizations
+  'docs-getting-started-templates-dashboard/Dashboard.png',
+  'docs-getting-started-templates-dashboard-components/ChartUserByCountry.png',
+  'docs-getting-started-templates-dashboard-components/CustomDatePicker.png',
+  'docs-getting-started-templates-dashboard-components/CustomizedDataGrid.png',
+  'docs-getting-started-templates-dashboard-components/CustomizedTreeView.png',
+  'docs-getting-started-templates-dashboard-components/Header.png',
+  'docs-getting-started-templates-dashboard-components/HighlightedCard.png',
+  'docs-getting-started-templates-dashboard-components/MenuButton.png',
+  'docs-getting-started-templates-dashboard-components/Navbar.png',
+  'docs-getting-started-templates-dashboard-components/NavbarBreadcrumbs.png',
+  'docs-getting-started-templates-dashboard-components/OptionsMenu.png',
+  'docs-getting-started-templates-dashboard-components/SessionsChart.png',
+  'docs-getting-started-templates-dashboard-components/Search.png',
+  'docs-getting-started-templates-dashboard-components/ToggleColorMode.png',
+  'docs-getting-started-templates-dashboard-components/SideMenuMobile.png',
+  'docs-getting-started-templates-dashboard-components/PageViewsBarChart.png',
+  'docs-getting-started-templates-dashboard-components/StatCard.png',
+  'docs-getting-started-templates-dashboard-theme-customizations/buttons.png',
+  'docs-getting-started-templates-dashboard-theme-customizations/charts.png',
+  'docs-getting-started-templates-dashboard-theme-customizations/dataGrid.png',
+  'docs-getting-started-templates-dashboard-theme-customizations/datePickers.png',
+  'docs-getting-started-templates-dashboard-theme-customizations/index.png',
+  'docs-getting-started-templates-dashboard-theme-customizations/inputs.png',
+  'docs-getting-started-templates-dashboard-theme-customizations/layoutComponents.png',
+  'docs-getting-started-templates-dashboard-theme-customizations/menus.png',
+  'docs-getting-started-templates-dashboard-theme-customizations/others.png',
+  'docs-getting-started-templates-dashboard-theme-customizations/treeView.png',
+  'docs-getting-started-templates-dashboard-internals-components/CustomIcons.png',
+  // Sign-In/Sign-Up Theme Customizations
+  'docs-getting-started-templates-sign-in-side-theme-customizations/index.png',
+  'docs-getting-started-templates-sign-in-side/CustomIcons.png',
+  'docs-getting-started-templates-sign-in-theme-customizations/index.png',
+  'docs-getting-started-templates-sign-in/CustomIcons.png',
+  'docs-getting-started-templates-sign-up-theme-customizations/index.png',
+  'docs-getting-started-templates-sign-in-side/getSignInSideTheme.png',
+  'docs-getting-started-templates-sign-up/CustomIcons.png',
+  'docs-getting-started-templates-sign-up/getSignUpTheme.png',
+  // Checkout Theme Customizations
+  'docs-getting-started-templates-checkout-theme-customizations/index.png',
+  'docs-getting-started-templates-checkout/getCheckoutTheme.png',
+  // Marketing Page Theme Customizations
+  'docs-getting-started-templates-marketing-page/getMPTheme.png',
+  'docs-getting-started-templates-marketing-page/MarketingPage.png',
+  'docs-getting-started-templates-marketing-page-theme-customizations/index.png',
+  'docs-joy-getting-started-templates/TemplateCollection.png', // No public components
+  'docs-joy-core-features-automatic-adjustment/ListThemes.png', // No public components
+  'docs-joy-tools/PaletteThemeViewer.png', // No need for theme tokens
+  'docs-joy-tools/ShadowThemeViewer.png', // No need for theme tokens
+  'docs-joy-customization-theme-typography/TypographyThemeViewer.png', // No need for theme tokens
+  'docs-joy-components-circular-progress/CircularProgressCountUp.png', // Flaky due to animation
+  'docs-joy-components-divider/DividerChildPosition.png', // Needs interaction
+  'docs-joy-components-linear-progress/LinearProgressCountUp.png', // Flaky due to animation
+  'docs-base-guides-working-with-tailwind-css/PlayerFinal.png', // No public components
+  'docs-base-getting-started-quickstart/BaseButtonTailwind.png', // CodeSandbox
   'docs-components-alert/TransitionAlerts.png', // Needs interaction
   'docs-components-app-bar/BackToTop.png', // Needs interaction
   'docs-components-app-bar/ElevateAppBar.png', // Needs interaction
@@ -47,17 +127,6 @@ const blacklist = [
   'docs-components-chips/ChipsPlayground.png', // Redux isolation
   'docs-components-click-away-listener', // Needs interaction
   'docs-components-container', // Can't see the impact
-  'docs-components-date-picker/CustomInput.png', // Redundant
-  'docs-components-date-picker/LocalizedDatePicker.png', // Redundant
-  'docs-components-date-picker/ResponsiveDatePickers.png', // Redundant
-  'docs-components-date-picker/ServerRequestDatePicker.png', // Redundant
-  'docs-components-date-picker/ViewsDatePicker.png', // Redundant
-  'docs-components-date-range-picker/CalendarsDateRangePicker.png', // Redundant
-  'docs-components-date-range-picker/CustomDateRangeInputs.png', // Redundant
-  'docs-components-date-range-picker/MinMaxDateRangePicker.png', // Redundant
-  'docs-components-date-range-picker/ResponsiveDateRangePicker.png', // Redundant
-  'docs-components-date-time-picker/BasicDateTimePicker.png', // Redundant
-  'docs-components-date-time-picker/ResponsiveDateTimePickers.png', // Redundant
   'docs-components-dialogs', // Needs interaction
   'docs-components-drawers/SwipeableEdgeDrawer.png', // Needs interaction
   'docs-components-drawers/SwipeableTemporaryDrawer.png', // Needs interaction
@@ -68,6 +137,7 @@ const blacklist = [
   'docs-components-hidden', // Need to dynamically resize to test
   'docs-components-icons/FontAwesomeIconSize.png', // Relies on cascading network requests
   'docs-components-image-list', // Image don't load
+  'docs-components-masonry/ImageMasonry.png', // Image don't load
   'docs-components-material-icons/synonyms.png', // No component
   'docs-components-menus', // Need interaction
   'docs-components-modal/KeepMountedModal.png', // Needs interaction
@@ -105,14 +175,13 @@ const blacklist = [
   'docs-components-snackbars/SimpleSnackbar.png', // Needs interaction
   'docs-components-snackbars/TransitionsSnackbar.png', // Needs interaction
   'docs-components-speed-dial', // Needs interaction
+  'docs-components-stack/InteractiveStack.png', // Redundant
   'docs-components-steppers/HorizontalNonLinearStepper.png', // Redundant
   'docs-components-steppers/SwipeableTextMobileStepper.png', // Flaky image loading
   'docs-components-steppers/TextMobileStepper.png', // Flaky image loading
   'docs-components-tabs/AccessibleTabs1.png', // Need interaction
   'docs-components-tabs/AccessibleTabs2.png', // Need interaction
   'docs-components-textarea-autosize', // Superseded by a dedicated regression test
-  'docs-components-time-picker/LocalizedTimePicker.png', // Redundant
-  'docs-components-time-picker/ResponsiveTimePickers.png', // Redundant
   'docs-components-tooltips', // Needs interaction
   'docs-components-transitions', // Needs interaction
   'docs-components-trap-focus', // Need interaction
@@ -121,44 +190,25 @@ const blacklist = [
   'docs-components-tree-view/IconExpansionTreeView.png', // Need interaction
   'docs-components-tree-view/MultiSelectTreeView.png', // Need interaction
   'docs-components-use-media-query', // Need to dynamically resize to test
+  'docs-components-buttons/ButtonMaterialYouPlayground.png', // playground
   'docs-customization-breakpoints', // Need to dynamically resize to test
   'docs-customization-color', // Escape viewport
   'docs-customization-default-theme', // Redux isolation
   'docs-customization-density/DensityTool.png', // Redux isolation
   'docs-customization-transitions/TransitionHover.png', // Need interaction
   'docs-customization-typography/ResponsiveFontSizesChart.png',
+  'docs-customization-right-to-left/RtlDemo.png',
+  'docs-customization-container-queries/ResizableDemo.png', // No public components
   'docs-discover-more-languages', // No public components
   'docs-discover-more-showcase', // No public components
   'docs-discover-more-team', // No public components
-  'docs-getting-started-templates-album/Album.png', // Flaky image loading
-  'docs-getting-started-templates-blog', // Flaky random images
-  'docs-getting-started-templates-checkout/AddressForm.png', // Already tested in docs-getting-started-templates-checkout/Checkout
-  'docs-getting-started-templates-checkout/PaymentForm.png', // Already tested in docs-getting-started-templates-checkout/Checkout
-  'docs-getting-started-templates-checkout/Review.png', // Already tested in docs-getting-started-templates-checkout/Checkout
-  'docs-getting-started-templates-dashboard/Chart.png', // Already tested in docs-getting-started-templates-dashboard/Dashboard
-  'docs-getting-started-templates-dashboard/Deposits.png', // Already tested in docs-getting-started-templates-dashboard/Dashboard
-  'docs-getting-started-templates-dashboard/listItems.png', // nothing to test
-  'docs-getting-started-templates-dashboard/Orders.png', // Already tested in docs-getting-started-templates-dashboard/Dashboard
-  'docs-getting-started-templates-dashboard/Title.png', // Already tested in docs-getting-started-templates-dashboard/Dashboard
-  'docs-getting-started-templates-sign-in-side/SignInSide.png', // Flaky
   'docs-getting-started-templates', // No public components
   'docs-getting-started-usage/Usage.png', // No public components
+  'docs-getting-started-supported-components/MaterialUIComponents.png', // No public components
   'docs-landing', // Mostly images, redundant
   'docs-production-error', // No components, page for DX
-  'docs-styles-advanced', // Redudant
+  'docs-styles-advanced', // Redundant
   'docs-styles-basics/StressTest.png', // Need interaction
-  'docs-system-basics/BreakpointsAsArray.png', // Unit tests are enough
-  'docs-system-basics/BreakpointsAsObject.png', // Unit tests are enough
-  'docs-system-basics/ValueAsFunction.png', // Unit tests are enough
-  'docs-system-borders', // Unit tests are enough
-  'docs-system-display', // Unit tests are enough
-  'docs-system-flexbox', // Unit tests are enough
-  'docs-system-palette', // Unit tests are enough
-  'docs-system-positions', // Unit tests are enough
-  'docs-system-shadows', // Unit tests are enough
-  'docs-system-sizing', // Unit tests are enough
-  'docs-system-spacing', // Unit tests are enough
-  'docs-system-typography', // Unit tests are enough
   'docs-versions', // No public components
   /^docs-guides-.*/, // No public components
 ];
@@ -167,6 +217,17 @@ const unusedBlacklistPatterns = new Set(blacklist);
 
 function excludeDemoFixture(suite, name) {
   if (/^docs-premium-themes(.*)/.test(suite)) {
+    return true;
+  }
+
+  // Exclude files that are not images and are not PascalCase
+  // Tantamount to skipping JS/TS files that are not React components or "index.js" files
+  // PascalCase starts with a capital letter and has zero or more capital letters in the middle
+  if (!suite.endsWith('.png') && name !== 'index' && !/^[A-Z][A-Za-z0-9]*$/.test(name)) {
+    return true;
+  }
+
+  if (suite.includes('docs-joy') && name.match(/(Variables|Usage)$/)) {
     return true;
   }
 
@@ -196,23 +257,26 @@ function excludeDemoFixture(suite, name) {
 }
 
 // Also use some of the demos to avoid code duplication.
-const requireDemos = require.context('docs/src/pages', true, /js$/);
+const importDemos = require.context('docs/data', true, /(?<!pagesApi)\.js$/, 'lazy');
 const demoFixtures = [];
-requireDemos.keys().forEach((path) => {
+importDemos.keys().forEach((path) => {
   const [name, ...suiteArray] = path.replace('./', '').replace('.js', '').split('/').reverse();
-  const suite = `docs-${suiteArray.reverse().join('-')}`;
+  const suite = `docs-${suiteArray
+    .reverse()
+    .join('-')
+    .replace(/^material-/, '')}`;
 
-  if (!excludeDemoFixture(suite, name)) {
+  // TODO: Why does webpack include a key for the absolute and relative path?
+  // We just want the relative path
+  if (path.startsWith('./') && !excludeDemoFixture(suite, name)) {
     demoFixtures.push({
       path,
       suite,
       name,
-      Component: requireDemos(path).default,
+      Component: React.lazy(() => importDemos(path)),
     });
   }
 }, []);
-
-const fixtures = regressionFixtures.concat(demoFixtures);
 
 if (unusedBlacklistPatterns.size > 0) {
   console.warn(
@@ -222,7 +286,45 @@ if (unusedBlacklistPatterns.size > 0) {
   );
 }
 
-function App() {
+const viewerRoot = document.getElementById('test-viewer');
+
+function FixtureRenderer({ component: FixtureComponent }) {
+  const viewerReactRoot = React.useRef(null);
+
+  React.useLayoutEffect(() => {
+    const renderTimeout = setTimeout(() => {
+      const children = (
+        <TestViewer>
+          <FixtureComponent />
+        </TestViewer>
+      );
+
+      if (viewerReactRoot.current === null) {
+        viewerReactRoot.current = ReactDOMClient.createRoot(viewerRoot);
+      }
+
+      viewerReactRoot.current.render(children);
+    });
+
+    return () => {
+      clearTimeout(renderTimeout);
+      setTimeout(() => {
+        viewerReactRoot.current.unmount();
+        viewerReactRoot.current = null;
+      });
+    };
+  }, [FixtureComponent]);
+
+  return null;
+}
+
+FixtureRenderer.propTypes = {
+  component: PropTypes.elementType,
+};
+
+function App(props) {
+  const { fixtures } = props;
+
   function computeIsDev() {
     if (window.location.hash === '#dev') {
       return true;
@@ -249,7 +351,7 @@ function App() {
   React.useEffect(() => {
     webfontloader.load({
       google: {
-        families: ['Roboto:300,400,500,700', 'Material+Icons'],
+        families: ['Roboto:300,400,500,700', 'Inter:300,400,500,600,700,800,900', 'Material+Icons'],
       },
       custom: {
         families: ['Font Awesome 5 Free:n9'],
@@ -273,7 +375,7 @@ function App() {
 
   return (
     <Router>
-      <Switch>
+      <Routes>
         {fixtures.map((fixture) => {
           const path = computePath(fixture);
           const FixtureComponent = fixture.Component;
@@ -283,16 +385,16 @@ function App() {
           }
 
           return (
-            <Route key={path} exact path={path}>
-              {fixturePrepared && (
-                <TestViewer>
-                  <FixtureComponent />
-                </TestViewer>
-              )}
-            </Route>
+            <Route
+              key={path}
+              exact
+              path={path}
+              element={fixturePrepared ? <FixtureRenderer component={FixtureComponent} /> : null}
+            />
           );
         })}
-      </Switch>
+      </Routes>
+
       <div hidden={!isDev}>
         <div data-webfontloader={fontState}>webfontloader: {fontState}</div>
         <p>
@@ -320,11 +422,11 @@ function App() {
   );
 }
 
+App.propTypes = {
+  fixtures: PropTypes.array,
+};
+
 const container = document.getElementById('react-root');
-const children = <App />;
-if (typeof ReactDOM.unstable_createRoot === 'function') {
-  const root = ReactDOM.unstable_createRoot(container);
-  root.render(children);
-} else {
-  ReactDOM.render(children, container);
-}
+const children = <App fixtures={regressionFixtures.concat(demoFixtures)} />;
+const reactRoot = ReactDOMClient.createRoot(container);
+reactRoot.render(children);

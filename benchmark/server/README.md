@@ -1,37 +1,35 @@
-# Material-UI benchmark
+# Benchmark
 
-## `@material-ui/core`
+## `@mui/material`
 
 _Synthetic benchmark_
 
-```sh
-yarn server:core
+```bash
+pnpm server:core
 
 ButtonBase x 40,724 ops/sec ±1.58% (189 runs sampled)
 HocButton x 166,229 ops/sec ±1.04% (191 runs sampled)
 NakedButton x 228,473 ops/sec ±0.99% (187 runs sampled)
 ButtonBase enable ripple x 56,019 ops/sec ±0.87% (189 runs sampled)
 ButtonBase disable ripple x 61,748 ops/sec ±0.35% (190 runs sampled)
-Markdown x 954 ops/sec ±1.35% (187 runs sampled)
 ```
 
-## `@material-ui/docs`
+## `@mui/docs`
 
 _Synthetic benchmark_
 
-```sh
-yarn server:docs
+```bash
+pnpm server:docs
 
-Markdown x 946 ops/sec ±4.04% (176 runs sampled)
 MarkdownElement x 3,941 ops/sec ±5.53% (185 runs sampled)
 ```
 
-## `@material-ui/styles`
+## `@mui/styles`
 
 _Synthetic benchmark_
 
-```sh
-yarn server:styles
+```bash
+pnpm server:styles
 
 Box x 3,850 ops/sec ±3.58% (178 runs sampled)
 JSS naked x 35,493 ops/sec ±2.29% (183 runs sampled)
@@ -44,22 +42,22 @@ EmotionServerCssButton x 43,701 ops/sec ±1.04% (190 runs sampled)
 Naked x 58,694 ops/sec ±0.86% (188 runs sampled)
 ```
 
-## `@material-ui/system`
+## `@mui/system`
 
 _Synthetic benchmark_
 
-```sh
-yarn server:system
+```bash
+pnpm server:system
 
 @styled-system/css x 64,606 ops/sec ±0.45% (188 runs sampled)
 @chakra-ui/system/css x 126,272 ops/sec ±0.21% (191 runs sampled)
-@material-ui/system styleFunctionSx x 40,867 ops/sec ±0.50% (191 runs sampled)
+@mui/system styleFunctionSx x 40,867 ops/sec ±0.50% (191 runs sampled)
 ```
 
 ## Real-world benchmark
 
-```sh
-yarn server:server
+```bash
+pnpm server:server
 
 bombardier \
   -c 100 \

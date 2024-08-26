@@ -1,15 +1,15 @@
 /* eslint-disable no-console */
 import Benchmark from 'benchmark';
 import * as React from 'react';
-import ReactDOMServer from 'react-dom/server';
+import * as ReactDOMServer from 'react-dom/server';
 import styledComponents, { ServerStyleSheet } from 'styled-components';
 import styledEmotion from '@emotion/styled';
 import { css } from '@emotion/react';
 import { renderStylesToString } from '@emotion/server';
 import injectSheet, { JssProvider, SheetsRegistry } from 'react-jss';
-import { styled as styledMui, withStyles, makeStyles, StylesProvider } from '@material-ui/styles';
+import { styled as styledMui, withStyles, makeStyles, StylesProvider } from '@mui/styles';
 import jss, { getDynamicStyles } from 'jss';
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 
 const suite = new Benchmark.Suite('styles', {
   onError: (event) => {
@@ -84,8 +84,14 @@ function HookButton(props) {
   return <button type="button" className={classes.root} {...props} />;
 }
 
-const NakedButton = (props) => <button type="submit" {...props} />;
-const EmotionCssButton = (props) => <button type="submit" css={emotionCss} {...props} />;
+function NakedButton(props) {
+  return <button type="submit" {...props} />;
+}
+
+function EmotionCssButton(props) {
+  // eslint-disable-next-line react/no-unknown-property
+  return <button type="submit" css={emotionCss} {...props} />;
+}
 
 suite
   .add('StyledMuiButton', () => {
@@ -93,7 +99,7 @@ suite
     ReactDOMServer.renderToString(
       <StylesProvider sheetsManager={new Map()} sheetsRegistry={sheetsRegistry}>
         {Array.from(new Array(5)).map((_, index) => (
-          <StyledMuiButton key={String(index)}>Material-UI</StyledMuiButton>
+          <StyledMuiButton key={String(index)}>MUI</StyledMuiButton>
         ))}
       </StylesProvider>,
     );
@@ -105,7 +111,7 @@ suite
       <StylesProvider sheetsManager={new Map()} sheetsRegistry={sheetsRegistry}>
         {Array.from(new Array(5)).map((_, index) => (
           <Box key={String(index)} p={2}>
-            Material-UI
+            MUI
           </Box>
         ))}
       </StylesProvider>,
@@ -137,7 +143,7 @@ suite
       <JssProvider registry={sheetsRegistry}>
         {Array.from(new Array(5)).map((_, index) => (
           <button key={String(index)} type="submit">
-            Material-UI
+            MUI
           </button>
         ))}
       </JssProvider>,
@@ -150,7 +156,7 @@ suite
       <JssProvider registry={sheetsRegistry}>
         <React.Fragment>
           {Array.from(new Array(5)).map((_, index) => (
-            <JSSButton key={String(index)}>Material-UI</JSSButton>
+            <JSSButton key={String(index)}>MUI</JSSButton>
           ))}
         </React.Fragment>
       </JssProvider>,
@@ -162,7 +168,7 @@ suite
     ReactDOMServer.renderToString(
       <StylesProvider sheetsManager={new Map()} sheetsRegistry={sheetsRegistry}>
         {Array.from(new Array(5)).map((_, index) => (
-          <WithStylesButton key={String(index)}>Material-UI</WithStylesButton>
+          <WithStylesButton key={String(index)}>MUI</WithStylesButton>
         ))}
       </StylesProvider>,
     );
@@ -173,7 +179,7 @@ suite
     ReactDOMServer.renderToString(
       <StylesProvider sheetsManager={new Map()} sheetsRegistry={sheetsRegistry}>
         {Array.from(new Array(5)).map((_, index) => (
-          <HookButton key={String(index)}>Material-UI</HookButton>
+          <HookButton key={String(index)}>MUI</HookButton>
         ))}
       </StylesProvider>,
     );
@@ -185,7 +191,7 @@ suite
       sheet.collectStyles(
         <React.Fragment>
           {Array.from(new Array(5)).map((_, index) => (
-            <StyledComponentsButton key={String(index)}>Material-UI</StyledComponentsButton>
+            <StyledComponentsButton key={String(index)}>MUI</StyledComponentsButton>
           ))}
         </React.Fragment>,
       ),
@@ -196,7 +202,7 @@ suite
     ReactDOMServer.renderToString(
       <StylesProvider>
         {Array.from(new Array(5)).map((_, index) => (
-          <EmotionButton key={String(index)}>Material-UI</EmotionButton>
+          <EmotionButton key={String(index)}>MUI</EmotionButton>
         ))}
       </StylesProvider>,
     );
@@ -205,7 +211,7 @@ suite
     ReactDOMServer.renderToString(
       <StylesProvider>
         {Array.from(new Array(5)).map((_, index) => (
-          <EmotionCssButton key={String(index)}>Material-UI</EmotionCssButton>
+          <EmotionCssButton key={String(index)}>MUI</EmotionCssButton>
         ))}
       </StylesProvider>,
     );
@@ -215,7 +221,7 @@ suite
       ReactDOMServer.renderToString(
         <StylesProvider>
           {Array.from(new Array(5)).map((_, index) => (
-            <EmotionCssButton key={String(index)}>Material-UI</EmotionCssButton>
+            <EmotionCssButton key={String(index)}>MUI</EmotionCssButton>
           ))}
         </StylesProvider>,
       ),
@@ -225,7 +231,7 @@ suite
     ReactDOMServer.renderToString(
       <StylesProvider>
         {Array.from(new Array(5)).map((_, index) => (
-          <NakedButton key={String(index)}>Material-UI</NakedButton>
+          <NakedButton key={String(index)}>MUI</NakedButton>
         ))}
       </StylesProvider>,
     );

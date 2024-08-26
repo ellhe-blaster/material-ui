@@ -1,15 +1,18 @@
-# Security Policy
+# Security policy
 
-## Supported Versions
+## Supported versions
 
 The versions of the project that are currently supported with security updates.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.x     | :white_check_mark: |
-| 4.x     | :white_check_mark: |
-| < 4.0   | :x:                |
+| Material UI version | Release    | Supported            |
+| ------------------: | :--------- | :------------------- |
+|              ^5.0.0 | 2021-09-16 | ✅ Stable major      |
+|              ^4.0.0 | 2019-06-23 | ✅ Long-term support |
+|              ^3.0.0 | 2018-08-27 | ❌                   |
+|              ^2.0.0 | /          | ❌                   |
+|              ^1.0.0 | 2018-06-18 | ❌                   |
+|             <=1.0.0 | 2014-10-05 | ❌                   |
 
-## Reporting a Vulnerability
+## Reporting a vulnerability
 
-You can report a vulnerability by contacting us via email at [security@material-ui.com](mailto:security@material-ui.com).
+You can report a vulnerability by contacting us via email at [security@mui.com](mailto:security@mui.com).

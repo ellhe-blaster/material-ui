@@ -1,52 +1,54 @@
 import * as React from 'react';
-import clsx from 'clsx';
-import MuiPaper, { PaperProps } from '@material-ui/core/Paper';
-import { Theme } from '@material-ui/core/styles';
-import { withStyles, WithStyles } from '@material-ui/styles';
-
-const backgroundStyleMapping = {
-  light: 'backgroundLight',
-  main: 'backgroundMain',
-  dark: 'backgroundDark',
-};
-
-const styles = (theme: Theme) => ({
-  [backgroundStyleMapping.light]: {
-    backgroundColor: theme.palette.secondary.light,
-  },
-  [backgroundStyleMapping.main]: {
-    backgroundColor: theme.palette.secondary.main,
-  },
-  [backgroundStyleMapping.dark]: {
-    backgroundColor: theme.palette.secondary.dark,
-  },
-  padding: {
-    padding: theme.spacing(1),
-  },
-});
+import MuiPaper, { PaperProps } from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
 
 interface ExtraPaperProps {
   background: 'light' | 'main' | 'dark';
   padding?: boolean;
 }
 
-function Paper(props: PaperProps & ExtraPaperProps & WithStyles<typeof styles>) {
-  const { background, classes, className, padding, ...other } = props;
+const PaperRoot = styled(MuiPaper, {
+  shouldForwardProp: (prop) => prop !== 'background' && prop !== 'padding',
+})<ExtraPaperProps>(({ theme }) => ({
+  variants: [
+    {
+      props: ({ padding }) => padding,
+      style: {
+        padding: theme.spacing(1),
+      },
+    },
+    {
+      props: { background: 'main' },
+      style: {
+        backgroundColor: theme.palette.secondary.main,
+      },
+    },
+    {
+      props: { background: 'light' },
+      style: {
+        backgroundColor: theme.palette.secondary.light,
+      },
+    },
+    {
+      props: { background: 'dark' },
+      style: {
+        backgroundColor: theme.palette.secondary.dark,
+      },
+    },
+  ],
+}));
+
+export default function Paper(props: PaperProps & ExtraPaperProps) {
+  const { background, classes, className, padding = false, ...other } = props;
 
   return (
-    <MuiPaper
-      elevation={0}
+    <PaperRoot
       square
-      className={clsx(
-        classes[backgroundStyleMapping[background]],
-        {
-          [classes.padding]: !!padding,
-        },
-        className,
-      )}
+      elevation={0}
+      background={background}
+      padding={padding}
+      className={className}
       {...other}
     />
   );
 }
-
-export default withStyles(styles)(Paper);

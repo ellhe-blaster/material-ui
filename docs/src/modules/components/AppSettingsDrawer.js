@@ -1,69 +1,61 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/styles';
-import { createTheme, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import ToggleButtonGroup from '@material-ui/core/ToggleButtonGroup';
-import ToggleButton from '@material-ui/core/ToggleButton';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
-import SettingsBrightnessIcon from '@material-ui/icons/SettingsBrightness';
-import FormatTextdirectionLToRIcon from '@material-ui/icons/FormatTextdirectionLToR';
-import FormatTextdirectionRToLIcon from '@material-ui/icons/FormatTextdirectionRToL';
-import Link from 'docs/src/modules/components/Link';
-import { useTranslate } from 'docs/src/modules/utils/i18n';
-import { useChangeTheme } from 'docs/src/modules/components/ThemeContext';
-import { getCookie } from 'docs/src/modules/utils/helpers';
+import { styled, useTheme } from '@mui/material/styles';
+import Drawer from '@mui/material/Drawer';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness';
+import FormatTextdirectionLToRIcon from '@mui/icons-material/FormatTextdirectionLToR';
+import FormatTextdirectionRToLIcon from '@mui/icons-material/FormatTextdirectionRToL';
+import { useColorSchemeShim, useChangeTheme } from 'docs/src/modules/components/ThemeContext';
+import { useTranslate } from '@mui/docs/i18n';
 
-const styles = (theme) => ({
-  paper: {
-    width: 352,
-    backgroundColor: theme.palette.background.level1,
-  },
-  heading: {
-    margin: '16px 0 8px',
-  },
-  icon: {
-    marginRight: 8,
+const Heading = styled(Typography)(({ theme }) => ({
+  margin: '16px 0 8px',
+  fontWeight: theme.typography.fontWeightSemiBold,
+  fontSize: theme.typography.pxToRem(11),
+  textTransform: 'uppercase',
+  letterSpacing: '.1rem',
+  color: (theme.vars || theme).palette.text.tertiary,
+}));
+
+const IconToggleButton = styled(ToggleButton)({
+  display: 'flex',
+  justifyContent: 'center',
+  width: '100%',
+  '& > *': {
+    marginRight: '8px',
   },
 });
 
-function AppSettingsDrawer(props) {
-  const { classes, onClose, open = false, ...other } = props;
+export default function AppSettingsDrawer(props) {
+  const { onClose, open = false, ...other } = props;
   const t = useTranslate();
-  const theme = useTheme();
+  const upperTheme = useTheme();
   const changeTheme = useChangeTheme();
-  const [mode, setMode] = React.useState(getCookie('paletteMode') || 'system');
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const preferredMode = prefersDarkMode ? 'dark' : 'light';
+
+  // TODO replace with useColorScheme once all pages support css vars
+  const { mode, setMode } = useColorSchemeShim();
 
   const handleChangeThemeMode = (event, paletteMode) => {
     if (paletteMode === null) {
       return;
     }
-
     setMode(paletteMode);
-
-    if (paletteMode === 'system') {
-      document.cookie = `paletteMode=;path=/;max-age=31536000`;
-      changeTheme({ paletteMode: preferredMode });
-    } else {
-      document.cookie = `paletteMode=${paletteMode};path=/;max-age=31536000`;
-      changeTheme({ paletteMode });
-    }
   };
 
   const handleChangeDirection = (event, direction) => {
     if (direction === null) {
-      direction = theme.direction;
+      direction = upperTheme.direction;
     }
-
     changeTheme({ direction });
   };
 
@@ -72,22 +64,38 @@ function AppSettingsDrawer(props) {
       anchor="right"
       onClose={onClose}
       open={open}
-      classes={{
-        paper: classes.paper,
+      PaperProps={{
+        elevation: 0,
+        sx: {
+          width: { xs: 310, sm: 360 },
+          borderRadius: '10px 0px 0px 10px',
+          border: '1px solid',
+          borderColor: 'divider',
+        },
       }}
       {...other}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-        <Typography variant="h5">{t('settings.settings')}</Typography>
-        <IconButton color="inherit" onClick={onClose} edge="end">
-          <CloseIcon />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          px: 2,
+          py: 1,
+        }}
+      >
+        <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+          {t('settings.settings')}
+        </Typography>
+        <IconButton color="inherit" onClick={onClose} edge="end" aria-label={t('close')}>
+          <CloseIcon color="primary" fontSize="small" />
         </IconButton>
       </Box>
       <Divider />
       <Box sx={{ pl: 2, pr: 2 }}>
-        <Typography gutterBottom id="settings-mode" className={classes.heading}>
+        <Heading gutterBottom id="settings-mode">
           {t('settings.mode')}
-        </Typography>
+        </Heading>
         <ToggleButtonGroup
           exclusive
           value={mode}
@@ -96,95 +104,82 @@ function AppSettingsDrawer(props) {
           aria-labelledby="settings-mode"
           fullWidth
         >
-          <ToggleButton
+          <IconToggleButton
             value="light"
             aria-label={t('settings.light')}
             data-ga-event-category="settings"
             data-ga-event-action="light"
           >
-            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-              <Brightness7Icon className={classes.icon} />
-              {t('settings.light')}
-            </Box>
-          </ToggleButton>
-          <ToggleButton
+            <LightModeIcon fontSize="small" />
+            {t('settings.light')}
+          </IconToggleButton>
+          <IconToggleButton
             value="system"
             aria-label={t('settings.system')}
             data-ga-event-category="settings"
             data-ga-event-action="system"
           >
-            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-              <SettingsBrightnessIcon className={classes.icon} />
-              {t('settings.system')}
-            </Box>
-          </ToggleButton>
-          <ToggleButton
+            <SettingsBrightnessIcon fontSize="small" />
+            {t('settings.system')}
+          </IconToggleButton>
+          <IconToggleButton
             value="dark"
             aria-label={t('settings.dark')}
             data-ga-event-category="settings"
             data-ga-event-action="dark"
           >
-            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-              <Brightness4Icon className={classes.icon} />
-              {t('settings.dark')}
-            </Box>
-          </ToggleButton>
+            <DarkModeOutlinedIcon fontSize="small" />
+            {t('settings.dark')}
+          </IconToggleButton>
         </ToggleButtonGroup>
-        <Typography gutterBottom id="settings-direction" className={classes.heading}>
+        <Heading gutterBottom id="settings-direction">
           {t('settings.direction')}
-        </Typography>
+        </Heading>
         <ToggleButtonGroup
           exclusive
-          value={theme.direction}
+          value={upperTheme.direction}
           onChange={handleChangeDirection}
           aria-labelledby="settings-direction"
           color="primary"
           fullWidth
         >
-          <ToggleButton
+          <IconToggleButton
             value="ltr"
-            aria-label={t('settings.light')}
+            aria-label={t('settings.ltr')}
             data-ga-event-category="settings"
             data-ga-event-action="ltr"
           >
-            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-              <FormatTextdirectionLToRIcon className={classes.icon} />
-              {t('settings.ltr')}
-            </Box>
-          </ToggleButton>
-          <ToggleButton
+            <FormatTextdirectionLToRIcon fontSize="small" />
+            {t('settings.ltr')}
+          </IconToggleButton>
+          <IconToggleButton
             value="rtl"
-            aria-label={t('settings.system')}
+            aria-label={t('settings.rtl')}
             data-ga-event-category="settings"
             data-ga-event-action="rtl"
           >
-            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-              <FormatTextdirectionRToLIcon className={classes.icon} />
-              {t('settings.rtl')}
-            </Box>
-          </ToggleButton>
+            <FormatTextdirectionRToLIcon fontSize="small" />
+            {t('settings.rtl')}
+          </IconToggleButton>
         </ToggleButtonGroup>
-        <Typography gutterBottom className={classes.heading}>
-          {t('settings.color')}
-        </Typography>
-        <Link
-          href="/customization/color/#playground"
+        <Heading gutterBottom>{t('settings.color')}</Heading>
+        <Button
+          component="a"
+          href="/material-ui/customization/color/#playground"
           data-ga-event-category="settings"
           data-ga-event-action="colors"
-          variant="body1"
+          variant="outlined"
+          size="small"
+          fullWidth
         >
-          {t('settings.editWebsiteColors')}
-        </Link>
+          {t('settings.editDocsColors')}
+        </Button>
       </Box>
     </Drawer>
   );
 }
 
 AppSettingsDrawer.propTypes = {
-  classes: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool,
 };
-
-const defaultTheme = createTheme();
-export default withStyles(styles, { defaultTheme })(AppSettingsDrawer);

@@ -1,42 +1,34 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import {
-  ThemeProvider as MuiThemeProvider,
-  createTheme as createLegacyModeTheme,
-  unstable_createMuiStrictModeTheme as createStrictModeTheme,
-  darken,
-} from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { enUS, zhCN, faIR, ruRU, ptBR, esES, frFR, deDE, jaJP } from '@material-ui/core/locale';
-import { blue, pink } from '@material-ui/core/colors';
-import darkScrollbar from '@material-ui/core/darkScrollbar';
-import { unstable_useEnhancedEffect as useEnhancedEffect } from '@material-ui/core/utils';
+  ThemeProvider as MdThemeProvider,
+  createTheme as createMdTheme,
+} from '@mui/material/styles';
+import { deepmerge } from '@mui/utils';
+import { enUS, zhCN, ptBR } from '@mui/material/locale';
+import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/material/utils';
 import { getCookie } from 'docs/src/modules/utils/helpers';
 import useLazyCSS from 'docs/src/modules/utils/useLazyCSS';
-import { useUserLanguage } from 'docs/src/modules/utils/i18n';
+import { useUserLanguage } from '@mui/docs/i18n';
+import { getDesignTokens, getThemedComponents, getMetaThemeColor } from '@mui/docs/branding';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useLocalStorageState from '@mui/utils/useLocalStorageState';
 
 const languageMap = {
   en: enUS,
   zh: zhCN,
-  fa: faIR,
-  ru: ruRU,
   pt: ptBR,
-  es: esES,
-  fr: frFR,
-  de: deDE,
-  ja: jaJP,
 };
-
-export const themeColor = blue[700];
 
 const themeInitialOptions = {
   dense: false,
   direction: 'ltr',
   paletteColors: {},
   spacing: 8, // spacing unit
+  paletteMode: 'light',
 };
 
-const highDensity = {
+export const highDensity = {
   components: {
     MuiButton: {
       defaultProps: {
@@ -61,14 +53,6 @@ const highDensity = {
     MuiIconButton: {
       defaultProps: {
         size: 'small',
-      },
-      styleOverrides: {
-        sizeSmall: {
-          // minimal touch target hit spacing
-          marginLeft: 4,
-          marginRight: 4,
-          padding: 12,
-        },
       },
     },
     MuiInputBase: {
@@ -122,13 +106,6 @@ if (process.env.NODE_ENV !== 'production') {
   DispatchContext.displayName = 'ThemeDispatchContext';
 }
 
-let createTheme;
-if (process.env.REACT_MODE === 'legacy') {
-  createTheme = createLegacyModeTheme;
-} else {
-  createTheme = createStrictModeTheme;
-}
-
 export function ThemeProvider(props) {
   const { children } = props;
 
@@ -168,6 +145,15 @@ export function ThemeProvider(props) {
           paletteColors: themeInitialOptions.paletteColors,
         };
       case 'CHANGE':
+        // No value changed
+        if (
+          (!action.payload.paletteMode || action.payload.paletteMode === state.paletteMode) &&
+          (!action.payload.direction || action.payload.direction === state.direction) &&
+          (!action.payload.paletteColors || action.payload.paletteColors === state.paletteColors)
+        ) {
+          return state;
+        }
+
         return {
           ...state,
           paletteMode: action.payload.paletteMode || state.paletteMode,
@@ -180,44 +166,66 @@ export function ThemeProvider(props) {
   }, themeInitialOptions);
 
   const userLanguage = useUserLanguage();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const preferredMode = prefersDarkMode ? 'dark' : 'light';
-  const { dense, direction, paletteColors, paletteMode = preferredMode, spacing } = themeOptions;
+  const { dense, direction, paletteColors, paletteMode, spacing } = themeOptions;
 
   useLazyCSS('/static/styles/prism-okaidia.css', '#prismjs');
 
-  React.useEffect(() => {
-    if (process.browser) {
-      const nextPaletteColors = JSON.parse(getCookie('paletteColors') || 'null');
-      const nextPaletteMode = getCookie('paletteMode') || preferredMode;
-
-      dispatch({
-        type: 'CHANGE',
-        payload: { paletteColors: nextPaletteColors, paletteMode: nextPaletteMode },
-      });
-    }
-  }, [preferredMode]);
+  // TODO replace with useColorScheme once all pages support css vars
+  const { mode, systemMode } = useColorSchemeShim();
+  const calculatedMode = mode === 'system' ? systemMode : mode;
 
   useEnhancedEffect(() => {
-    document.body.dir = direction;
+    let nextPaletteColors = JSON.parse(getCookie('paletteColors') || 'null');
+    // Set default value if no value is found in cookie
+    if (nextPaletteColors === null) {
+      nextPaletteColors = themeInitialOptions.paletteColors;
+    }
+
+    dispatch({
+      type: 'CHANGE',
+      payload: {
+        paletteColors: nextPaletteColors,
+        paletteMode: calculatedMode,
+      },
+    });
+  }, [calculatedMode]);
+
+  useEnhancedEffect(() => {
+    document.body.setAttribute('dir', direction);
   }, [direction]);
 
+  useEnhancedEffect(() => {
+    // To support light and dark mode images in the docs
+    if (paletteMode === 'dark') {
+      document.body.classList.remove('mode-light');
+      document.body.classList.add('mode-dark');
+    } else {
+      document.body.classList.remove('mode-dark');
+      document.body.classList.add('mode-light');
+    }
+
+    const metas = document.querySelectorAll('meta[name="theme-color"]');
+    metas.forEach((meta) => {
+      meta.setAttribute('content', getMetaThemeColor(paletteMode));
+    });
+  }, [paletteMode]);
+
   const theme = React.useMemo(() => {
-    const nextTheme = createTheme(
+    const brandingDesignTokens = getDesignTokens(paletteMode);
+    const nextPalette = deepmerge(brandingDesignTokens.palette, paletteColors);
+    let nextTheme = createMdTheme(
       {
         direction,
-        nprogress: {
-          color: paletteMode === 'light' ? '#000' : '#fff',
-        },
+        ...brandingDesignTokens,
         palette: {
-          primary: {
-            main: paletteMode === 'light' ? blue[700] : blue[200],
-          },
-          secondary: {
-            main: paletteMode === 'light' ? darken(pink.A400, 0.1) : pink[200],
-          },
+          ...nextPalette,
           mode: paletteMode,
-          ...paletteColors,
+        },
+        // v5 migration
+        props: {
+          MuiBadge: {
+            overlap: 'rectangular',
+          },
         },
         spacing,
       },
@@ -225,8 +233,9 @@ export function ThemeProvider(props) {
       {
         components: {
           MuiCssBaseline: {
-            styleOverrides: {
-              body: paletteMode === 'dark' ? darkScrollbar() : null,
+            defaultProps: {
+              // TODO: Material UI v6, makes this the default
+              enableColorScheme: true,
             },
           },
         },
@@ -234,27 +243,22 @@ export function ThemeProvider(props) {
       languageMap[userLanguage],
     );
 
-    nextTheme.palette.background.level2 =
-      paletteMode === 'light' ? nextTheme.palette.grey[100] : '#333';
-
-    nextTheme.palette.background.level1 =
-      paletteMode === 'light' ? '#fff' : nextTheme.palette.grey[900];
+    nextTheme = deepmerge(nextTheme, getThemedComponents(nextTheme));
 
     return nextTheme;
   }, [dense, direction, paletteColors, paletteMode, spacing, userLanguage]);
 
   React.useEffect(() => {
     // Expose the theme as a global variable so people can play with it.
-    if (process.browser) {
-      window.theme = theme;
-      window.createTheme = createTheme;
-    }
+    window.theme = theme;
+    window.createTheme = createMdTheme;
   }, [theme]);
 
+  // TODO: remove MdThemeProvider, top level layout should render the default theme.
   return (
-    <MuiThemeProvider theme={theme}>
+    <MdThemeProvider theme={theme}>
       <DispatchContext.Provider value={dispatch}>{children}</DispatchContext.Provider>
-    </MuiThemeProvider>
+    </MdThemeProvider>
   );
 }
 
@@ -268,4 +272,17 @@ ThemeProvider.propTypes = {
 export function useChangeTheme() {
   const dispatch = React.useContext(DispatchContext);
   return React.useCallback((options) => dispatch({ type: 'CHANGE', payload: options }), [dispatch]);
+}
+
+// TODO: remove once all pages support css vars and replace call sites with useColorScheme()
+export function useColorSchemeShim() {
+  const [mode, setMode] = useLocalStorageState('mui-mode', 'system');
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', { noSsr: true });
+  const systemMode = prefersDarkMode ? 'dark' : 'light';
+
+  return {
+    mode,
+    systemMode,
+    setMode,
+  };
 }
