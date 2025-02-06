@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { spy } from 'sinon';
-import { fireEvent, createRenderer, describeConformance, screen } from '@mui-internal/test-utils';
+import { fireEvent, createRenderer, screen } from '@mui/internal-test-utils';
 import PropTypes, { checkPropTypes } from 'prop-types';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
 import { backdropClasses } from '@mui/material/Backdrop';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import useForkRef from '../utils/useForkRef';
+import describeConformance from '../../test/describeConformance';
 
 const FakePaper = React.forwardRef(function FakeWidthPaper(props, ref) {
   const { style, ...other } = props;
@@ -62,17 +63,11 @@ describe('<SwipeableDrawer />', () => {
   const { render } = createRenderer({ clock: 'fake' });
 
   describeConformance(<SwipeableDrawer onOpen={() => {}} onClose={() => {}} open />, () => ({
+    render,
     classes: {},
     inheritComponent: Drawer,
     refInstanceof: window.HTMLDivElement,
-    skip: [
-      'componentProp',
-      'themeDefaultProps',
-      'themeStyleOverrides',
-      'themeVariants',
-      // https://github.com/facebook/react/issues/11565
-      'reactTestRenderer',
-    ],
+    skip: ['componentProp', 'themeDefaultProps', 'themeStyleOverrides', 'themeVariants'],
   }));
 
   it('should render a Drawer and a SwipeArea', () => {
@@ -92,7 +87,9 @@ describe('<SwipeableDrawer />', () => {
         onOpen={() => {}}
         onClose={() => {}}
         open
-        PaperProps={{ 'data-test': 'foo' }}
+        slotProps={{
+          paper: { 'data-test': 'foo' },
+        }}
       />,
     );
 
@@ -181,7 +178,9 @@ describe('<SwipeableDrawer />', () => {
               onOpen={handleOpen}
               onClose={handleClose}
               open={false}
-              PaperProps={{ component: FakePaper }}
+              slotProps={{
+                paper: { component: FakePaper },
+              }}
             >
               <div data-testid="drawer">SwipeableDrawer</div>
             </SwipeableDrawer>,
@@ -239,8 +238,10 @@ describe('<SwipeableDrawer />', () => {
               onOpen={handleOpen}
               onClose={handleClose}
               open={false}
-              PaperProps={{ component: FakePaper }}
               transitionDuration={0}
+              slotProps={{
+                paper: { component: FakePaper },
+              }}
             >
               <div data-testid="drawer">SwipeableDrawer</div>
             </SwipeableDrawer>,
@@ -309,7 +310,9 @@ describe('<SwipeableDrawer />', () => {
               onOpen={handleOpen}
               onClose={() => {}}
               open={false}
-              PaperProps={{ component: FakePaper }}
+              slotProps={{
+                paper: { component: FakePaper },
+              }}
             >
               <div>SwipeableDrawer</div>
             </SwipeableDrawer>,
@@ -340,7 +343,9 @@ describe('<SwipeableDrawer />', () => {
               onOpen={() => {}}
               onClose={handleClose}
               open
-              PaperProps={{ component: FakePaper }}
+              slotProps={{
+                paper: { component: FakePaper },
+              }}
             >
               <div data-testid="drawer">SwipeableDrawer</div>
             </SwipeableDrawer>,
@@ -371,7 +376,9 @@ describe('<SwipeableDrawer />', () => {
               onOpen={handleOpen}
               onClose={handleClose}
               open={false}
-              PaperProps={{ component: FakePaper }}
+              slotProps={{
+                paper: { component: FakePaper },
+              }}
             >
               <div data-testid="drawer">SwipeableDrawer</div>
             </SwipeableDrawer>,
@@ -403,7 +410,9 @@ describe('<SwipeableDrawer />', () => {
               onOpen={handleOpen}
               onClose={handleClose}
               open={false}
-              PaperProps={{ component: FakePaper }}
+              slotProps={{
+                paper: { component: FakePaper },
+              }}
             >
               <div>SwipeableDrawer</div>
             </SwipeableDrawer>,
@@ -432,7 +441,9 @@ describe('<SwipeableDrawer />', () => {
           onOpen={() => {}}
           onClose={handleClose}
           open
-          PaperProps={{ component: FakePaper }}
+          slotProps={{
+            paper: { component: FakePaper },
+          }}
         >
           <div data-testid="drawer">SwipeableDrawer</div>
         </SwipeableDrawer>,
@@ -460,7 +471,9 @@ describe('<SwipeableDrawer />', () => {
           onOpen={() => {}}
           onClose={() => {}}
           open={false}
-          PaperProps={{ component: FakePaper }}
+          slotProps={{
+            paper: { component: FakePaper },
+          }}
         >
           <div>SwipeableDrawer</div>
         </SwipeableDrawer>,
@@ -487,7 +500,9 @@ describe('<SwipeableDrawer />', () => {
           onOpen={() => {}}
           onClose={() => {}}
           open={false}
-          PaperProps={{ component: FakePaper }}
+          slotProps={{
+            paper: { component: FakePaper },
+          }}
         >
           <div>SwipeableDrawer</div>
         </SwipeableDrawer>,
@@ -520,17 +535,19 @@ describe('<SwipeableDrawer />', () => {
             onClose={() => {}}
             open={false}
             swipeAreaWidth={20}
-            SwipeAreaProps={{
-              style: {
-                // ensure clicks will not be grabbed by swipe area to ensure testing just this functionality
-                pointerEvents: 'none',
-              },
-            }}
-            PaperProps={{ component: FakePaper }}
             ModalProps={{
               keepMounted: true,
               sx: {
                 transform: `translateY(${handleHeight}px) !important`,
+              },
+            }}
+            slotProps={{
+              paper: { component: FakePaper },
+              swipeArea: {
+                style: {
+                  // ensure clicks will not be grabbed by swipe area to ensure testing just this functionality
+                  pointerEvents: 'none',
+                },
               },
             }}
           >
@@ -579,8 +596,8 @@ describe('<SwipeableDrawer />', () => {
         render(
           <SwipeableDrawer
             anchor={'bottom'}
-            allowSwipeInChildren={(e) => {
-              const elem = e.target;
+            allowSwipeInChildren={(event) => {
+              const elem = event.target;
               // ignore touch events from .ignore &^ from swipe area
               return (
                 !elem.classList.contains('ignore') &&
@@ -591,18 +608,21 @@ describe('<SwipeableDrawer />', () => {
             onClose={() => {}}
             open={false}
             swipeAreaWidth={20}
-            SwipeAreaProps={{
-              style: {
-                // ensure clicks will not be grabbed by swipe area to ensure testing just this functionality
-                pointerEvents: 'none',
-              },
-            }}
-            PaperProps={{ component: FakePaper }}
             ModalProps={{
               keepMounted: true,
               sx: {
                 '& > *': {
                   pointerEvents: 'auto',
+                },
+              },
+            }}
+            slotProps={{
+              root: {},
+              paper: { component: FakePaper },
+              swipeArea: {
+                style: {
+                  // ensure clicks will not be grabbed by swipe area to ensure testing just this functionality
+                  pointerEvents: 'none',
                 },
               },
             }}
@@ -678,7 +698,14 @@ describe('<SwipeableDrawer />', () => {
   it('should be able to attach paper ref passed through PaperProps', () => {
     const ref = React.createRef();
     render(
-      <SwipeableDrawer onOpen={() => {}} onClose={() => {}} PaperProps={{ ref }} open>
+      <SwipeableDrawer
+        onOpen={() => {}}
+        onClose={() => {}}
+        open
+        slotProps={{
+          paper: { ref },
+        }}
+      >
         <div />
       </SwipeableDrawer>,
     );
@@ -694,7 +721,9 @@ describe('<SwipeableDrawer />', () => {
           onOpen={handleOpen}
           onClose={() => {}}
           open={false}
-          PaperProps={{ component: FakePaper }}
+          slotProps={{
+            paper: { component: FakePaper },
+          }}
         >
           <div>SwipeableDrawer</div>
         </SwipeableDrawer>,
@@ -723,7 +752,9 @@ describe('<SwipeableDrawer />', () => {
           onOpen={() => {}}
           onClose={handleClose}
           open
-          PaperProps={{ component: FakePaper, 'data-testid': 'paper' }}
+          slotProps={{
+            paper: { component: FakePaper, 'data-testid': 'paper' },
+          }}
         >
           <div>SwipeableDrawer</div>
         </SwipeableDrawer>,
@@ -755,8 +786,10 @@ describe('<SwipeableDrawer />', () => {
             onOpen={handleOpen}
             onClose={() => {}}
             open={false}
-            PaperProps={{ component: FakePaper }}
-            SwipeAreaProps={{ 'data-testid': 'swipearea' }}
+            slotProps={{
+              paper: { component: FakePaper },
+              swipeArea: { 'data-testid': 'swipearea' },
+            }}
           >
             <div>Drawer1</div>
           </SwipeableDrawer>
@@ -764,8 +797,10 @@ describe('<SwipeableDrawer />', () => {
             onOpen={handleOpen}
             onClose={() => {}}
             open={false}
-            PaperProps={{ component: FakePaper }}
-            SwipeAreaProps={{ 'data-testid': 'swipearea' }}
+            slotProps={{
+              paper: { component: FakePaper },
+              swipeArea: { 'data-testid': 'swipearea' },
+            }}
           >
             <div>Drawer2</div>
           </SwipeableDrawer>
@@ -799,8 +834,10 @@ describe('<SwipeableDrawer />', () => {
         onOpen={() => {}}
         onClose={() => {}}
         open={false}
-        PaperProps={{ component: NullPaper }}
-        SwipeAreaProps={{ 'data-testid': 'swipearea' }}
+        slotProps={{
+          paper: { component: NullPaper },
+          swipeArea: { 'data-testid': 'swipearea' },
+        }}
       >
         <div>SwipeableDrawer</div>
       </SwipeableDrawer>,

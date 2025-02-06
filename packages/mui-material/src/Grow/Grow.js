@@ -1,9 +1,11 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { elementAcceptingRef } from '@mui/utils';
+import useTimeout from '@mui/utils/useTimeout';
+import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
+import getReactElementRef from '@mui/utils/getReactElementRef';
 import { Transition } from 'react-transition-group';
-import useTheme from '../styles/useTheme';
+import { useTheme } from '../zero-styled';
 import { getTransitionProps, reflow } from '../transitions/utils';
 import useForkRef from '../utils/useForkRef';
 
@@ -55,12 +57,12 @@ const Grow = React.forwardRef(function Grow(props, ref) {
     TransitionComponent = Transition,
     ...other
   } = props;
-  const timer = React.useRef();
+  const timer = useTimeout();
   const autoTimeout = React.useRef();
   const theme = useTheme();
 
   const nodeRef = React.useRef(null);
-  const handleRef = useForkRef(nodeRef, children.ref, ref);
+  const handleRef = useForkRef(nodeRef, getReactElementRef(children), ref);
 
   const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
     if (callback) {
@@ -164,19 +166,13 @@ const Grow = React.forwardRef(function Grow(props, ref) {
 
   const handleAddEndListener = (next) => {
     if (timeout === 'auto') {
-      timer.current = setTimeout(next, autoTimeout.current || 0);
+      timer.start(autoTimeout.current || 0, next);
     }
     if (addEndListener) {
       // Old call signature before `react-transition-group` implemented `nodeRef`
       addEndListener(nodeRef.current, next);
     }
   };
-
-  React.useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
 
   return (
     <TransitionComponent
@@ -193,7 +189,8 @@ const Grow = React.forwardRef(function Grow(props, ref) {
       timeout={timeout === 'auto' ? null : timeout}
       {...other}
     >
-      {(state, childProps) => {
+      {/* Ensure "ownerState" is not forwarded to the child DOM element when a direct HTML element is used. This avoids unexpected behavior since "ownerState" is intended for internal styling, component props and not as a DOM attribute. */}
+      {(state, { ownerState, ...restChildProps }) => {
         return React.cloneElement(children, {
           style: {
             opacity: 0,
@@ -204,7 +201,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
             ...children.props.style,
           },
           ref: handleRef,
-          ...childProps,
+          ...restChildProps,
         });
       }}
     </TransitionComponent>
@@ -293,6 +290,8 @@ Grow.propTypes /* remove-proptypes */ = {
   ]),
 };
 
-Grow.muiSupportAuto = true;
+if (Grow) {
+  Grow.muiSupportAuto = true;
+}
 
 export default Grow;

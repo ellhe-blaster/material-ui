@@ -1,22 +1,23 @@
 # Installation
 
-<p class="description">Install Joy UI, a library of beautifully designed React UI components.</p>
+<p class="description">Install Joy UI, a library of beautifully designed React UI components.</p>
 
 ## Default installation
 
-Run one of the following commands to add Joy UI to your project:
+Run one of the following commands to add Joy UI to your project:
 
 <codeblock storageKey="package-manager">
+
 ```bash npm
 npm install @mui/joy @emotion/react @emotion/styled
 ```
 
-```bash yarn
-yarn add @mui/joy @emotion/react @emotion/styled
-```
-
 ```bash pnpm
 pnpm add @mui/joy @emotion/react @emotion/styled
+```
+
+```bash yarn
+yarn add @mui/joy @emotion/react @emotion/styled
 ```
 
 </codeblock>
@@ -25,36 +26,37 @@ pnpm add @mui/joy @emotion/react @emotion/styled
 
 <!-- #react-peer-version -->
 
-Please note that [react](https://www.npmjs.com/package/react) and [react-dom](https://www.npmjs.com/package/react-dom) are peer dependencies, meaning you should ensure they are installed before installing Joy UI.
+Please note that [react](https://www.npmjs.com/package/react) and [react-dom](https://www.npmjs.com/package/react-dom) are peer dependencies, meaning you should ensure they are installed before installing Joy UI.
 
 ```json
 "peerDependencies": {
-  "react": "^17.0.0 || ^18.0.0",
-  "react-dom": "^17.0.0 || ^18.0.0"
+  "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+  "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
 },
 ```
 
 ## Inter font
 
-Joy UI uses the [Inter](https://rsms.me/inter/)
+Joy UI uses the [Inter](https://rsms.me/inter/)
 font by default.
 Add it to your project via [Fontsource](https://fontsource.org/), or with the Google Fonts CDN.
 
 ### Fontsource
 
-Run one of the following commands to add Inter through Fontsource to your Joy UI project:
+Run one of the following commands to add Inter through Fontsource to your Joy UI project:
 
 <codeblock storageKey="package-manager">
+
 ```bash npm
 npm install @fontsource/inter
 ```
 
-```bash yarn
-yarn add @fontsource/inter
-```
-
 ```bash pnpm
 pnpm add @fontsource/inter
+```
+
+```bash yarn
+yarn add @fontsource/inter
 ```
 
 </codeblock>

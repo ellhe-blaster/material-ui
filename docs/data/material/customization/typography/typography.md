@@ -31,9 +31,10 @@ const theme = createTheme({
 
 To self-host fonts, download the font files in `ttf`, `woff`, and/or `woff2` formats and import them into your code.
 
-⚠️ This requires that you have a plugin or loader in your build process that can handle loading `ttf`, `woff`, and
-`woff2` files. Fonts will _not_ be embedded within your bundle. They will be loaded from your webserver instead of a
-CDN.
+:::warning
+This requires that you have a plugin or loader in your build process that can handle loading `ttf`, `woff`, and
+`woff2` files. Fonts will _not_ be embedded within your bundle. They will be loaded from your webserver instead of a CDN.
+:::
 
 ```js
 import RalewayWoff2 from './fonts/Raleway-Regular.woff2';
@@ -69,13 +70,7 @@ const theme = createTheme({
 return (
   <ThemeProvider theme={theme}>
     <CssBaseline />
-    <Box
-      sx={{
-        fontFamily: 'Raleway',
-      }}
-    >
-      Raleway
-    </Box>
+    <Box sx={{ fontFamily: 'Raleway' }}>Raleway</Box>
   </ThemeProvider>
 );
 ```
@@ -106,10 +101,10 @@ const theme = createTheme({
 The computed font size by the browser follows this mathematical equation:
 
 <div class="only-light-mode">
-  <img alt="font size calculation" style="width: 550px;" src="/static/images/font-size.svg" width="436" height="48" />
+  <img alt="font size calculation" style="width: 550px; display: block;" src="/static/images/font-size.svg" width="436" height="48" />
 </div>
 <div class="only-dark-mode">
-  <img alt="font size calculation" style="width: 550px;" src="/static/images/font-size-dark.svg" width="436" height="48" />
+  <img alt="font size calculation" style="width: 550px; display: block;" src="/static/images/font-size-dark.svg" width="436" height="48" />
 </div>
 
 <!-- https://latex.codecogs.com/svg.latex?\dpi{200}&space;\text{computed}&space;=&space;\text{specification}\cdot\frac{\text{typography.fontSize}}{14}\cdot\frac{\text{html&space;fontsize}}{\text{typography.htmlFontSize}} -->
@@ -181,7 +176,7 @@ html {
 }
 ```
 
-_You need to apply the above CSS on the html element of this page to see the below demo rendered correctly_
+You need to apply the above CSS on the HTML element of this page to see the below demo rendered correctly.
 
 {{"demo": "FontSizeTheme.js"}}
 
@@ -290,7 +285,7 @@ declare module '@mui/material/styles' {
     poster: React.CSSProperties;
   }
 
-  // allow configuration using `createTheme`
+  // allow configuration using `createTheme()`
   interface TypographyVariantsOptions {
     poster?: React.CSSProperties;
   }

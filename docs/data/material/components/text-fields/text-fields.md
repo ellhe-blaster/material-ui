@@ -5,6 +5,7 @@ components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, Inp
 githubLabel: 'component: text field'
 materialDesign: https://m2.material.io/components/text-fields
 unstyled: /base-ui/react-input/
+githubSource: packages/mui-material/src/TextField
 ---
 
 # Text Field
@@ -13,7 +14,7 @@ unstyled: /base-ui/react-input/
 
 Text fields allow users to enter text into a UI. They typically appear in forms and dialogs.
 
-{{"component": "modules/components/ComponentLinkHeader.js"}}
+{{"component": "@mui/docs/ComponentLinkHeader"}}
 
 ## Basic TextField
 
@@ -30,7 +31,7 @@ but Material UI will continue to support it.
 
 ## Form props
 
-Standard form attributes are supported e.g. `required`, `disabled`, `type`, etc. as well as a `helperText` which is used to give context about a field's input, such as how the input will be used.
+Standard form attributes are supported, for example `required`, `disabled`, `type`, etc. as well as a `helperText` which is used to give context about a field's input, such as how the input will be used.
 
 {{"demo": "FormPropsTextFields.js"}}
 
@@ -43,8 +44,8 @@ The `helperText` prop can then be used to provide feedback to the user about the
 
 ## Multiline
 
-The `multiline` prop transforms the text field into a [TextareaAutosize](/material-ui/react-textarea-autosize/) element.
-Unless the `rows` prop is set, the height of the text field dynamically matches its content (using [TextareaAutosize](/material-ui/react-textarea-autosize/)).
+The `multiline` prop transforms the Text Field into a [MUI Base Textarea Autosize](/base-ui/react-textarea-autosize/) element.
+Unless the `rows` prop is set, the height of the text field dynamically matches its content.
 You can use the `minRows` and `maxRows` props to bound it.
 
 {{"demo": "MultilineTextFields.js"}}
@@ -68,6 +69,13 @@ This can be used to add a prefix, a suffix, or an action to an input.
 For instance, you can use an icon button to hide or reveal the password.
 
 {{"demo": "InputAdornments.js"}}
+
+#### Customizing adornments
+
+You can apply custom styles to adornments, and trigger changes to one based on attributes from another.
+For example, the demo below uses the label's `[data-shrink=true]` attribute to make the suffix visible (via opacity) when the label is in its shrunken state.
+
+{{"demo": "InputSuffixShrink.js"}}
 
 ## Sizes
 
@@ -120,7 +128,7 @@ and [`FormHelperText`](/material-ui/api/form-helper-text/)
 You might also have noticed that some native HTML input properties are missing from the `TextField` component.
 This is on purpose.
 The component takes care of the most used properties.
-Then, it's up to the user to use the underlying component shown in the following demo. Still, you can use `inputProps` (and `InputProps`, `InputLabelProps` properties) if you want to avoid some boilerplate.
+Then, it's up to the user to use the underlying component shown in the following demo. Still, you can use `slotProps.htmlInput` (and `slotProps.input`, `slotProps.inputLabel` properties) if you want to avoid some boilerplate.
 
 {{"demo": "ComposedTextField.js"}}
 
@@ -197,7 +205,7 @@ import { useFormControl } from '@mui/material/FormControl';
 ## Performance
 
 Global styles for the auto-fill keyframes are injected and removed on each mount and unmount, respectively.
-If you are loading a large number of Text Field components at once, it might be a good idea to change this default behavior by enabling [`disableInjectingGlobalStyles`](/material-ui/api/input-base/#InputBase-prop-disableInjectingGlobalStyles) in `MuiInputBase`.
+If you are loading a large number of Text Field components at once, it might be a good idea to change this default behavior by enabling [`disableInjectingGlobalStyles`](/material-ui/api/input-base/#input-base-prop-disableInjectingGlobalStyles) in `MuiInputBase`.
 Make sure to inject `GlobalStyles` for the auto-fill keyframes at the top of your application.
 
 ```jsx
@@ -241,7 +249,7 @@ In some circumstances, we can't determine the "shrink" state (number input, date
 To workaround the issue, you can force the "shrink" state of the label.
 
 ```jsx
-<TextField InputLabelProps={{ shrink: true }} />
+<TextField slotProps={{ inputLabel: { shrink: true } }} />
 ```
 
 or
@@ -264,9 +272,10 @@ We do not recommend using `type="number"` with a Text Field due to potential usa
 - it allows certain non-numeric characters ('e', '+', '-', '.') and silently discards others
 - the functionality of scrolling to increment/decrement the number can cause accidental and hard-to-notice changes
 - and more—see [Why the GOV.UK Design System team changed the input type for numbers](https://technology.blog.gov.uk/2020/02/24/why-the-gov-uk-design-system-team-changed-the-input-type-for-numbers/) for a more detailed explanation of the limitations of `<input type="number">`
+
   :::
 
-If you need a text field with number validation, you can use Base UI's [Number Input](/base-ui/react-number-input/) instead.
+If you need a text field with number validation, you can use MUI Base's [Number Input](/base-ui/react-number-input/) instead.
 
 You can follow [this GitHub issue](https://github.com/mui/material-ui/issues/19154) to track the progress of introducing the Number Input component to Material UI.
 
@@ -285,7 +294,7 @@ This can be fixed by passing a space character to the `helperText` prop:
 You can use third-party libraries to format an input.
 You have to provide a custom implementation of the `<input>` element with the `inputComponent` property.
 
-The following demo uses the [react-imask](https://github.com/uNmAnNeR/imaskjs) and [react-number-format](https://github.com/s-yadav/react-number-format) libraries. The same concept could be applied to [e.g. react-stripe-element](https://github.com/mui/material-ui/issues/16037).
+The following demo uses the [react-imask](https://github.com/uNmAnNeR/imaskjs) and [react-number-format](https://github.com/s-yadav/react-number-format) libraries. The same concept could be applied to, for example [react-stripe-element](https://github.com/mui/material-ui/issues/16037).
 
 {{"demo": "FormattedInputs.js"}}
 
@@ -316,10 +325,12 @@ const MyInputComponent = React.forwardRef((props, ref) => {
 
 // usage
 <TextField
-  InputProps={{
-    inputComponent: MyInputComponent,
-    inputProps: {
-      component: SomeThirdPartyComponent,
+  slotProps={{
+    input: {
+      inputComponent: MyInputComponent,
+      inputProps: {
+        component: SomeThirdPartyComponent,
+      },
     },
   }}
 />;
@@ -337,7 +348,7 @@ In order for the text field to be accessible, **the input should be linked to th
 </div>
 ```
 
-- If you are using the `TextField` component, you just have to provide a unique `id` unless you're using the `TextField` only client side.
+- If you are using the `TextField` component, you just have to provide a unique `id` unless you're using the `TextField` only client-side.
   Until the UI is hydrated `TextField` without an explicit `id` will not have associated labels.
 - If you are composing the component:
 
@@ -349,14 +360,13 @@ In order for the text field to be accessible, **the input should be linked to th
 </FormControl>
 ```
 
-## Complementary projects
+## Supplementary projects
+
+<!-- To sync with related-projects.md -->
 
 For more advanced use cases, you might be able to take advantage of:
 
-- [react-hook-form](https://react-hook-form.com/): React hook for form validation.
-- [react-hook-form-mui](https://github.com/dohomi/react-hook-form-mui): Material UI and react-hook-form combined.
+- [react-hook-form-mui](https://github.com/dohomi/react-hook-form-mui): Material UI and [react-hook-form](https://react-hook-form.com/) combined.
 - [formik-material-ui](https://github.com/stackworx/formik-mui): Bindings for using Material UI with [formik](https://formik.org/).
-- [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui): Bindings for using Material UI with [Redux Form](https://redux-form.com/).
 - [mui-rff](https://github.com/lookfirst/mui-rff): Bindings for using Material UI with [React Final Form](https://final-form.org/react).
 - [@ui-schema/ds-material](https://www.npmjs.com/package/@ui-schema/ds-material) Bindings for using Material UI with [UI Schema](https://github.com/ui-schema/ui-schema). JSON Schema compatible.
-- [@data-driven-forms/mui-component-mapper](https://www.data-driven-forms.org/provided-mappers/mui-component-mapper): Bindings for using Material UI with [Data Driven Forms](https://github.com/data-driven-forms/react-forms).

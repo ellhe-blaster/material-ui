@@ -85,7 +85,7 @@ const NumberInput = React.forwardRef(function NumberInput(
     value,
     slotProps = {},
     slots = {},
-    ...rest
+    ...other
   } = props;
 
   const {
@@ -115,6 +115,7 @@ const NumberInput = React.forwardRef(function NumberInput(
     readOnly,
     value,
     inputId: id,
+    componentName: 'NumberInput',
   });
 
   const ownerState: NumberInputOwnerState = {
@@ -139,7 +140,7 @@ const NumberInput = React.forwardRef(function NumberInput(
     elementType: Root,
     getSlotProps: getRootProps,
     externalSlotProps: slotProps.root,
-    externalForwardedProps: rest,
+    externalForwardedProps: other,
     additionalProps: {
       ref: forwardedRef,
     },
@@ -204,7 +205,7 @@ NumberInput.propTypes /* remove-proptypes */ = {
   /**
    * The default value. Use when the component is not controlled.
    */
-  defaultValue: PropTypes.any,
+  defaultValue: PropTypes.number,
   /**
    * If `true`, the component is disabled.
    * The prop defaults to the value (`false`) inherited from the parent FormControl component.
@@ -306,6 +307,7 @@ NumberInput.propTypes /* remove-proptypes */ = {
   step: PropTypes.number,
   /**
    * The current value. Use when the component is controlled.
+   * @default null
    */
   value: PropTypes.number,
 } as any;

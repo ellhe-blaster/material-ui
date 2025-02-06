@@ -5,13 +5,15 @@ components: Switch
 hooks: useSwitch
 githubLabel: 'component: switch'
 waiAria: https://www.w3.org/WAI/ARIA/apg/patterns/switch/
+newUrl: https://base-ui.com/react/components/switch
+newName: Switch
 ---
 
 # Switch
 
 <p class="description">Switches are UI elements that let users choose between two states—most commonly on/off.</p>
 
-{{"component": "modules/components/ComponentLinkHeader.js", "design": false}}
+{{"component": "@mui/docs/ComponentLinkHeader", "design": false}}
 
 {{"component": "modules/components/ComponentPageTabs.js"}}
 

@@ -4,7 +4,7 @@ description: An update on our mission for Q2 2020.
 date: 2020-07-17T00:00:00.000Z
 authors: ['oliviertassinari']
 tags: ['Company']
-card: true
+manualCard: true
 ---
 
 This update covers our progress over the last three months, and what we aim to achieve in the coming months.
@@ -27,7 +27,7 @@ Here are the most significant improvements since March 2020:
 
   Adobe XD and Framer support are also up for consideration if they attract a significant audience, but not until we've polished the Sketch and Figma assets.
 
-- 🔄 `LoadingButton` – [a new component in the lab](https://mui.com/material-ui/react-button/#loading-button). This work is influenced by the [concurrent UI patterns](https://17.reactjs.org/docs/concurrent-mode-patterns.html) presented by the React team.
+- 🔄 `LoadingButton` – [a new component in the lab](https://v5.mui.com/material-ui/react-button/#loading-button). This work is influenced by the [concurrent UI patterns](https://17.reactjs.org/docs/concurrent-mode-patterns.html) presented by the React team.
 
   <img src="/static/blog/2020-q2-update/loading.gif" alt="loading" style="margin-bottom: 24px;" />
 

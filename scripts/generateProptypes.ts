@@ -5,17 +5,17 @@ import * as prettier from 'prettier';
 import glob from 'fast-glob';
 import * as _ from 'lodash';
 import * as yargs from 'yargs';
-import * as ts from 'typescript';
+import { LiteralType } from '@mui/internal-scripts/typescript-to-proptypes/src/models';
 import {
   fixBabelGeneratorIssues,
   fixLineEndings,
   getUnstyledFilename,
-} from '@mui-internal/docs-utilities';
+} from '@mui/internal-docs-utils';
 import {
   getPropTypesFromFile,
   injectPropTypesInFile,
   InjectPropTypesInFileOptions,
-} from 'typescript-to-proptypes';
+} from '@mui/internal-scripts/typescript-to-proptypes';
 import {
   createTypeScriptProjectBuilder,
   TypeScriptProject,
@@ -131,14 +131,14 @@ const ignoreExternalDocumentation: Record<string, readonly string[]> = {
   Zoom: transitionCallbacks,
 };
 
-function sortBreakpointsLiteralByViewportAscending(a: ts.LiteralType, b: ts.LiteralType) {
+function sortBreakpointsLiteralByViewportAscending(a: LiteralType, b: LiteralType) {
   // default breakpoints ordered by their size ascending
   const breakpointOrder: readonly unknown[] = ['"xs"', '"sm"', '"md"', '"lg"', '"xl"'];
 
   return breakpointOrder.indexOf(a.value) - breakpointOrder.indexOf(b.value);
 }
 
-function sortSizeByScaleAscending(a: ts.LiteralType, b: ts.LiteralType) {
+function sortSizeByScaleAscending(a: LiteralType, b: LiteralType) {
   const sizeOrder: readonly unknown[] = ['"small"', '"medium"', '"large"'];
   return sizeOrder.indexOf(a.value) - sizeOrder.indexOf(b.value);
 }
@@ -161,10 +161,6 @@ const getSortLiteralUnions: InjectPropTypesInFileOptions['getSortLiteralUnions']
 
   return undefined;
 };
-
-const prettierConfig = prettier.resolveConfig.sync(process.cwd(), {
-  config: path.join(__dirname, '../prettier.config.js'),
-});
 
 async function generateProptypes(
   project: TypeScriptProject,
@@ -192,7 +188,7 @@ async function generateProptypes(
     return;
   }
 
-  // exclude internal slot components, e.g. ButtonRoot
+  // exclude internal slot components, for example ButtonRoot
   const cleanComponents = components.filter((component) => {
     if (component.propsFilename?.endsWith('.tsx')) {
       // only check for .tsx
@@ -306,7 +302,11 @@ async function generateProptypes(
     throw new Error('Unable to produce inject propTypes into code.');
   }
 
-  const prettified = prettier.format(result, { ...prettierConfig, filepath: sourceFile });
+  const prettierConfig = await prettier.resolveConfig(process.cwd(), {
+    config: path.join(__dirname, '../prettier.config.js'),
+  });
+
+  const prettified = await prettier.format(result, { ...prettierConfig, filepath: sourceFile });
   const formatted = fixBabelGeneratorIssues(prettified);
   const correctedLineEndings = fixLineEndings(sourceContent, formatted);
 
@@ -334,7 +334,6 @@ async function run(argv: HandlerArgv) {
       path.resolve(__dirname, '../packages/mui-base/src'),
       path.resolve(__dirname, '../packages/mui-material/src'),
       path.resolve(__dirname, '../packages/mui-lab/src'),
-      path.resolve(__dirname, '../packages/mui-material-next/src'),
       path.resolve(__dirname, '../packages/mui-joy/src'),
     ].map((folderPath) =>
       glob('+([A-Z])*/+([A-Z])*.*@(d.ts|ts|tsx)', {
@@ -364,9 +363,7 @@ async function run(argv: HandlerArgv) {
   const promises = files.map<Promise<void>>(async (tsFile) => {
     const sourceFile = tsFile.includes('.d.ts') ? tsFile.replace('.d.ts', '.js') : tsFile;
     try {
-      const projectName = tsFile.match(
-        /packages\/mui-([a-zA-Z-]+)\/src/,
-      )![1] as CoreTypeScriptProjects;
+      const projectName = tsFile.match(/packages\/mui-([a-zA-Z-]+)\/src/)![1];
       const project = buildProject(projectName);
       await generateProptypes(project, sourceFile, tsFile);
     } catch (error: any) {

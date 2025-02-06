@@ -4,13 +4,15 @@ title: React Input component and hook
 components: Input
 hooks: useInput
 githubLabel: 'component: input'
+newUrl: https://base-ui.com/react/components/input
+newName: Input
 ---
 
 # Input
 
 <p class="description">The Input component provides users with a field to enter and edit text.</p>
 
-{{"component": "modules/components/ComponentLinkHeader.js", "design": false}}
+{{"component": "@mui/docs/ComponentLinkHeader", "design": false}}
 
 {{"component": "modules/components/ComponentPageTabs.js"}}
 
@@ -105,7 +107,7 @@ The demo below shows how to use the `useInput` hook to create a custom input com
 
 :::info
 The following features can be used with both components and hooks.
-For the sake of simplicity, demos and code snippets primarily feature components.
+For the sake of simplicity, demos, and code snippets primarily feature components.
 :::
 
 ### Adornments
@@ -134,3 +136,11 @@ To set minimum and maximum sizes, add the `minRows` and `maxRows` props.
 The following demo shows how to insert a Textarea Autosize component into an Input so that its height grows with the length of the content:
 
 {{"demo": "InputMultilineAutosize.js"}}
+
+## Common examples
+
+### OTP Input
+
+The following demo shows how to build a one-time password component using `Input`.
+
+{{"demo": "OTPInput.js"}}

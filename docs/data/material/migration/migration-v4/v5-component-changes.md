@@ -75,7 +75,7 @@ Move the component from the lab to the core. The component is now stable.
 
 ### Remove debug prop
 
-Remove `debug` prop. There are a couple of simpler alternatives: `open={true}`, Chrome devtools ["Emulate focused"](https://twitter.com/sulco/status/1305841873945272321), or React devtools prop setter.
+Remove `debug` prop. There are a couple of simpler alternatives: `open={true}`, Chrome devtools ["Emulate focused"](https://x.com/sulco/status/1305841873945272321), or React devtools prop setter.
 
 ### Update `renderOption`
 
@@ -744,7 +744,7 @@ The props `alignItems`, `alignContent`, and `justifyContent`—along with their 
 
 These props are now considered part of MUI System, not the `Grid` component itself.
 
-If you still wish to add overrides for them, you can use the [callback as a value in `styleOverrides`](/material-ui/customization/theme-components/#overrides-based-on-props).
+If you still wish to add overrides for them, you can use the [callback as a value in `styleOverrides`](https://v5.mui.com/material-ui/customization/theme-components/#overrides-based-on-props).
 
 ```diff
  const theme = createTheme({
@@ -772,10 +772,10 @@ If you need negative margins on all sides, we recommend using the new Grid v2 in
 
 ```diff
 - import Grid from '@mui/material/Grid';
-+ import Grid from '@mui/material/Unstable_Grid2';
++ import Grid from '@mui/material/Grid2';
 ```
 
-To learn more about the Grid v2, check out the [demos](/material-ui/react-grid2/#whats-changed) and the [Grid migration guide](/material-ui/migration/migration-grid-v2/).
+To learn more about the Grid v2, check out the [demos](/material-ui/react-grid2/) and the [Grid migration guide](/material-ui/migration/migration-grid-v2/).
 
 :::info
 Grid v2 was introduced in Material UI v5.9.1 and features negative margins on all sides by default.
@@ -796,7 +796,7 @@ Rename the `GridList` components to `ImageList` to align with the current Materi
 
 ### Use CSS object-fit
 
-Use CSS `object-fit`. For IE11 support either use a polyfill such as
+Use CSS `object-fit`. For IE 11 support either use a polyfill such as
 [this npm package](https://www.npmjs.com/package/object-fit-images), or else continue to use the v4 component.
 
 ```diff
@@ -991,7 +991,7 @@ prop `listItemClasses` is removed, use `classes` instead.
 +<MenuItem classes={{...}}>
 ```
 
-Read more about the [MenuItem CSS API](/material-ui/api/menu-item/#css).
+Read more about the [MenuItem CSS API](/material-ui/api/menu-item/#classes).
 
 ## Modal
 
@@ -1034,7 +1034,7 @@ Use `onClose` with `reason === "escapeKeyDown"` instead.
 
 Remove the `onRendered` prop.
 
-Depending on your use case, you can either use a [callback ref](https://legacy.reactjs.org/docs/refs-and-the-dom.html#callback-refs) on the child element, or an effect hook in the child component.
+Depending on your use case, you can either use a [callback ref](https://react.dev/learn/manipulating-the-dom-with-refs#how-to-manage-a-list-of-refs-using-a-ref-callback) on the child element, or an effect hook in the child component.
 
 ## NativeSelect
 
@@ -1177,7 +1177,7 @@ Read the [Popper.js migration guide](https://popper.js.org/docs/v2/migration-gui
 
 Remove the `onRendered` prop.
 
-Depending on your use case, you can either use a [callback ref](https://legacy.reactjs.org/docs/refs-and-the-dom.html#callback-refs) on the child element, or an effect hook in the child component.
+Depending on your use case, you can either use a [callback ref](https://react.dev/learn/manipulating-the-dom-with-refs#how-to-manage-a-list-of-refs-using-a-ref-callback) on the child element, or an effect hook in the child component.
 
 ## Radio
 
@@ -1255,7 +1255,7 @@ This component has been removed.
 
 You can get a reference to the underlying DOM node of our components via `ref` prop.
 
-The component relied on [`ReactDOM.findDOMNode`](https://react.dev/reference/react-dom/findDOMNode) which is [deprecated in `React.StrictMode`](https://react.dev/reference/react/StrictMode#warning-about-deprecated-finddomnode-usage).
+The component relied on [`ReactDOM.findDOMNode`](https://legacy.reactjs.org/docs/react-dom.html#finddomnode) which is [deprecated in `React.StrictMode`](https://react.dev/reference/react/StrictMode#warning-about-deprecated-finddomnode-usage).
 
 :::success
 This is handled in the [preset-safe codemod](#preset-safe) by applying fake `RootRef` component to prevent application crash, but further fixes are required.
@@ -1862,7 +1862,7 @@ The following classes and style overrides keys were removed:
 
 These props are now considered part of MUISystem rather than the `Typography` component itself.
 
-If you still wish to add overrides for them, you can use the [callback as a value in `styleOverrides`](/material-ui/customization/theme-components/#overrides-based-on-props).
+If you still wish to add overrides for them, you can use the [callback as a value in `styleOverrides`](https://v5.mui.com/material-ui/customization/theme-components/#overrides-based-on-props).
 
 For example:
 
@@ -2008,7 +2008,7 @@ This change removes the confusion with the built-in `Omit` helper introduced in 
 
 The built-in `Omit`, while similar, is non-distributive.
 This leads to differences when applied to union types.
-[See this Stack Overflow answer for further details](https://stackoverflow.com/questions/57103834/typescript-omit-a-property-from-all-interfaces-in-a-union-but-keep-the-union-s/57103940#57103940).
+[See this Stack Overflow answer for further details](https://stackoverflow.com/questions/57103834/typescript-omit-a-property-from-all-interfaces-in-a-union-but-keep-the-union-s/57103940#57103940).
 
 ```diff
 -import { Omit } from '@mui/types';

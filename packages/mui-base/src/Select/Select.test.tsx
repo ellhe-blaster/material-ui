@@ -2,34 +2,26 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import {
-  createMount,
   createRenderer,
-  describeConformanceUnstyled,
   fireEvent,
   act,
   screen,
   MuiRenderResult,
   RenderOptions,
-} from '@mui-internal/test-utils';
+  flushMicrotasks,
+} from '@mui/internal-test-utils';
 import userEvent from '@testing-library/user-event';
 import { Select, SelectListboxSlotProps, selectClasses } from '@mui/base/Select';
 import { SelectOption } from '@mui/base/useOption';
 import { Option, OptionProps, OptionRootSlotProps, optionClasses } from '@mui/base/Option';
 import { OptionGroup } from '@mui/base/OptionGroup';
+import { describeConformanceUnstyled } from '../../test/describeConformanceUnstyled';
 
 // TODO v6: initialize @testing-library/user-event using userEvent.setup() instead of directly calling methods e.g. userEvent.click() for all related tests in this file
 // currently the setup() method uses the ClipboardEvent constructor which is incompatible with our lowest supported version of iOS Safari (12.2) https://github.com/mui/material-ui/blob/master/.browserslistrc#L44
 // userEvent.setup() requires Safari 14 or up to work
 
-async function flushMicrotasks() {
-  if (/jsdom/.test(window.navigator.userAgent)) {
-    // This is only needed for JSDOM and causes issues in real browsers
-    await act(() => async () => {});
-  }
-}
-
 describe('<Select />', () => {
-  const mount = createMount();
   const { render: internalRender } = createRenderer();
 
   async function render(
@@ -52,7 +44,6 @@ describe('<Select />', () => {
   describeConformanceUnstyled(componentToTest, () => ({
     inheritComponent: 'button',
     render,
-    mount,
     refInstanceof: window.HTMLButtonElement,
     testComponentPropWith: 'span',
     slots: {
@@ -68,7 +59,7 @@ describe('<Select />', () => {
         testWithElement: 'span',
       },
     },
-    skip: ['componentProp', 'reactTestRenderer'],
+    skip: ['componentProp'],
   }));
 
   describe('selected option rendering', () => {
@@ -761,7 +752,7 @@ describe('<Select />', () => {
       expect(onChange.notCalled).to.equal(true);
     });
 
-    it('is not called after initial render when when controlled value is set to null', () => {
+    it('is not called after initial render when when controlled value is set to null', async () => {
       function TestComponent({ onChange }: { onChange: (value: string | null) => void }) {
         const [value, setValue] = React.useState<string | null>(null);
         const handleChange = (event: React.SyntheticEvent | null, newValue: string | null) => {
@@ -778,12 +769,12 @@ describe('<Select />', () => {
       }
 
       const onChange = spy();
-      render(<TestComponent onChange={onChange} />);
+      await render(<TestComponent onChange={onChange} />);
 
       expect(onChange.notCalled).to.equal(true);
     });
 
-    it('is not called after initial render when when the default uncontrolled value is set to null', () => {
+    it('is not called after initial render when when the default uncontrolled value is set to null', async () => {
       function TestComponent({ onChange }: { onChange: (value: string | null) => void }) {
         const handleChange = (event: React.SyntheticEvent | null, newValue: string | null) => {
           onChange(newValue);
@@ -798,12 +789,12 @@ describe('<Select />', () => {
       }
 
       const onChange = spy();
-      render(<TestComponent onChange={onChange} />);
+      await render(<TestComponent onChange={onChange} />);
 
       expect(onChange.notCalled).to.equal(true);
     });
 
-    it('is not called after initial render when the controlled value is set to a valid option', () => {
+    it('is not called after initial render when the controlled value is set to a valid option', async () => {
       function TestComponent({ onChange }: { onChange: (value: string | null) => void }) {
         const [value, setValue] = React.useState<string | null>('1');
         const handleChange = (event: React.SyntheticEvent | null, newValue: string | null) => {
@@ -820,12 +811,12 @@ describe('<Select />', () => {
       }
 
       const onChange = spy();
-      render(<TestComponent onChange={onChange} />);
+      await render(<TestComponent onChange={onChange} />);
 
       expect(onChange.notCalled).to.equal(true);
     });
 
-    it('is not called after initial render when when the default uncontrolled value is set to a valid option', () => {
+    it('is not called after initial render when when the default uncontrolled value is set to a valid option', async () => {
       function TestComponent({ onChange }: { onChange: (value: string | null) => void }) {
         const handleChange = (event: React.SyntheticEvent | null, newValue: string | null) => {
           onChange(newValue);
@@ -840,12 +831,12 @@ describe('<Select />', () => {
       }
 
       const onChange = spy();
-      render(<TestComponent onChange={onChange} />);
+      await render(<TestComponent onChange={onChange} />);
 
       expect(onChange.notCalled).to.equal(true);
     });
 
-    it('is called after initial render with `null` when the controlled value is set to a nonexistent option', () => {
+    it('is called after initial render with `null` when the controlled value is set to a nonexistent option', async () => {
       function TestComponent({ onChange }: { onChange: (value: string | null) => void }) {
         const [value, setValue] = React.useState<string | null>('42');
         const handleChange = (event: React.SyntheticEvent | null, newValue: string | null) => {
@@ -862,13 +853,13 @@ describe('<Select />', () => {
       }
 
       const onChange = spy();
-      render(<TestComponent onChange={onChange} />);
+      await render(<TestComponent onChange={onChange} />);
 
       expect(onChange.called).to.equal(true);
       expect(onChange.args[0][0]).to.equal(null);
     });
 
-    it('is called after initial render when when the default uncontrolled value is set to a nonexistent option', () => {
+    it('is called after initial render when when the default uncontrolled value is set to a nonexistent option', async () => {
       function TestComponent({ onChange }: { onChange: (value: string | null) => void }) {
         const handleChange = (event: React.SyntheticEvent | null, newValue: string | null) => {
           onChange(newValue);
@@ -883,7 +874,7 @@ describe('<Select />', () => {
       }
 
       const onChange = spy();
-      render(<TestComponent onChange={onChange} />);
+      await render(<TestComponent onChange={onChange} />);
 
       expect(onChange.called).to.equal(true);
       expect(onChange.args[0][0]).to.equal(null);
@@ -987,8 +978,8 @@ describe('<Select />', () => {
 
   // according to WAI-ARIA 1.2 (https://www.w3.org/TR/wai-aria-1.2/#combobox)
   describe('a11y attributes', () => {
-    it('should have the `combobox` role', () => {
-      render(
+    it('should have the `combobox` role', async () => {
+      await render(
         <Select>
           <Option value={1}>One</Option>
         </Select>,
@@ -997,8 +988,8 @@ describe('<Select />', () => {
       expect(screen.queryByRole('combobox')).not.to.equal(null);
     });
 
-    it('should have the aria-expanded attribute', () => {
-      render(
+    it('should have the aria-expanded attribute', async () => {
+      await render(
         <Select>
           <Option value={1}>One</Option>
         </Select>,
@@ -1007,23 +998,23 @@ describe('<Select />', () => {
       expect(screen.getByRole('combobox')).to.have.attribute('aria-expanded', 'false');
     });
 
-    it('should have the aria-expanded attribute set to true when the listbox is open', () => {
-      render(
+    it('should have the aria-expanded attribute set to true when the listbox is open', async () => {
+      await render(
         <Select>
           <Option value={1}>One</Option>
         </Select>,
       );
 
       const select = screen.getByRole('combobox');
-      act(() => {
+      await act(async () => {
         select.click();
       });
 
       expect(select).to.have.attribute('aria-expanded', 'true');
     });
 
-    it('should have the aria-controls attribute', () => {
-      render(
+    it('should have the aria-controls attribute', async () => {
+      await render(
         <Select>
           <Option value={1}>One</Option>
         </Select>,
@@ -1031,7 +1022,7 @@ describe('<Select />', () => {
 
       const select = screen.getByRole('combobox');
 
-      act(() => {
+      await act(async () => {
         select.click();
       });
 
@@ -1042,15 +1033,15 @@ describe('<Select />', () => {
       expect(select).to.have.attribute('aria-controls', listboxId!);
     });
 
-    it('should have the correct tabindex attribute', () => {
-      render(
+    it('should have the correct tabindex attribute', async () => {
+      await render(
         <Select>
           <Option value={1}>One</Option>
         </Select>,
       );
 
       const select = screen.getByRole('combobox');
-      act(() => {
+      await act(async () => {
         select.click();
       });
 
@@ -1262,16 +1253,21 @@ describe('<Select />', () => {
     const updateButton = getByTestId('update-externally');
     const selectButton = getByTestId('select');
 
-    act(() => updateButton.click());
-    act(() => selectButton.click());
+    await act(async () => updateButton.click());
+    await act(async () => selectButton.click());
 
     const option2 = getByText('2');
-    act(() => option2.click());
+    await act(async () => option2.click());
 
     expect(selectButton).to.have.text('1, 2');
   });
 
-  it('perf: does not rerender options unnecessarily', async () => {
+  it('perf: does not rerender options unnecessarily', async function test() {
+    if (/jsdom/.test(window.navigator.userAgent)) {
+      // JSDOM doesn't support :focus-visible
+      this.skip();
+    }
+
     const renderOption1Spy = spy();
     const renderOption2Spy = spy();
     const renderOption3Spy = spy();

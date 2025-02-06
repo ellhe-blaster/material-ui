@@ -10,6 +10,7 @@ export default function DiscreteSlider() {
         aria-label="Temperature"
         defaultValue={30}
         getAriaValueText={valuetext}
+        shiftStep={30}
         step={10}
         marks
         min={10}
@@ -150,7 +151,7 @@ const Slider = styled(BaseSlider)(
   }
 
   & .valueLabel {
-    font-family: IBM Plex Sans;
+    font-family: "IBM Plex Sans", sans-serif;
     font-weight: 600;
     font-size: 12px;
     position: relative;

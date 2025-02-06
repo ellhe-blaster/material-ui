@@ -4,14 +4,102 @@ import { SxProps } from '@mui/system';
 import { IconButtonProps, InternalStandardProps as StandardProps, SvgIconProps, Theme } from '..';
 import { PaperProps } from '../Paper';
 import { AlertClasses } from './alertClasses';
+import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
 
 export type AlertColor = 'success' | 'info' | 'warning' | 'error';
 
 export interface AlertPropsVariantOverrides {}
-
 export interface AlertPropsColorOverrides {}
 
-export interface AlertProps extends StandardProps<PaperProps, 'variant'> {
+export interface AlertRootSlotPropsOverrides {}
+
+export interface AlertIconSlotPropsOverrides {}
+
+export interface AlertMessageSlotPropsOverrides {}
+
+export interface AlertActionSlotPropsOverrides {}
+
+export interface AlertCloseButtonSlotPropsOverrides {}
+export interface AlertCloseIconSlotPropsOverrides {}
+
+export interface AlertSlots {
+  /**
+   * The component that renders the root slot.
+   * @default Paper
+   */
+  root: React.ElementType;
+  /**
+   * The component that renders the icon slot.
+   * @default div
+   */
+  icon: React.ElementType;
+  /**
+   * The component that renders the message slot.
+   * @default div
+   */
+  message: React.ElementType;
+  /**
+   * The component that renders the action slot.
+   * @default div
+   */
+  action: React.ElementType;
+  /**
+   * The component that renders the close button.
+   * @default IconButton
+   */
+  closeButton: React.ElementType;
+  /**
+   * The component that renders the close icon.
+   * @default svg
+   */
+  closeIcon: React.ElementType;
+}
+
+export type AlertSlotsAndSlotProps = CreateSlotsAndSlotProps<
+  AlertSlots,
+  {
+    /**
+     * Props forwarded to the root slot.
+     * By default, the avaible props are based on the [Paper](https://mui.com/material-ui/api/paper/#props) component.
+     */
+    root: SlotProps<React.ElementType<PaperProps>, AlertRootSlotPropsOverrides, AlertOwnerState>;
+    /**
+     * Props forwarded to the icon slot.
+     * By default, the avaible props are based on a div element.
+     */
+    icon: SlotProps<'div', AlertIconSlotPropsOverrides, AlertOwnerState>;
+    /**
+     * Props forwarded to the message slot.
+     * By default, the avaible props are based on a div element.
+     */
+    message: SlotProps<'div', AlertMessageSlotPropsOverrides, AlertOwnerState>;
+    /**
+     * Props forwarded to the action slot.
+     * By default, the avaible props are based on a div element.
+     */
+    action: SlotProps<'div', AlertActionSlotPropsOverrides, AlertOwnerState>;
+    /**
+     * Props forwarded to the closeButton slot.
+     * By default, the avaible props are based on the [IconButton](https://mui.com/material-ui/api/icon-button/#props) component.
+     */
+    closeButton: SlotProps<
+      React.ElementType<IconButtonProps>,
+      AlertCloseButtonSlotPropsOverrides,
+      AlertOwnerState
+    >;
+    /**
+     * Props forwarded to the closeIcon slot.
+     * By default, the avaible props are based on the [SvgIcon](https://mui.com/material-ui/api/svg-icon/#props) component.
+     */
+    closeIcon: SlotProps<
+      React.ElementType<SvgIconProps>,
+      AlertCloseIconSlotPropsOverrides,
+      AlertOwnerState
+    >;
+  }
+>;
+
+export interface AlertProps extends StandardProps<PaperProps, 'variant'>, AlertSlotsAndSlotProps {
   /**
    * The action to display. It renders after the message, at the end of the alert.
    */
@@ -23,7 +111,7 @@ export interface AlertProps extends StandardProps<PaperProps, 'variant'> {
   /**
    * Override the default label for the *close popup* icon button.
    *
-   * For localization purposes, you can use the provided [translations](/material-ui/guides/localization/).
+   * For localization purposes, you can use the provided [translations](https://mui.com/material-ui/guides/localization/).
    * @default 'Close'
    */
   closeText?: string;
@@ -36,8 +124,7 @@ export interface AlertProps extends StandardProps<PaperProps, 'variant'> {
   /**
    * The components used for each slot inside.
    *
-   * This prop is an alias for the `slots` prop.
-   * It's recommended to use the `slots` prop instead.
+   * @deprecated use the `slots` prop instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
    *
    * @default {}
    */
@@ -49,8 +136,7 @@ export interface AlertProps extends StandardProps<PaperProps, 'variant'> {
    * The extra props for the slot components.
    * You can override the existing props or add new ones.
    *
-   * This prop is an alias for the `slotProps` prop.
-   * It's recommended to use the `slotProps` prop instead, as `componentsProps` will be deprecated in the future.
+   * @deprecated use the `slotProps` prop instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
    *
    * @default {}
    */
@@ -95,43 +181,22 @@ export interface AlertProps extends StandardProps<PaperProps, 'variant'> {
    */
   variant?: OverridableStringUnion<'standard' | 'filled' | 'outlined', AlertPropsVariantOverrides>;
   /**
-   * The extra props for the slot components.
-   * You can override the existing props or add new ones.
-   *
-   * This prop is an alias for the `componentsProps` prop, which will be deprecated in the future.
-   *
-   * @default {}
-   */
-  slotProps?: {
-    closeButton?: IconButtonProps;
-    closeIcon?: SvgIconProps;
-  };
-  /**
-   * The components used for each slot inside.
-   *
-   * This prop is an alias for the `components` prop, which will be deprecated in the future.
-   *
-   * @default {}
-   */
-  slots?: {
-    closeButton?: React.ElementType;
-    closeIcon?: React.ElementType;
-  };
-  /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
   sx?: SxProps<Theme>;
 }
 
+export interface AlertOwnerState extends AlertProps {}
+
 /**
  *
  * Demos:
  *
- * - [Alert](https://mui.com/material-ui/react-alert/)
+ * - [Alert](https://next.mui.com/material-ui/react-alert/)
  *
  * API:
  *
- * - [Alert API](https://mui.com/material-ui/api/alert/)
- * - inherits [Paper API](https://mui.com/material-ui/api/paper/)
+ * - [Alert API](https://next.mui.com/material-ui/api/alert/)
+ * - inherits [Paper API](https://next.mui.com/material-ui/api/paper/)
  */
-export default function Alert(props: AlertProps): JSX.Element;
+export default function Alert(props: AlertProps): React.JSX.Element;

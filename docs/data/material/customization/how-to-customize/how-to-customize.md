@@ -49,7 +49,7 @@ These class names can't be used as CSS selectors because they are unstable.
 If you want to override a component's styles using custom classes, you can use the `className` prop, available on each component.
 To override the styles of a specific part of the component, use the global classes provided by Material UI, as described in the previous section **"Overriding nested component styles"** under the [`sx` prop section](#the-sx-prop).
 
-Visit the [Style library interoperability](/material-ui/guides/interoperability/) guide to find examples of this approach using different styling libraries.
+Visit the [Style library interoperability](/material-ui/integrations/interoperability/) guide to find examples of this approach using different styling libraries.
 
 ### State classes
 
@@ -186,6 +186,10 @@ To add global baseline styles for some of the HTML elements, use the `GlobalStyl
 Here is an example of how you can override styles for the `h1` elements:
 
 {{"demo": "GlobalCssOverride.js", "iframe": true, "height": 100}}
+
+The `styles` prop in the `GlobalStyles` component supports a callback in case you need to access the theme.
+
+{{"demo": "GlobalCssOverrideTheme.js", "iframe": true, "height": 100}}
 
 If you are already using the [CssBaseline](/material-ui/react-css-baseline/) component for setting baseline styles, you can also add these global styles as overrides for this component. Here is how you can achieve the same by using this approach.
 

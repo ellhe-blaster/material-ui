@@ -9,6 +9,8 @@ githubLabel: 'component: Typography'
 
 <p class="description">The Typography component helps present design and content clearly and efficiently.</p>
 
+{{"component": "@mui/docs/ComponentLinkHeader"}}
+
 ## Introduction
 
 The Typography component helps maintain a consistent design by providing a limited set of values to choose from and convenient props for building common designs faster.
@@ -78,7 +80,7 @@ These values include various heading levels (h1, h2, h3, etc.) as well as body t
 Additionally, you can also use the level prop to control the font size, weight, line height, and other typographic properties.
 
 :::warning
-Keep in mind that each level renders a specific HTML tag (e.g. "h1" renders as an `<h1>` element, "body-md" renders as a `<p>`, etc.)
+Keep in mind that each level renders a specific HTML tag (for example "h1" renders as an `<h1>` element, "body-md" renders as a `<p>`, etc.)
 :::
 
 {{"demo": "TypographyScales.js"}}

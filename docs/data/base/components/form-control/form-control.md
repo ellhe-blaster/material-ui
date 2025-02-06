@@ -4,13 +4,15 @@ title: React Form Control component and hook
 components: FormControl
 hooks: useFormControlContext
 githubLabel: 'component: FormControl'
+newUrl: https://base-ui.com/react/components/field
+newName: Field
 ---
 
 # Form Control
 
 <p class="description">The Form Control component is a utility that lets you associate a form input with auxiliary components, such as labels, error indicators, or helper text.</p>
 
-{{"component": "modules/components/ComponentLinkHeader.js", "design": false}}
+{{"component": "@mui/docs/ComponentLinkHeader", "design": false}}
 
 {{"component": "modules/components/ComponentPageTabs.js"}}
 
@@ -82,7 +84,7 @@ The demo below shows how to integrate this hook with its component counterpart:
 
 {{"demo": "UseFormControl.js", "defaultCodeOpen": false}}
 
-Note that even though Form Control supports both controlled and uncontrolled-style APIs (i.e. it accepts `value` and `defaultValue` props), `useFormControlContext` returns only the controlled `value`.
+Note that even though Form Control supports both controlled and uncontrolled-style APIs (that is it accepts `value` and `defaultValue` props), `useFormControlContext` returns only the controlled `value`.
 This way, you don't have to implement both in your custom input—Form Control does this for you.
 
 :::info
@@ -97,7 +99,7 @@ Learn more about controlled and uncontrolled components in the [React documentat
 
 :::info
 The following features can be used with both components and hooks.
-For the sake of simplicity, demos and code snippets primarily feature components.
+For the sake of simplicity, demos, and code snippets primarily feature components.
 :::
 
 ### Accessing the form control state

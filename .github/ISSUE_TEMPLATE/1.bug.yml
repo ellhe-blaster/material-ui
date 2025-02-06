@@ -1,5 +1,5 @@
 name: Bug report 🐛
-description: Create a bug report for Material UI, Base UI, MUI System, or Joy UI.
+description: Create a bug report for Material UI, MUI System, or Joy UI.
 labels: ['status: waiting for maintainer']
 body:
   - type: markdown
@@ -9,7 +9,7 @@ body:
     attributes:
       label: Search keywords
       description: |
-        Your issue may have already been reported! First search for duplicates among the [existing issues](https://github.com/mui/material-ui/issues).
+        Your issue may have already been reported! First search for duplicates among the [existing issues](https://github.com/mui/material-ui/issues?q=is%3Aopen+is%3Aclosed).
         If your issue isn't a duplicate, great! Please list the keywords you used so people in the future can find this one more easily:
     validations:
       required: true
@@ -26,12 +26,10 @@ body:
       description: |
         **⚠️ Issues that we can't reproduce can't be fixed.**
 
-        Please provide a link to a live example and an unambiguous set of steps to reproduce this bug. As a starting point, we recommend you browse our [documentation](https://mui.com/material-ui/getting-started/installation/), and [select](https://mui.com/static/docs/forking-an-example.png) the closest example to your use case. Or you can use the [official template](https://mui.com/r/issue-template) to build a reproduction case.
+        Please provide a link to a live example and an unambiguous set of steps to reproduce this bug. See our [documentation](https://mui.com/material-ui/getting-started/support/#bug-reproductions) on how to build a reproduction case.
       value: |
-        Link to live example: (required)
-
         Steps:
-        1.
+        1. Open this link to live example: (required)
         2.
         3.
   - type: textarea
@@ -59,3 +57,9 @@ body:
           Output from `npx @mui/envinfo` goes here.
         ```
         </details>
+  - type: markdown
+    attributes:
+      value: |
+        ## :heart: Love Material UI?
+
+        Consider donating $10 to sustain our open-source work: [https://opencollective.com/mui-org](https://opencollective.com/mui-org).

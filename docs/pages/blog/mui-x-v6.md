@@ -3,11 +3,11 @@ title: Introducing MUI X v6
 description: Introducing the new major version of the advanced components.
 date: 2023-03-06T00:00:00.000Z
 authors: ['josefreitas']
-card: true
-tags: ['MUI X', 'News']
+manualCard: true
+tags: ['MUI X', 'Product']
 ---
 
-<img src="/static/blog/mui-x-v6/card.png" alt="" style="margin-bottom: 16px;" width="2400" height="559" />
+<img src="/static/blog/mui-x-v6/card.png" alt="" width="2560" height="1280" />
 
 [MUI X v6.0.0](https://github.com/mui/mui-x/releases/tag/v6.0.0) is finally here with many improvements, new features, customization abilities, and a more robust foundation to accommodate the changes we want to deliver next.
 
@@ -66,7 +66,7 @@ And if you want to understand more about our view of the open-source/commercial 
 ### Improved column menu
 
 Another significant step in terms of customization but also usability; the v6 [column menu](/x/react-data-grid/column-menu/) now provides support for icons, menu groups, custom items and actions, and more.
-We've redesigned this sub-component to make it as extensible as possible.
+We've redesigned this subcomponent to make it as extensible as possible.
 
 <a href="/x/react-data-grid/column-menu/">
 <img src="/static/blog/mui-x-v6/column-menu-custom-action.png" loading="lazy" alt="Column menu custom action" width="1636" height="808" />
@@ -176,7 +176,7 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 
 ### Improved layout customization
 
-Combining the slots concept with the grid layout, you can now rearrange, extend, and customize most of the sub-components used in the Pickers UI.
+Combining the slots concept with the grid layout, you can now rearrange, extend, and customize most of the subcomponents used in the Pickers UI.
 See [the documentation about it](/x/react-date-pickers/custom-layout/) and this quick overview:
 
 ```tsx
@@ -208,7 +208,7 @@ export default function CustomStaticDatePicker() {
 
 Many end-users complained, and we completely agree, the [clock view](/x/react-date-pickers/time-clock/) is not the ideal time-picking experience on Desktop, so we removed it as a default view.
 
-<img src="/static/blog/mui-x-v6/clock.png" loading="lazy" alt="Date Range shortcuts." width="518" height="496" style="width: 259px; margin-bottom: 24px;" />
+<img src="/static/blog/mui-x-v6/clock.png" loading="lazy" alt="Date Range shortcuts." width="518" height="496" style="width: 259px;" />
 
 <p class="blog-description">The clock picker, still present on mobile.</p>
 
@@ -270,7 +270,7 @@ Here's a list of what you can expect to be delivered in the following months (wh
 - Row spanning ([mui-x#207](https://github.com/mui/mui-x/issues/207))
 - Improved column management panel (column visibility, reordering, grouping, pinning, etc.) ([mui-x#5700](https://github.com/mui/mui-x/issues/5700))
 - Improved filter panel ([mui-x#6419](https://github.com/mui/mui-x/issues/6419))
-- Support for Joy UI
+- Support for Joy UI
 
 ### Date Pickers
 
@@ -278,13 +278,13 @@ Here's a list of what you can expect to be delivered in the following months (wh
 - Time Range Picker ([mui-x#4460](https://github.com/mui/mui-x/issues/4460))
 - Date Time Range Picker ([mui-x#4547](https://github.com/mui/mui-x/issues/4547))
 - Ability to select a month range in the Date Range Picker ([mui-x#4995](https://github.com/mui/mui-x/issues/4995))
-- Support for Joy UI
+- Support for Joy UI
 
 ### Charts 📊
 
 - Preview of chart components 🔥 ([mui-x#1408](https://github.com/mui/mui-x/issues/1408))
 
-You can get more details of our next steps in [MUI X public roadmap](https://github.com/mui/mui-x/projects/1).
+You can get more details of our next steps in [MUI X public roadmap](https://github.com/orgs/mui/projects/35).
 
 ## Decoupling versions from MUI Core
 
@@ -293,7 +293,7 @@ We have decoupled MUI X's versioning from MUI Core (including `@mui/material`:
 1. Soften migration pains with a yearly release cycle.\
    The MUI X codebase is dynamic, and the constant development of new features often requires a faster breaking changes pace than MUI Core. With a yearly release, we aim to deliver those in smaller, more digestible sizes, in a time window that you can rely on to make your plans and prepare for updates.
 
-2. We aim to support not only Material UI but also Joy UI and, in the future, Base UI.
+2. We aim to support not only Material UI but also Joy UI and, in the future, Base UI.
 
 ## Feedback
 

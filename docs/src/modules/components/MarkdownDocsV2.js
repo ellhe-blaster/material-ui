@@ -5,20 +5,20 @@ import kebabCase from 'lodash/kebabCase';
 import { useTheme } from '@mui/system';
 import { exactProp } from '@mui/utils';
 import { CssVarsProvider as JoyCssVarsProvider, useColorScheme } from '@mui/joy/styles';
+import { Ad, AdGuest } from '@mui/docs/Ad';
 import ComponentsApiContent from 'docs/src/modules/components/ComponentsApiContent';
 import HooksApiContent from 'docs/src/modules/components/HooksApiContent';
 import { getTranslatedHeader as getComponentTranslatedHeader } from 'docs/src/modules/components/ApiPage';
 import RichMarkdownElement from 'docs/src/modules/components/RichMarkdownElement';
 import { pathnameToLanguage } from 'docs/src/modules/utils/helpers';
 import AppLayoutDocs from 'docs/src/modules/components/AppLayoutDocs';
-import { useTranslate, useUserLanguage } from 'docs/src/modules/utils/i18n';
-import BrandingProvider from 'docs/src/BrandingProvider';
-import Ad from 'docs/src/modules/components/Ad';
+import { useTranslate, useUserLanguage } from '@mui/docs/i18n';
+import { BrandingProvider } from '@mui/docs/branding';
 import { HEIGHT as AppFrameHeight } from 'docs/src/modules/components/AppFrame';
 import { HEIGHT as TabsHeight } from 'docs/src/modules/components/ComponentPageTabs';
-import AdGuest from 'docs/src/modules/components/AdGuest';
 import { getPropsToC } from 'docs/src/modules/components/ApiPage/sections/PropertiesSection';
 import { getClassesToC } from 'docs/src/modules/components/ApiPage/sections/ClassesSection';
+import MuiBaseDeprecation from 'docs/src/components/productBaseUI/MuiBaseDeprecation';
 
 function JoyModeObserver({ mode }) {
   const { setMode } = useColorScheme();
@@ -81,7 +81,7 @@ export default function MarkdownDocsV2(props) {
 
   const localizedDoc = docs[userLanguage] || docs.en;
   // Generate the TOC based on the tab
-  const demosToc = localizedDoc.toc.filter((item) => item.text !== 'API');
+  const demosToc = localizedDoc.toc;
 
   function createHookTocEntry(hookName, sectionName, hookProps = {}) {
     const hookPropToc = [];
@@ -147,8 +147,8 @@ export default function MarkdownDocsV2(props) {
       const { componentDescriptionToc = [] } = componentsApiDescriptions[key][userLanguage];
       const {
         name: componentName,
-        inheritance,
         slots,
+        inheritance,
         themeDefaultProps,
         classes,
         props: componentProps,
@@ -183,6 +183,8 @@ export default function MarkdownDocsV2(props) {
     });
   }
 
+  const isBase = canonicalAs.startsWith('/base-ui/');
+
   const isJoy = canonicalAs.startsWith('/joy-ui/');
   const CssVarsProvider = isJoy ? JoyCssVarsProvider : React.Fragment;
 
@@ -199,7 +201,7 @@ export default function MarkdownDocsV2(props) {
   // process the elements before the tabs component
   while (i < localizedDoc.rendered.length && !done) {
     const renderedMarkdownOrDemo = localizedDoc.rendered[i];
-    if (renderedMarkdownOrDemo.component && renderedMarkdownOrDemo.component.indexOf('Tabs') >= 0) {
+    if (renderedMarkdownOrDemo.component && renderedMarkdownOrDemo.component.includes('Tabs')) {
       done = true;
     }
     commonElements.push(
@@ -243,6 +245,10 @@ export default function MarkdownDocsV2(props) {
 
   return (
     <AppLayoutDocs
+      cardOptions={{
+        description: localizedDoc.headers.cardDescription,
+        title: localizedDoc.headers.cardTitle,
+      }}
       description={localizedDoc.description}
       disableAd={disableAd}
       disableToc={disableToc}
@@ -268,14 +274,16 @@ export default function MarkdownDocsV2(props) {
         )}
         <CssVarsProvider>
           {isJoy && <JoyModeObserver mode={theme.palette.mode} />}
+          {isBase && (
+            <MuiBaseDeprecation
+              newComponentUrl={localizedDoc.headers.newUrl}
+              newComponentName={localizedDoc.headers.newName}
+            />
+          )}
           {commonElements}
           {activeTab === '' &&
             localizedDoc.rendered
-              // for the "hook only" edge case, e.g. Base UI autocomplete
-              .slice(
-                i,
-                localizedDoc.rendered.length - (localizedDoc.headers.components.length > 0 ? 1 : 0),
-              )
+              .slice(i)
               .map((renderedMarkdownOrDemo, index) => (
                 <RichMarkdownElement
                   key={`demos-section-${index}`}

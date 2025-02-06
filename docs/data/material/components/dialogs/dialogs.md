@@ -5,6 +5,7 @@ components: Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
 githubLabel: 'component: dialog'
 materialDesign: https://m2.material.io/components/dialogs
 waiAria: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/
+githubSource: packages/mui-material/src/Dialog
 ---
 
 # Dialog
@@ -15,19 +16,27 @@ A Dialog is a type of [modal](/material-ui/react-modal/) window that appears in 
 
 Dialogs are purposefully interruptive, so they should be used sparingly.
 
-{{"component": "modules/components/ComponentLinkHeader.js"}}
+{{"component": "@mui/docs/ComponentLinkHeader"}}
 
-## Basic dialog
+## Introduction
 
-Simple dialogs can provide additional details or actions about a list item.
-For example, they can display avatars, icons, clarifying subtext, or orthogonal actions (such as adding an account).
+Dialogs are implemented using a collection of related components:
 
-Touch mechanics:
-
-- Choosing an option immediately commits the option and closes the menu
-- Touching outside of the dialog, or pressing Back, cancels the action and closes the dialog
+- Dialog: the parent component that renders the modal.
+- Dialog Title: a wrapper used for the title of a Dialog.
+- Dialog Actions: an optional container for a Dialog's Buttons.
+- Dialog Content: an optional container for displaying the Dialog's content.
+- Dialog Content Text: a wrapper for text inside of `<DialogContent />`.
+- Slide: optional [Transition](/material-ui/transitions/#slide) used to slide the Dialog in from the edge of the screen.
 
 {{"demo": "SimpleDialogDemo.js"}}
+
+## Basics
+
+```jsx
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+```
 
 ## Alerts
 
@@ -36,7 +45,7 @@ Alerts are urgent interruptions, requiring acknowledgement, that inform the user
 Most alerts don't need titles.
 They summarize a decision in a sentence or two by either:
 
-- Asking a question (e.g. "Delete this conversation?")
+- Asking a question (for example "Delete this conversation?")
 - Making a statement related to the action buttons
 
 Use title bar alerts only for high-risk situations, such as the potential loss of connectivity.
@@ -104,7 +113,7 @@ function MyComponent() {
 Confirmation dialogs require users to explicitly confirm their choice before an option is committed.
 For example, users can listen to multiple ringtones but only make a final selection upon touching "OK".
 
-Touching "Cancel" in a confirmation dialog, or pressing Back, cancels the action, discards any changes, and closes the dialog.
+Touching "Cancel" in a confirmation dialog, cancels the action, discards any changes, and closes the dialog.
 
 {{"demo": "ConfirmationDialog.js"}}
 
@@ -144,7 +153,7 @@ Follow the [Modal performance section](/material-ui/react-modal/#performance).
 
 Follow the [Modal limitations section](/material-ui/react-modal/#limitations).
 
-## Complementary projects
+## Supplementary projects
 
 For more advanced use cases you might be able to take advantage of:
 
@@ -158,3 +167,45 @@ The package [`material-ui-confirm`](https://github.com/jonatanklosko/material-ui
 ## Accessibility
 
 Follow the [Modal accessibility section](/material-ui/react-modal/#accessibility).
+
+## Toolpad (Beta)
+
+### useDialogs
+
+You can create and manipulate dialogs imperatively with the [`useDialogs()`](https://mui.com/toolpad/core/react-use-dialogs/) API in `@toolpad/core`. This hook handles
+
+- state management for opening and closing dialogs
+- passing data to dialogs and receiving results back from them
+- stacking multiple dialogs
+- themed, asynchronous versions of `window.alert()`, `window.confirm()` and `window.prompt()`
+
+The following example demonstrates some of these features:
+
+{{"demo": "ToolpadDialogsNoSnap.js", "defaultCodeOpen": false}}
+
+```tsx
+const handleDelete = async () => {
+  const id = await dialogs.prompt('Enter the ID to delete', {
+    okText: 'Delete',
+    cancelText: 'Cancel',
+  });
+
+  if (id) {
+    const deleteConfirmed = await dialogs.confirm(
+      `Are you sure you want to delete "${id}"?`,
+    );
+    if (deleteConfirmed) {
+      try {
+        setIsDeleting(true);
+        await mockApiDelete(id);
+        dialogs.alert('Deleted!');
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        await dialogs.open(MyCustomDialog, { id, error: message });
+      } finally {
+        setIsDeleting(false);
+      }
+    }
+  }
+};
+```

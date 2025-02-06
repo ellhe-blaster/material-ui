@@ -2,14 +2,17 @@ import * as React from 'react';
 import { AppType } from 'next/app';
 import { EmotionCache } from '@emotion/react';
 import createEmotionServer from '@emotion/server/create-instance';
-import Document, { DocumentContext, DocumentInitialProps } from 'next/document';
+import type { DocumentContext, DocumentInitialProps } from 'next/document';
+import nextDocument from './nextDocument.cjs';
 import { EmotionCacheProviderProps } from './pagesRouterV13App';
 import createEmotionCache from './createCache';
+
+const Document = nextDocument.default || nextDocument;
 
 interface Plugin {
   enhanceApp: (
     App: React.ComponentType<React.ComponentProps<AppType>>,
-  ) => (props: any) => JSX.Element;
+  ) => (props: any) => React.JSX.Element;
   resolveProps: (initialProps: DocumentInitialProps) => Promise<DocumentInitialProps>;
 }
 
@@ -37,7 +40,7 @@ export function createGetInitialProps(plugins: Plugin[]) {
 }
 
 export interface DocumentHeadTagsProps {
-  emotionStyleTags: React.ReactElement[];
+  emotionStyleTags: React.ReactElement<unknown>[];
 }
 
 export function DocumentHeadTags(props: DocumentHeadTagsProps) {

@@ -84,11 +84,11 @@ const Listbox = styled('ul')(
   min-width: 200px;
   border-radius: 12px;
   overflow: auto;
-  outline: 0px;
+  outline: 0;
   background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
   border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
   color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-  box-shadow: 0px 4px 6px ${
+  box-shadow: 0 4px 6px ${
     theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.50)' : 'rgba(0,0,0, 0.05)'
   };
   z-index: 1;
@@ -107,7 +107,7 @@ const MenuItem = styled(BaseMenuItem)(
     border-bottom: none;
   }
 
-  &.${menuItemClasses.focusVisible} {
+  &:focus {
     outline: 3px solid ${theme.palette.mode === 'dark' ? blue[600] : blue[200]};
     background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
     color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
@@ -115,11 +115,6 @@ const MenuItem = styled(BaseMenuItem)(
 
   &.${menuItemClasses.disabled} {
     color: ${theme.palette.mode === 'dark' ? grey[700] : grey[400]};
-  }
-
-  &:hover:not(.${menuItemClasses.disabled}) {
-    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   }
   `,
 );
@@ -132,7 +127,6 @@ const MenuButton = styled(BaseMenuButton)(
   line-height: 1.5;
   padding: 8px 16px;
   border-radius: 8px;
-  color: white;
   transition: all 150ms ease;
   cursor: pointer;
   background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};

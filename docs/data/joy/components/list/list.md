@@ -9,11 +9,13 @@ githubLabel: 'component: list'
 
 <p class="description">Lists are organizational tools that enhance the readability and organization of content.</p>
 
+{{"component": "@mui/docs/ComponentLinkHeader"}}
+
 ## Introduction
 
 Lists present information in a concise, easy-to-follow format through a continuous, vertical index of text or images.
 
-Joy UI Lists are implemented using a collection of related components:
+Joy UI Lists are implemented using a collection of related components:
 
 - [List](#basics) - a wrapper for list items. Renders as a `<ul>` by default.
 - [List Item](#basics) - a common list item. Renders as an `<li>` by default.
@@ -36,7 +38,7 @@ import ListItem from '@mui/joy/ListItem';
 
 ### Variants
 
-The List component supports Joy UI's four [global variants](/joy-ui/main-features/global-variants/): `solid`, `soft`, `outlined`, and `plain`.
+The List component supports Joy UI's four [global variants](/joy-ui/main-features/global-variants/): `solid`, `soft`, `outlined`, and `plain`.
 
 ### Sizes
 
@@ -234,7 +236,7 @@ Inspired by Gmail's desktop navigation bar.
 
 ### Collapsible list
 
-Inspired by the [Gatsby documentation](https://www.gatsbyjs.com/docs) navbar.
+Inspired by the [Gatsby documentation](https://www.gatsbyjs.com/docs/) navbar.
 This example uses the `startAction` prop to create a collapsible button.
 
 {{"demo": "ExampleCollapsibleList.js"}}
@@ -252,7 +254,7 @@ It also supports keyboard navigation, inspired by the [Roving UX](https://github
 
 To ensure that your List is accessible, here are some factors you should consider:
 
-- Use the appropriate HTML semantic element for the list (eg. `ol` or `ul`), to ensure that assistive technologies can correctly interpret the list structure.
+- Use the appropriate HTML semantic element for the list (for example `ol` or `ul`), to ensure that assistive technologies can correctly interpret the list structure.
 - Make sure to use a meaningful name that describes the content of the list in the `aria-labelledby` prop.
 - Use `role` attributes to provide additional information about the purpose of the list and its items.
   For example, use `role="list"` for the list and `role="listitem"` for each list item.

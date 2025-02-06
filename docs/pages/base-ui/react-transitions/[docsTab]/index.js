@@ -1,7 +1,7 @@
 import * as React from 'react';
 import MarkdownDocs from 'docs/src/modules/components/MarkdownDocsV2';
 import AppFrame from 'docs/src/modules/components/AppFrame';
-import * as pageProps from 'docs/data/base/components/transitions/transitions.md?@mui/markdown';
+import * as pageProps from 'docs/data/base/components/transitions/transitions.md?muiMarkdown';
 import mapApiPageTranslations from 'docs/src/modules/utils/mapApiPageTranslations';
 import CssAnimationApiJsonPageContent from '../../api/css-animation.json';
 import CssTransitionApiJsonPageContent from '../../api/css-transition.json';
@@ -40,7 +40,7 @@ export const getStaticProps = () => {
   const CssTransitionApiDescriptions = mapApiPageTranslations(CssTransitionApiReq);
 
   const useTransitionStateManagerApiReq = require.context(
-    'docs/translations/api-docs/use-transition-state-manager',
+    'docs/translations/api-docs-base/use-transition-state-manager',
     false,
     /use-transition-state-manager.*.json$/,
   );
@@ -49,7 +49,7 @@ export const getStaticProps = () => {
   );
 
   const useTransitionTriggerApiReq = require.context(
-    'docs/translations/api-docs/use-transition-trigger',
+    'docs/translations/api-docs-base/use-transition-trigger',
     false,
     /use-transition-trigger.*.json$/,
   );

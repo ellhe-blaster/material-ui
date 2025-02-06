@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import KeyboardArrowDownRounded from '@mui/icons-material/KeyboardArrowDownRounded';
 import SvgHamburgerMenu from 'docs/src/icons/SvgHamburgerMenu';
-import Link from 'docs/src/modules/components/Link';
+import { Link } from '@mui/docs/Link';
 import ROUTES from 'docs/src/route';
 
 const Anchor = styled('a')<{ component?: React.ElementType; noLinkStyle?: boolean }>(
@@ -67,17 +67,17 @@ const PRODUCTS = [
   },
   {
     name: 'Templates',
-    description: 'Fully built, out-of-the-box, templates for your application.',
+    description: 'Fully built templates for your application.',
     href: ROUTES.productTemplates,
   },
   {
-    name: 'Design kits',
-    description: 'Our components available in your favorite design tool.',
+    name: 'Design Kits',
+    description: 'Material UI components in your favorite design tool.',
     href: ROUTES.productDesignKits,
   },
   {
-    name: 'MUI Toolpad',
-    description: 'Low-code admin builder.',
+    name: 'Toolpad',
+    description: 'Components and tools for dashboards and internal apps.',
     href: ROUTES.productToolpad,
     chip: 'Beta',
   },
@@ -95,7 +95,7 @@ const DOCS = [
     href: ROUTES.joyDocs,
   },
   {
-    name: 'Base UI',
+    name: 'MUI Base',
     description: 'Unstyled React components and low-level hooks.',
     href: ROUTES.baseDocs,
   },
@@ -110,9 +110,9 @@ const DOCS = [
     href: ROUTES.xIntro,
   },
   {
-    name: 'MUI Toolpad',
-    description: 'Low-code admin builder.',
-    href: ROUTES.toolpadDocs,
+    name: 'Toolpad',
+    description: 'Components and tools for dashboards and internal apps.',
+    href: ROUTES.toolpadCoreDocs,
     chip: 'Beta',
   },
 ];
@@ -229,10 +229,20 @@ export default function HeaderNavDropdown() {
                                 label={item.chip}
                                 color="primary"
                                 variant="outlined"
+                                sx={{
+                                  fontSize: '.625rem',
+                                  fontWeight: 'semiBold',
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '.04rem',
+                                  height: '16px',
+                                  '& .MuiChip-label': {
+                                    px: '4px',
+                                  },
+                                }}
                               />
                             ) : null}
                           </Box>
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             {item.description}
                           </Typography>
                         </Anchor>
@@ -280,10 +290,20 @@ export default function HeaderNavDropdown() {
                                 label={item.chip}
                                 color="primary"
                                 variant="outlined"
+                                sx={{
+                                  fontSize: '.625rem',
+                                  fontWeight: 'semiBold',
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '.04rem',
+                                  height: '16px',
+                                  '& .MuiChip-label': {
+                                    px: '4px',
+                                  },
+                                }}
                               />
                             ) : null}
                           </Box>
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             {item.description}
                           </Typography>
                         </Anchor>
