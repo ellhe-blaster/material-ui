@@ -17,7 +17,7 @@ export default function TriggersTooltips() {
 
   return (
     <div>
-      <Grid container justifyContent="center">
+      <Grid container sx={{ justifyContent: 'center' }}>
         <Grid item>
           <Tooltip disableFocusListener title="Add">
             <Button>Hover or touch</Button>
@@ -37,15 +37,17 @@ export default function TriggersTooltips() {
           <ClickAwayListener onClickAway={handleTooltipClose}>
             <div>
               <Tooltip
-                PopperProps={{
-                  disablePortal: true,
-                }}
                 onClose={handleTooltipClose}
                 open={open}
                 disableFocusListener
                 disableHoverListener
                 disableTouchListener
                 title="Add"
+                slotProps={{
+                  popper: {
+                    disablePortal: true,
+                  },
+                }}
               >
                 <Button onClick={handleTooltipOpen}>Click</Button>
               </Tooltip>

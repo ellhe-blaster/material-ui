@@ -137,7 +137,7 @@ function Styles() {
       border-radius: 0.75em;
       color: ${grey[900]};
       overflow: auto;
-      outline: 0px;
+      outline: 0;
       box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.05);
     }
 
@@ -160,13 +160,13 @@ function Styles() {
       border-bottom: none;
     }
 
-    .menu-item.focus-visible {
+    .menu-item:focus {
       background-color: ${grey[100]};
       color: ${grey[900]};
       outline: 0;
     }
 
-    .mode-dark .menu-item.focus-visible {
+    .mode-dark .menu-item:focus {
       background-color: ${grey[800]};
       color: ${grey[300]};
     }
@@ -175,19 +175,9 @@ function Styles() {
       color: ${grey[400]};
     }
 
-    .mode-dark .menu-item.disabled {
-      color: ${grey[700]};
-    }
-
-    .menu-item:hover:not(.disabled) {
-      background-color: ${grey[100]};
-      color: ${grey[900]};
-    }
-
-    .mode-dark .menu-item:hover:not(.disabled) {
-      background-color: ${grey[800]};
-      color: ${grey[300]};
-    }
+  .mode-dark .menu-item.disabled {
+    color: ${grey[700]};
+  }
 
     .button {
       font-family: 'IBM Plex Sans', sans-serif;

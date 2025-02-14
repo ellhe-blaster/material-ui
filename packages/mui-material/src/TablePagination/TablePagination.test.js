@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import PropTypes from 'prop-types';
-import { describeConformance, fireEvent, createRenderer } from '@mui-internal/test-utils';
+import { fireEvent, createRenderer } from '@mui/internal-test-utils';
 import TableFooter from '@mui/material/TableFooter';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
@@ -13,6 +13,7 @@ import { filledInputClasses } from '@mui/material/FilledInput';
 import IconButton, { iconButtonClasses } from '@mui/material/IconButton';
 import { svgIconClasses } from '@mui/material/SvgIcon';
 import { createSvgIcon } from '@mui/material/utils';
+import describeConformance from '../../test/describeConformance';
 
 const ArrowBackIcon = createSvgIcon(<path d="M3 3h18v18H3z" />, 'ArrowBack');
 const ArrowForwardIcon = createSvgIcon(<path d="M3 3h18v18H3z" />, 'ArrowForward');
@@ -44,21 +45,30 @@ describe('<TablePagination />', () => {
         );
         return { container: container.firstChild.firstChild.firstChild, ...other };
       },
-      wrapMount: (mount) => (node) => {
-        const wrapper = mount(
-          <table>
-            <tbody>
-              <tr>{node}</tr>
-            </tbody>
-          </table>,
-        );
-        return wrapper.find('tr').childAt(0);
-      },
       muiName: 'MuiTablePagination',
       refInstanceof: window.HTMLTableCellElement,
       testComponentPropWith: 'td',
       testComponentsRootPropWith: 'td',
-      testDeepOverrides: { slotName: 'toolbar', slotClassName: classes.toolbar },
+      testRootOverrides: { slotName: 'root', slotClassName: classes.root },
+      testDeepOverrides: [
+        { slotName: 'toolbar', slotClassName: classes.toolbar },
+        { slotName: 'spacer', slotClassName: classes.spacer },
+        { slotName: 'selectLabel', slotClassName: classes.selectLabel },
+        { slotName: 'displayedRows', slotClassName: classes.displayedRows },
+      ],
+      slots: {
+        root: {
+          expectedClassName: classes.root,
+          testWithComponent: React.forwardRef((props, ref) => (
+            <TableCell component="th" ref={ref} {...props} data-testid="custom" />
+          )),
+          testWithElement: 'th',
+        },
+        toolbar: { expectedClassName: classes.toolbar },
+        spacer: { expectedClassName: classes.spacer },
+        selectLabel: { expectedClassName: classes.selectLabel },
+        displayedRows: { expectedClassName: classes.displayedRows },
+      },
       skip: ['themeVariants', 'componentsProps'],
     }),
   );

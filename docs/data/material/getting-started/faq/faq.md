@@ -9,14 +9,14 @@ If you still can't find what you're looking for, you can refer to our [support p
 There are many ways to support us:
 
 - **Spread the word**. Evangelize MUI's products by [linking to mui.com](https://mui.com/) on your website—every backlink matters.
-  Follow us on [X](https://twitter.com/MUI_hq), like and retweet the important news. Or just talk about us with your friends.
-- **Give us feedback**. Tell us what we're doing well or where we can improve. Please upvote (👍) the issues that you are the most interested in seeing solved.
+  Follow us on [X](https://x.com/MUI_hq), like and retweet the important news. Or just talk about us with your friends.
+- **Give us feedback**. Tell us what is going well or where there is improvement opportunities. Please upvote (👍) the issues that you are the most interested in seeing solved.
 - **Help new users**. You can answer questions on
-  [Stack Overflow](https://stackoverflow.com/questions/tagged/material-ui).
+  [Stack Overflow](https://stackoverflow.com/questions/tagged/material-ui).
 - **Make changes happen**.
-  - Edit the documentation. Every page has an "Edit this page" link in the top right.
+  - Edit the documentation. At the bottom of every page, you can find an "Edit this page" button.
   - Report bugs or missing features by [creating an issue](https://github.com/mui/material-ui/issues/new).
-  - Review and comment on existing [pull requests](https://github.com/mui/material-ui/pulls) and [issues](https://github.com/mui/material-ui/issues).
+  - Review and comment on existing [pull requests](https://github.com/mui/material-ui/pulls?q=is%3Apr) and [issues](https://github.com/mui/material-ui/issues?q=is%3Aopen+is%3Aclosed).
   - [Improve our documentation](https://github.com/mui/material-ui/tree/HEAD/docs), fix bugs, or add features by [submitting a pull request](https://github.com/mui/material-ui/pulls).
 - **Support us financially on [Open Collective](https://opencollective.com/mui-org)**.
   If you use Material UI in a commercial project and would like to support its continued development by becoming a Sponsor, or in a side or hobby project and would like to become a Backer, you can do so through Open Collective.
@@ -59,7 +59,7 @@ import { createTheme } from '@mui/material';
 
 const theme = createTheme({
   transitions: {
-    // So we have `transition: none;` everywhere
+    // So `transition: none;` gets applied everywhere
     create: () => 'none',
   },
 });
@@ -106,8 +106,7 @@ But if you are using the default styled engine (`@mui/styled-engine`) the Emotio
 
 Perhaps, however, you're adding some Material UI components to an app that already uses another styling solution,
 or are already familiar with a different API, and don't want to learn a new one? In that case, head over to the
-[Style library interoperability](/material-ui/guides/interoperability/) section,
-where we show how simple it is to restyle Material UI components with alternative style libraries.
+[Style library interoperability](/material-ui/integrations/interoperability/) section to learn how to restyle Material UI components with alternative style libraries.
 
 ## When should I use inline-style vs. CSS?
 
@@ -121,7 +120,7 @@ The CSS alternative provides more advantages, such as:
 
 ## How do I use react-router?
 
-We detail the [integration with third-party routing libraries](/material-ui/guides/routing/) like react-router or Next.js in our guide.
+Visit the guide about [integration with third-party routing libraries](/material-ui/integrations/routing/), like react-router or Next.js, for more details.
 
 ## How can I access the DOM element?
 
@@ -138,8 +137,8 @@ const ref = React.createRef();
 const element = ref.current;
 ```
 
-If you're not sure if the Material UI component in question forwards its ref you can check the API documentation under "Props".
-You should find the message below, like in the [Button API](/material-ui/api/button/#props), [Button API](/material-ui/api/button/#props)
+If you're not sure if the Material UI component in question forwards its ref you can check the API documentation under "Props."
+You should find the message below, like in the [Button API](/material-ui/api/button/#props).
 
 > The ref is forwarded to the root element.
 
@@ -204,7 +203,7 @@ In the example above, the `Portal` would run an effect once, but might not re-re
 This is especially apparent for React.lazy components in Suspense.
 The above implementation could also not account for a change in the DOM node.
 
-This is why we require a prop with the actual DOM node so that React can take care of determining when the `Portal` should re-render:
+This is why a prop is required to the actual DOM node so that React can take care of determining when the `Portal` should re-render:
 
 ```jsx
 function App() {
@@ -262,6 +261,81 @@ return (
 
 If you are getting the error: `TypeError: Cannot convert a Symbol value to a string`, take a look at the [styled()](/system/styled/#how-to-use-components-selector-api) docs page for instructions on how you can fix this.
 
+## How can I contribute to the free templates?
+
+The templates are built using a [shared theme](https://github.com/mui/material-ui/tree/v6.0.2/docs/data/material/getting-started/templates/shared-theme). Below are the structure to create a new template:
+
+### Template page
+
+Create a new page in the `docs/pages/material-ui/getting-started/templates/<name>.js` directory with the following code:
+
+```js
+import * as React from 'react';
+import AppTheme from 'docs/src/modules/components/AppTheme';
+import TemplateFrame from 'docs/src/modules/components/TemplateFrame';
+import Template from 'docs/data/material/getting-started/templates/<name>/<Template>';
+
+export default function Page() {
+  return (
+    <AppTheme>
+      <TemplateFrame>
+        <Template />
+      </TemplateFrame>
+    </AppTheme>
+  );
+}
+```
+
+Then create a template file at `docs/data/material/getting-started/templates/<name>/<Template>.tsx` (add more files if needed):
+
+> Note: The `<Template>` must be a pascal case string of the `<name>` folder.
+
+### Shared theme
+
+The template must use `AppTheme` from `../shared-theme/AppTheme` to ensure a consistent look and feel across all templates.
+
+If the template includes custom-themed components, such as the dashboard template with MUI X themed components, pass them to the `AppTheme`'s `themedComponents` prop:
+
+```js
+import AppTheme from '../shared-theme/AppTheme';
+
+const xThemeComponents = {
+  ...chartsCustomizations,
+  ...dataGridCustomizations,
+  ...datePickersCustomizations,
+  ...treeViewCustomizations,
+};
+
+export default function Dashboard(props: { disableCustomTheme?: boolean }) {
+  return (
+    <AppTheme {...props} themeComponents={xThemeComponents}>...</AppTheme>
+  )
+}
+```
+
+### Color mode toggle
+
+The shared theme provides 2 appearance of the color mode toggle, `ColorModeSelect` and `ColorModeIconDropdown`.
+You can use either of them in your template, it will be hidden within the `TemplateFrame` but will be visible in the CodeSandbox and StackBlitz.
+
+### Template frame
+
+If the template has a sidebar or a header that needs to stick to the top, refer to the CSS variable `--template-frame-height` to adjust.
+
+For example, the dashboard template has a fixed header that needs to be accounted for the template frame height:
+
+```js
+<AppBar
+  position="fixed"
+  sx={{
+    top: 'var(--template-frame-height, 0px)',
+    // ...other styles
+  }}
+>
+```
+
+This will make the `AppBar` stay below the `TemplateFrame` in a preview mode but stick to the top in the CodeSandbox and StackBlitz.
+
 ## [legacy] I have several instances of styles on the page
 
 If you are seeing a warning message in the console like the one below, you probably have several instances of `@mui/styles` initialized on the page.
@@ -276,8 +350,8 @@ This may cause theme propagation issues, broken class names, specificity issues,
 There are several common reasons for this to happen:
 
 - You have another `@mui/styles` library somewhere in your dependencies.
-- You have a monorepo structure for your project (e.g, lerna, yarn workspaces) and `@mui/styles` module is a dependency in more than one package (this one is more or less the same as the previous one).
-- You have several applications that are using `@mui/styles` running on the same page (e.g., several entry points in Webpack are loaded on the same page).
+- You have a monorepo structure for your project (for example, lerna or yarn workspaces) and `@mui/styles` module is a dependency in more than one package (this one is more or less the same as the previous one).
+- You have several applications that are using `@mui/styles` running on the same page (for example, several entry points in webpack are loaded on the same page).
 
 ### Duplicated module in node_modules
 
@@ -291,7 +365,7 @@ If you identified that duplication is the issue that you are encountering there 
 If you are using npm you can try running `npm dedupe`.
 This command searches the local dependencies and tries to simplify the structure by moving common dependencies further up the tree.
 
-If you are using Webpack, you can change the way it will [resolve](https://webpack.js.org/configuration/resolve/#resolve-modules) the @mui/styles module. You can overwrite the default order in which Webpack will look for your dependencies and make your application node_modules more prioritized than default node module resolution order:
+If you are using webpack, you can change the way it will [resolve](https://webpack.js.org/configuration/resolve/#resolve-modules) the @mui/styles module. You can overwrite the default order in which webpack will look for your dependencies and make your application node_modules more prioritized than default node module resolution order:
 
 ```diff
  resolve: {
@@ -303,7 +377,7 @@ If you are using Webpack, you can change the way it will [resolve](https://webpa
 
 ### Running multiple applications on one page
 
-If you have several applications running on one page, consider using one @mui/styles module for all of them. If you are using Webpack, you can use [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/) to create an explicit [vendor chunk](https://webpack.js.org/plugins/commons-chunk-plugin/#explicit-vendor-chunk), that will contain the @mui/styles module:
+If you have several applications running on one page, consider using one @mui/styles module for all of them. If you are using webpack, you can use [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/) to create an explicit [vendor chunk](https://webpack.js.org/plugins/commons-chunk-plugin/#explicit-vendor-chunk), that will contain the @mui/styles module:
 
 ```diff
   module.exports = {
@@ -335,7 +409,7 @@ You could end up accidentally using two class name generators in a variety of sc
 - You are using a bundler and it is splitting code in a way that causes multiple class name generator instances to be created.
 
 :::success
-If you are using Webpack with the [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/), try configuring the [`runtimeChunk` setting under `optimizations`](https://webpack.js.org/configuration/optimization/#optimization-runtimechunk).
+If you are using webpack with the [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/), try configuring the [`runtimeChunk` setting under `optimizations`](https://webpack.js.org/configuration/optimization/#optimization-runtimechunk).
 :::
 
 Overall, it's simple to recover from this problem by wrapping each Material UI application with [`StylesProvider`](/system/styles/api/#stylesprovider) components at the top of their component trees **and using a single class name generator shared among them**.

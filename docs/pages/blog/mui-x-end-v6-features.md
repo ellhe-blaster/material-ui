@@ -3,13 +3,13 @@ title: MUI X v6.18.0 and the latest features before the next major
 description: New components, polished features, better performance and more.
 date: 2023-11-13T00:00:00.000Z
 authors: ['josefreitas']
-card: true
-tags: ['MUI X', 'News']
+manualCard: true
+tags: ['MUI X', 'Product']
 ---
 
 <div style="max-width: 692px; width: 100%; height: 230px; overflow: hidden; margin-bottom: 16px;">
   <a href="https://github.com/mui/mui-x/releases/tag/v6.18.0">
-    <img src="/static/blog/mui-x-end-v6-features/intro.png" alt="MUI X v6.18.0 release" width="1200" height="400" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" />
+    <img src="/static/blog/mui-x-end-v6-features/intro.png" alt="MUI X v6.18.0 release" width="2400" height="800" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" />
   </a>
 </div>
 
@@ -47,9 +47,9 @@ And the latest version also includes:
 Bar and Pie Charts currently support animations.
 More to come!
 
-  <video preload="metadata" style="margin-bottom: 16px;" autoplay muted loop playsinline width="680" height="306">
-    <source src="/static/blog/mui-x-end-v6-features/bar-chart-animations.mp4" type="video/mp4">
-  </video>
+<video autoplay muted loop playsinline width="680" height="306">
+  <source src="/static/blog/mui-x-end-v6-features/bar-chart-animations.mp4" type="video/mp4">
+</video>
 
 #### Horizontal Bar Chart support
 
@@ -67,7 +67,7 @@ appealing.
 
 After an extensive period of development and refinement in the lab and pre-release packages, and with the invaluable feedback we've received from you and the community, we're happy to share that the package is now officially stable!
 
-<video preload="metadata" style="margin-bottom: 10px;" autoplay muted loop playsinline width="680" height="400">
+<video autoplay muted loop playsinline width="680" height="400">
   <source src="/static/blog/mui-x-end-v6-features/tree-view-gmail.mp4" type="video/mp4">
 </video>
 
@@ -80,7 +80,7 @@ After an extensive period of development and refinement in the lab and pre-relea
 A much-anticipated feature, the date and time fields now allow users to clear a selected date with a single click.
 Learn how to use it by visiting the [clearable behavior documentation](/x/react-date-pickers/fields/#clearable-behavior).
 
-<video preload="metadata" style="margin-bottom: 10px;" autoplay muted loop playsinline width="680" height="128">
+<video autoplay muted loop playsinline width="680" height="128">
   <source src="/static/blog/mui-x-end-v6-features/clearable-fields.mp4" type="video/mp4">
 </video>
 
@@ -91,7 +91,7 @@ The Date Picker animations have been significantly smoothened to ensure a much m
 ### Customization playgrounds
 
 We're constantly improving our documentation and working to better communicate how to use our components effectively.
-With the new customization playgrounds, you can now tailor the style of [Date Picker](/x/react-date-pickers/date-picker/#customization) and experiment with multiple combinations of [sub-components](/x/react-date-pickers/playground/) to achieve the look and feel you desire.
+With the new customization playgrounds, you can now tailor the style of [Date Picker](/x/react-date-pickers/date-picker/#customization) and experiment with multiple combinations of [subcomponents](/x/react-date-pickers/playground/) to achieve the look and feel you desire.
 
 ## Data Grid
 
@@ -101,7 +101,7 @@ The new autosizing feature automatically adjusts the column width to accommodate
 You can include or exclude both headers and outliers from the calculation and expand to use the entire area of the grid.
 Learn more details at [column autosizing section](/x/react-data-grid/column-dimensions/#autosizing).
 
-<video preload="metadata" style="margin-bottom: 10px;" autoplay muted loop playsinline width="680" height="128">
+<video autoplay muted loop playsinline width="680" height="128">
   <source src="/static/blog/mui-x-end-v6-features/column-auto-sizing.mp4" type="video/mp4">
 </video>
 
@@ -113,7 +113,7 @@ We're continuously improving our docs, and we're starting to add more advanced e
 
 You can integrate the MUI X Charts with the Data Grid to add Sparkline Charts to columns.
 
-<img alt="Sparkline charts on the MUI X Data Grid" src="/static/blog/mui-x-end-v6-features/sparkline-datagrid.png" width="1200" height="840" loading="lazy" style="margin-bottom: 16px;" />
+<img alt="Sparkline charts on the MUI X Data Grid" src="/static/blog/mui-x-end-v6-features/sparkline-datagrid.png" width="1200" height="840" loading="lazy" />
 
 👉 [Get started with Sparkline Charts in the Data Grid now](/x/react-data-grid/custom-columns/#sparkline)!
 
@@ -146,7 +146,7 @@ Most notably:
   - New UI for column management
   - Pivoting for the [Premium](/x/react-data-grid/#premium-plan) version
 
-We'll continue to expand our portfolio of Charts, including [Heat Map](/x/react-charts/heat-map/), [Funnel](/x/react-charts/funnel/), and [Gantt](/x/react-charts/gantt/); and explore virtualization and other advanced use cases for the Tree View component.
+We'll continue to expand our portfolio of Charts, including [Heatmap](/x/react-charts/heatmap/), [Funnel](/x/react-charts/funnel/), and [Gantt](/x/react-charts/gantt/); and explore virtualization and other advanced use cases for the Tree View component.
 
 We encourage you to upvote issues on GitHub to help us prioritize.
 Your input directly influences our development schedule, so don't hesitate to let us know what matters most to you!
@@ -158,7 +158,7 @@ Use the following list to quickly access each component's issues:
 - [Date and Time pickers](https://github.com/mui/mui-x/issues?q=is%3Aissue+is%3Aopen+label%3A%22component%3A+pickers%22+label%3A%22waiting+for+%F0%9F%91%8D%22)
 
 Going forward, the next major version—v7—will be released in alpha and then beta between now and March 2024, at which point we'll bump it to a stable release.
-At the same time, v6 will transition to [Long-Term Support](/versions/#long-term-support-lts), while support for v5 will be discontinued.
+At the same time, v6 will transition to [long-term support](https://mui.com/x/introduction/support/#long-term-support-lts), while support for v5 will be discontinued.
 
 ## Give us feedback
 

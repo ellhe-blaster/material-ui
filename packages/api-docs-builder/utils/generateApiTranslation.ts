@@ -2,14 +2,15 @@ import { mkdirSync } from 'fs';
 import path from 'path';
 import kebabCase from 'lodash/kebabCase';
 import { writePrettifiedFile } from '../buildApiUtils';
+import { HooksTranslations, PropsTranslations } from '../types/ApiBuilder.types';
 
 interface MinimalReactAPI {
   name: string;
   apiDocsTranslationFolder?: string;
-  translations: object;
+  translations: PropsTranslations | HooksTranslations;
 }
 
-export default function generateApiTranslations<ReactApi extends MinimalReactAPI>(
+export default async function generateApiTranslations<ReactApi extends MinimalReactAPI>(
   outputDirectory: string,
   reactApi: ReactApi,
   languages: string[],
@@ -30,23 +31,25 @@ export default function generateApiTranslations<ReactApi extends MinimalReactAPI
   });
   reactApi.apiDocsTranslationFolder = apiDocsTranslationPath;
 
-  writePrettifiedFile(
+  await writePrettifiedFile(
     resolveApiDocsTranslationsComponentLanguagePath('en'),
     JSON.stringify(reactApi.translations),
   );
 
-  languages.forEach((language) => {
-    if (language !== 'en') {
-      try {
-        writePrettifiedFile(
-          resolveApiDocsTranslationsComponentLanguagePath(language),
-          JSON.stringify(reactApi.translations),
-          undefined,
-          { flag: 'wx' },
-        );
-      } catch (error) {
-        // File exists
+  await Promise.all(
+    languages.map(async (language) => {
+      if (language !== 'en') {
+        try {
+          await writePrettifiedFile(
+            resolveApiDocsTranslationsComponentLanguagePath(language),
+            JSON.stringify(reactApi.translations),
+            undefined,
+            { flag: 'wx' },
+          );
+        } catch (error) {
+          // File exists
+        }
       }
-    }
-  });
+    }),
+  );
 }

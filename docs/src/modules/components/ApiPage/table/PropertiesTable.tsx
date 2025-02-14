@@ -1,17 +1,14 @@
 /* eslint-disable react/no-danger */
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
-import { useTranslate } from 'docs/src/modules/utils/i18n';
+import { useTranslate } from '@mui/docs/i18n';
 import {
   brandingDarkTheme as darkTheme,
   brandingLightTheme as lightTheme,
-} from 'docs/src/modules/brandingTheme';
-import {
-  PropDescriptionParams,
-  getHash,
-} from 'docs/src/modules/components/ApiPage/list/PropertiesList';
+} from '@mui/docs/branding';
+import { PropertyDefinition } from 'docs/src/modules/components/ApiPage/definitions/properties';
 import StyledTableContainer from 'docs/src/modules/components/ApiPage/table/StyledTableContainer';
-import ApiWarning from 'docs/src/modules/components/ApiPage/ApiWarning';
+import ApiWarningAlert from 'docs/src/modules/components/ApiPage/ApiWarningAlert';
 
 const StyledTable = styled('table')(
   ({ theme }) => ({
@@ -66,7 +63,9 @@ const StyledTable = styled('table')(
         marginBottom: 0,
       },
       '& .prop-table-alert': {
-        marginTop: 12,
+        '& .MuiAlert-icon': {
+          margin: 0,
+        },
       },
     },
     '& .prop-table-signature': {
@@ -120,36 +119,40 @@ function PropDescription({ description }: { description: string }) {
 }
 
 interface PropertiesTableProps {
-  properties: PropDescriptionParams[];
+  properties: PropertyDefinition[];
 }
 
 export default function PropertiesTable(props: PropertiesTableProps) {
   const { properties } = props;
+
+  const hasDefaultColumn = properties.some((item) => item.propDefault !== undefined);
+
   const t = useTranslate();
   return (
     <StyledTableContainer>
       <StyledTable>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Default</th>
-            <th>Description</th>
+            {/* eslint-disable material-ui/no-hardcoded-labels */}
+            <th>{'Name'}</th>
+            <th>{'Type'}</th>
+            {hasDefaultColumn && <th>{'Default'}</th>}
+            <th>{'Description'}</th>
+            {/* eslint-enable material-ui/no-hardcoded-labels */}
           </tr>
         </thead>
         <tbody>
           {properties.map((params) => {
             const {
-              componentName,
               propName,
               description,
               seeMoreDescription,
               requiresRef,
               isOptional,
               isRequired,
+              isProPlan,
+              isPremiumPlan,
               isDeprecated,
-              hooksParameters,
-              hooksReturnValue,
               deprecationInfo,
               typeName,
               propDefault,
@@ -157,17 +160,27 @@ export default function PropertiesTable(props: PropertiesTableProps) {
               signature,
               signatureArgs,
               signatureReturnDescription,
+              hash,
             } = params;
 
             return (
-              <tr
-                key={propName}
-                id={getHash({ componentName, propName, hooksParameters, hooksReturnValue })}
-              >
-                <td className="MuiApi-table-item-title">
+              <tr key={propName} id={hash}>
+                <td className="MuiApi-table-item-title algolia-lvl3">
                   {propName}
                   {isRequired ? '*' : ''}
                   {isOptional ? '?' : ''}
+                  {isProPlan && (
+                    // eslint-disable-next-line material-ui/no-hardcoded-labels
+                    <a href="/x/introduction/licensing/#pro-plan" aria-label="Pro plan">
+                      <span className="plan-pro" />
+                    </a>
+                  )}
+                  {isPremiumPlan && (
+                    // eslint-disable-next-line material-ui/no-hardcoded-labels
+                    <a href="/x/introduction/licensing/#premium-plan" aria-label="Premium plan">
+                      <span className="plan-premium" />
+                    </a>
+                  )}
                 </td>
                 <td className="type-column">
                   {
@@ -179,10 +192,16 @@ export default function PropertiesTable(props: PropertiesTableProps) {
                     />
                   }
                 </td>
-                <td className="default-column">
-                  <span className="MuiApi-table-item-default">{propDefault}</span>
-                </td>
-                <td className="MuiPropTable-description-column">
+                {hasDefaultColumn && (
+                  <td className="default-column">
+                    {propDefault ? (
+                      <span className="MuiApi-table-item-default">{propDefault}</span>
+                    ) : (
+                      '-'
+                    )}
+                  </td>
+                )}
+                <td className="MuiPropTable-description-column algolia-content">
                   {description && <PropDescription description={description} />}
                   {seeMoreDescription && (
                     <p
@@ -190,16 +209,7 @@ export default function PropertiesTable(props: PropertiesTableProps) {
                       className="prop-table-additional-description"
                     />
                   )}
-                  {requiresRef && (
-                    <ApiWarning className="prop-table-alert">
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: t('api-docs.requires-ref'),
-                        }}
-                      />
-                    </ApiWarning>
-                  )}
-                  {additionalInfo.map((key) => (
+                  {additionalInfo?.map((key) => (
                     <p
                       className="prop-table-additional-description"
                       key={key}
@@ -208,12 +218,21 @@ export default function PropertiesTable(props: PropertiesTableProps) {
                       }}
                     />
                   ))}
+                  {requiresRef && (
+                    <ApiWarningAlert className="prop-table-alert">
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: t('api-docs.requires-ref'),
+                        }}
+                      />
+                    </ApiWarningAlert>
+                  )}
                   {isDeprecated && (
-                    <ApiWarning className="prop-table-alert">
-                      {t('api-docs.deprecated')}
+                    <ApiWarningAlert>
+                      <b>{t('api-docs.deprecated')}</b>
                       {deprecationInfo && (
                         <React.Fragment>
-                          {' - '}
+                          {'－'}
                           <span
                             dangerouslySetInnerHTML={{
                               __html: deprecationInfo,
@@ -221,7 +240,7 @@ export default function PropertiesTable(props: PropertiesTableProps) {
                           />
                         </React.Fragment>
                       )}
-                    </ApiWarning>
+                    </ApiWarningAlert>
                   )}
                   {signature && (
                     <div className="prop-table-signature">

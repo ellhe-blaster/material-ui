@@ -4,14 +4,14 @@ title: React Select component
 components: Select, Option
 githubLabel: 'component: select'
 waiAria: https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
-unstyled: /base-ui/react-select/
+unstyled: https://base-ui.com/react/components/select
 ---
 
 # Select
 
 <p class="description">Select components are used for collecting user-provided information from a list of options.</p>
 
-{{"component": "modules/components/ComponentLinkHeader.js"}}
+{{"component": "@mui/docs/ComponentLinkHeader"}}
 
 ## Introduction
 

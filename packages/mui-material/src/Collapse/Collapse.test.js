@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { spy, stub } from 'sinon';
-import { act, createRenderer, describeConformance } from '@mui-internal/test-utils';
+import { act, createRenderer } from '@mui/internal-test-utils';
 import { Transition } from 'react-transition-group';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Collapse, { collapseClasses as classes } from '@mui/material/Collapse';
+import describeConformance from '../../test/describeConformance';
 
 describe('<Collapse />', () => {
   const { clock, render } = createRenderer();
@@ -265,6 +266,24 @@ describe('<Collapse />', () => {
       setProps({ in: false });
 
       expect(handleExiting.args[0][0].style.height).to.equal(collapsedSize);
+    });
+  });
+
+  // Test for https://github.com/mui/material-ui/issues/40653
+  it('should render correctly when external ownerState prop is passed', function test() {
+    if (/jsdom/.test(window.navigator.userAgent)) {
+      this.skip();
+    }
+
+    const { container } = render(
+      <Collapse in ownerState={{}}>
+        <div style={{ height: '100px' }} />
+      </Collapse>,
+    );
+    const collapse = container.firstChild;
+
+    expect(collapse).toHaveComputedStyle({
+      height: '100px',
     });
   });
 });

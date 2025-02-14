@@ -1,4 +1,4 @@
-# Contributing to Material UI, Base UI, MUI System, Joy UI
+# Contributing to Material UI, MUI System, Joy UI
 
 If you're reading this, you're awesome!
 Thank you for being a part of the community and helping us make these projects great.
@@ -25,7 +25,7 @@ Here are a few guidelines that will help you along the way.
 
 ## Code of conduct
 
-We has adopted the [Contributor Covenant](https://www.contributor-covenant.org/) as our code of conduct, and we expect project participants to adhere to it.
+We have adopted the [Contributor Covenant](https://www.contributor-covenant.org/) as our code of conduct, and we expect project participants to adhere to it.
 Please read [the full text](https://github.com/mui/.github/blob/master/CODE_OF_CONDUCT.md) to understand what actions will and will not be tolerated.
 
 ## A large spectrum of contributions
@@ -40,10 +40,10 @@ Working on your first pull request? You can learn how in this free video series:
 Get started with [good first issues](https://github.com/mui/material-ui/issues?q=is:open+is:issue+label:"good+first+issue"), which have a limited scope and a working solution that's already been discussed.
 This makes them ideal for newer developers, or those who are new to these libraries and want to see how the contribution process works.
 
-We also have a list of [good to take issues](https://github.com/mui/material-ui/issues?q=is:open+is:issue+label:"good+to+take"), which are issues that have already been at least partially resolved in discussion, to the point that it's clear what to do next.
+We also have a list of [ready to take issues](https://github.com/mui/material-ui/issues?q=is:open+is:issue+label:"ready+to+take"), which are issues that have already been at least partially resolved in discussion, to the point that it's clear what to do next.
 These issues are great for developers who want to reduce their chances of falling down a rabbit hole in search of a solution.
 
-Of course, you can work on any other issue you like—the "good first" and "good to take" issues are simply those where the scope and timeline may be better defined.
+Of course, you can work on any other issue you like—the "good first" and "ready to take" issues are simply those where the scope and timeline may be better defined.
 Pull requests for other issues, or completely novel problems, may take a bit longer to review if they don't fit into our current development cycle.
 
 If you decide to fix an issue, please make sure to check the comment thread in case somebody is already working on a fix.
@@ -70,7 +70,7 @@ cd material-ui
 git remote add upstream https://github.com/mui/material-ui.git
 ```
 
-<!-- #default-branch-switch -->
+<!-- #target-branch-reference -->
 
 3. Synchronize your local `master` branch with the upstream one:
 
@@ -140,11 +140,11 @@ The new playground will be accessible at: `http://localhost:3000/playground/<fil
 
 Continuous Integration (CI) automatically runs a series of checks when a PR is opened.
 If you're unsure whether your changes will pass, you can always open a PR, and the GitHub UI will display a summary of the results.
-If any of these checks fail, refer to [Checks and how to fix them](#checks-and-how-to-fix-them).
+If any of these checks fail, refer to [CI checks and how to fix them](#ci-checks-and-how-to-fix-them).
 
 Make sure the following is true:
 
-<!-- #default-branch-switch -->
+<!-- #target-branch-reference -->
 
 - The branch is targeted at `master` for ongoing development. All tests are passing. Code that lands in `master` must be compatible with the latest stable release. It may contain additional features but no breaking changes. We should be able to release a new minor version from the tip of `master` at any time.
 - If a feature is being added:
@@ -153,7 +153,7 @@ Make sure the following is true:
 - If adding new features or modifying existing ones, you've included tests to confirm the new behavior. You can read more about our test setup in our test [README](https://github.com/mui/material-ui/blob/HEAD/test/README.md).
 - If props were added or prop types were changed, you've updated the TypeScript declarations.
 - If submitting a new component, you've added it to the [lab](https://github.com/mui/material-ui/tree/HEAD/packages/mui-lab).
-- The branch is not [behind its target branch](https://github.community/t/branch-10-commits-behind/2403).
+- The branch is not [behind its target branch](https://docs.github.com/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/keeping-your-pull-request-in-sync-with-the-base-branch).
 
 We will only merge a PR when all tests pass.
 The following statements must be true:
@@ -162,7 +162,7 @@ The following statements must be true:
 - The code is linted. If the code was changed, run `pnpm eslint`.
 - The code is type-safe. If TypeScript sources or declarations were changed, run `pnpm typescript` to confirm that the check passes.
 - The API docs are up to date. If API was changed, run `pnpm proptypes && pnpm docs:api`.
-- The demos are up to date. If demos were changed, run `pnpm docs:typescript:formatted`. See [about writing demos](#3-write-the-content-of-the-demo).
+- The demos are up to date. If demos were changed, run `pnpm docs:typescript:formatted`. See [about writing demos](#2-write-the-demo-code).
 - The pull request title follows the pattern `[product-name][Component] Imperative commit message`. (See: [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/) for a great explanation).
 
 Don't worry if you miss a step—the Continuous Integration will run a thorough set of tests on your commits, and the maintainers of the project can assist you if you run into problems.
@@ -238,7 +238,7 @@ Clicking on **Details** will show you the differences.
 #### deploy/netlify
 
 This renders a preview of the docs with your changes if it succeeds.
-Otherwise `pnpm docs:build` or `pnpm docs:export` usually fail locally as well.
+Otherwise `pnpm docs:build` usually fails locally as well.
 
 #### codecov/project
 
@@ -253,7 +253,7 @@ Click on **Details** to find out more about them.
 ### Updating the component API documentation
 
 The component API in the component `propTypes` and under `docs/pages/api-docs` is auto-generated from the [JSDoc](https://jsdoc.app/about-getting-started.html) in the TypeScript declarations.
-Be sure to update the documentation in the corresponding `.d.ts` files (e.g. `packages/mui-material/src/Button/Button.d.ts` for `<Button>`) and then run:
+Be sure to update the documentation in the corresponding `.d.ts` files (for example `packages/mui-material/src/Button/Button.d.ts` for `<Button>`) and then run:
 
 ```bash
 $ pnpm proptypes
@@ -263,7 +263,7 @@ $ pnpm docs:api
 ### Coding style
 
 Please follow the coding style of the project.
-MUI Core projects use prettier and ESLint, so if possible, enable linting in your editor to get real-time feedback.
+It uses Prettier and ESLint, so if possible, enable linting in your editor to get real-time feedback.
 
 - `pnpm prettier` reformats the code.
 - `pnpm eslint` runs the linting rules.
@@ -299,12 +299,12 @@ docs/src/pages/components/buttons/
 
 #### 2. Write the demo code
 
-We uses TypeScript to document our components.
-We prefer demos written in TS (using the `.tsx` file format).
+We use TypeScript to document our components.
+We prefer demos written in TypeScript (using the `.tsx` file format).
 
 After creating a TypeScript demo, run `pnpm docs:typescript:formatted` to automatically create the JavaScript version, which is also required.
 
-If you're not familiar with TypeScript, you can write the demo in JavaScript, and a core contributor may help you migrate it to TS.
+If you're not familiar with TypeScript, you can write the demo in JavaScript, and a core contributor may help you migrate it to TypeScript.
 
 #### 3. Edit the page's Markdown file
 

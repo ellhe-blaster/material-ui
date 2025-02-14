@@ -4,6 +4,7 @@ title: Circular, Linear progress React components
 components: CircularProgress, LinearProgress
 githubLabel: 'component: progress'
 materialDesign: https://m2.material.io/components/progress-indicators
+githubSource: packages/mui-material/src/LinearProgress
 ---
 
 # Progress
@@ -17,7 +18,7 @@ Progress indicators inform users about the status of ongoing processes, such as 
 
 The animations of the components rely on CSS as much as possible to work even before the JavaScript is loaded.
 
-{{"component": "modules/components/ComponentLinkHeader.js"}}
+{{"component": "@mui/docs/ComponentLinkHeader"}}
 
 ## Circular
 
@@ -28,6 +29,10 @@ The animations of the components rely on CSS as much as possible to work even be
 ### Circular color
 
 {{"demo": "CircularColor.js"}}
+
+### Circular size
+
+{{"demo": "CircularSize.js"}}
 
 ### Circular determinate
 
@@ -107,7 +112,9 @@ After 1.0 second, you can display a loader to keep user's flow of thought uninte
 Under heavy load, you might lose the stroke dash animation or see random `CircularProgress` ring widths.
 You should run processor intensive operations in a web worker or by batch in order not to block the main rendering thread.
 
-![heavy load](/static/images/progress/heavy-load.gif)
+<video autoplay muted loop playsinline width="1082" height="158" style="width: 541px;">
+  <source src="/static/material-ui/react-components/progress-heavy-load.mp4" type="video/mp4" />
+</video>
 
 When it's not possible, you can leverage the `disableShrink` prop to mitigate the issue.
 See [this issue](https://github.com/mui/material-ui/issues/10327).
@@ -127,42 +134,3 @@ If you need to perform 30 re-renders per second or more, we recommend disabling 
   transition: none;
 }
 ```
-
-### IE 11
-
-The circular progress component animation on IE 11 is degraded.
-The stroke dash animation is not working (equivalent to `disableShrink`) and the circular animation wobbles.
-You can solve the latter with:
-
-```css
-.MuiCircularProgress-indeterminate {
-  animation: circular-rotate 1.4s linear infinite;
-}
-
-@keyframes circular-rotate {
-  0% {
-    transform: rotate(0deg);
-    /* Fix IE11 wobbly */
-    transform-origin: 50% 50%;
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-```
-
-## Experimental APIs
-
-### Material 3 Progress
-
-The default Material UI Progress components follow the Material Design 2 specs.
-To use the [Material 3](https://m3.material.io/) version, install the experimental `@mui/material-next` package.
-
-```js
-import CircularProgress from '@mui/material-next/CircularProgress';
-import LinearProgress from '@mui/material-next/LinearProgress';
-```
-
-{{"demo": "ProgressMaterialYouPlayground.js", "hideToolbar": true, "bg": "playground"}}
-
-To learn more about Material UI's MD3 implementation, visit the [Material 3 Components documentation](/material-ui/guides/material-3-components/).

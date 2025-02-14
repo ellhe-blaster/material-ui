@@ -14,7 +14,7 @@
 
 One of the biggest changes in v5 is the replacement of JSS for [Emotion](https://emotion.sh/docs/introduction) (or [styled-components](https://styled-components.com/) as an alternative) as a default styling solution .
 
-Note that you may continue to use JSS for adding overrides for the components (e.g. `makeStyles`, `withStyles`) even after migrating to v5.
+Note that you may continue to use JSS for adding overrides for the components (for example `makeStyles`, `withStyles`) even after migrating to v5.
 Then, if at any point you want to move over to the new styling engine, you can refactor your components progressively.
 
 :::info
@@ -191,7 +191,7 @@ This tool is _not_ maintained by MUI.
 ### 2. Use [tss-react](https://github.com/garronej/tss-react)
 
 :::error
-This API will not work if you are [using `styled-components` as the underlying styling engine in place of `@emotion`](/material-ui/guides/interoperability/#styled-components).
+This API will not work if you are [using `styled-components` as the underlying styling engine in place of `@emotion`](/material-ui/integrations/interoperability/#styled-components).
 :::
 
 The API is similar to JSS `makeStyles`, but under the hood, it uses `@emotion/react`.

@@ -14,13 +14,14 @@ import MuiList from '@mui/material/List';
 import MuiListItem from '@mui/material/ListItem';
 import MuiDivider from '@mui/material/Divider';
 import { getCookie } from 'docs/src/modules/utils/helpers';
-import { useUserLanguage, useTranslate } from 'docs/src/modules/utils/i18n';
+import { useUserLanguage, useTranslate } from '@mui/docs/i18n';
 
 async function fetchNotifications() {
   if (process.env.NODE_ENV === 'development') {
     const items = (await import('../../../notifications.json')).default;
     return items;
   }
+  // #repo-reference
   const response = await fetch(
     'https://raw.githubusercontent.com/mui/material-ui/master/docs/notifications.json',
   );
@@ -116,7 +117,7 @@ export default function Notifications() {
     // and create some distraction.
     const timeout = setTimeout(async () => {
       const notifications = await fetchNotifications().catch(() => {
-        // Swallow the exceptions, e.g. rate limit
+        // Swallow the exceptions, for example rate limit
         return [];
       });
 
@@ -131,7 +132,7 @@ export default function Notifications() {
           }, */
           {
             id: 1,
-            text: 'You can <a style="color: inherit;" target="_blank" rel="noopener" href="https://twitter.com/MUI_hq">follow us on X</a> or subscribe on <a style="color: inherit;" target="_blank" rel="noopener" href="/blog/">our blog</a> to receive exclusive tips and updates about MUI and the React ecosystem.',
+            text: 'You can <a style="color: inherit;" target="_blank" rel="noopener" href="https://x.com/MUI_hq">follow us on X</a> or subscribe on <a style="color: inherit;" target="_blank" rel="noopener" href="/blog/">our blog</a> to receive exclusive tips and updates about MUI and the React ecosystem.',
           },
           // Only 3
           ...notifications.splice(-3),
@@ -167,6 +168,7 @@ export default function Notifications() {
       >
         <IconButton
           color="primary"
+          size="small"
           ref={anchorRef}
           aria-controls={open ? 'notifications-popup' : undefined}
           aria-haspopup="true"
@@ -231,12 +233,9 @@ export default function Notifications() {
                       <React.Fragment key={message.id}>
                         <ListItem alignItems="flex-start">
                           <Typography gutterBottom>
-                            <span
-                              // eslint-disable-next-line react/no-danger
-                              dangerouslySetInnerHTML={{ __html: message.title }}
-                            />
+                            <b>{message.title}</b>
                           </Typography>
-                          <Typography gutterBottom variant="body2" color="text.secondary">
+                          <Typography gutterBottom variant="body2" sx={{ color: 'text.secondary' }}>
                             <span
                               id="notification-message"
                               // eslint-disable-next-line react/no-danger
@@ -244,7 +243,7 @@ export default function Notifications() {
                             />
                           </Typography>
                           {message.date && (
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                               {new Date(message.date).toLocaleDateString('en-US', {
                                 year: 'numeric',
                                 month: 'long',

@@ -2,7 +2,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { deepmerge } from '@mui/utils';
+import deepmerge from '@mui/utils/deepmerge';
+import composeClasses from '@mui/utils/composeClasses';
+import getReactElementRef from '@mui/utils/getReactElementRef';
 import SelectInput from './SelectInput';
 import formControlState from '../FormControl/formControlState';
 import useFormControl from '../FormControl/useFormControl';
@@ -11,14 +13,22 @@ import Input from '../Input';
 import NativeSelectInput from '../NativeSelect/NativeSelectInput';
 import FilledInput from '../FilledInput';
 import OutlinedInput from '../OutlinedInput';
-import useThemeProps from '../styles/useThemeProps';
+import { useDefaultProps } from '../DefaultPropsProvider';
 import useForkRef from '../utils/useForkRef';
-import styled, { rootShouldForwardProp } from '../styles/styled';
+import { styled } from '../zero-styled';
+import rootShouldForwardProp from '../styles/rootShouldForwardProp';
+import { getSelectUtilityClasses } from './selectClasses';
 
 const useUtilityClasses = (ownerState) => {
   const { classes } = ownerState;
 
-  return classes;
+  const slots = {
+    root: ['root'],
+  };
+
+  const composedClasses = composeClasses(slots, getSelectUtilityClasses, classes);
+
+  return { ...classes, ...composedClasses };
 };
 
 const styledRootConfig = {
@@ -35,7 +45,7 @@ const StyledOutlinedInput = styled(OutlinedInput, styledRootConfig)('');
 const StyledFilledInput = styled(FilledInput, styledRootConfig)('');
 
 const Select = React.forwardRef(function Select(inProps, ref) {
-  const props = useThemeProps({ name: 'MuiSelect', props: inProps });
+  const props = useDefaultProps({ name: 'MuiSelect', props: inProps });
   const {
     autoWidth = false,
     children,
@@ -84,7 +94,7 @@ const Select = React.forwardRef(function Select(inProps, ref) {
       filled: <StyledFilledInput ownerState={ownerState} />,
     }[variant];
 
-  const inputComponentRef = useForkRef(ref, InputComponent.ref);
+  const inputComponentRef = useForkRef(ref, getReactElementRef(InputComponent));
 
   return (
     <React.Fragment>
@@ -117,7 +127,9 @@ const Select = React.forwardRef(function Select(inProps, ref) {
           classes: inputProps ? deepmerge(restOfClasses, inputProps.classes) : restOfClasses,
           ...(input ? input.props.inputProps : {}),
         },
-        ...(multiple && native && variant === 'outlined' ? { notched: true } : {}),
+        ...(((multiple && native) || displayEmpty) && variant === 'outlined'
+          ? { notched: true }
+          : {}),
         ref: inputComponentRef,
         className: clsx(InputComponent.props.className, className, classes.root),
         // If a custom input is provided via 'input' prop, do not allow 'variant' to be propagated to it's root element. See https://github.com/mui/material-ui/issues/33894.
@@ -195,7 +207,7 @@ Select.propTypes /* remove-proptypes */ = {
    */
   inputProps: PropTypes.object,
   /**
-   * See [OutlinedInput#label](/material-ui/api/outlined-input/#props)
+   * See [OutlinedInput#label](https://mui.com/material-ui/api/outlined-input/#props)
    */
   label: PropTypes.node,
   /**
@@ -204,7 +216,7 @@ Select.propTypes /* remove-proptypes */ = {
    */
   labelId: PropTypes.string,
   /**
-   * Props applied to the [`Menu`](/material-ui/api/menu/) element.
+   * Props applied to the [`Menu`](https://mui.com/material-ui/api/menu/) element.
    */
   MenuProps: PropTypes.object,
   /**

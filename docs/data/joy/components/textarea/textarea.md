@@ -3,18 +3,17 @@ productId: joy-ui
 title: React Textarea component
 components: Textarea
 githubLabel: 'component: TextareaAutosize'
-unstyled: /base-ui/react-textarea-autosize/
 ---
 
 # Textarea
 
 <p class="description">Textarea component gives you a textarea HTML element that automatically adjusts its height to match the length of the content within.</p>
 
-{{"component": "modules/components/ComponentLinkHeader.js", "design": false}}
+{{"component": "@mui/docs/ComponentLinkHeader", "design": false}}
 
 ## Introduction
 
-Joy UI's textarea component is built on top of the Base UI [`TextareaAutoSize`](/base-ui/react-textarea-autosize/) component.
+Joy UI's textarea component is built on top of the MUI Base [`TextareaAutoSize`](/base-ui/react-textarea-autosize/) component.
 
 {{"demo": "TextareaUsage.js", "hideToolbar": true, "bg": "gradient"}}
 
@@ -50,7 +49,7 @@ Toggle the palette that's being used to color the by text field by using the `co
 
 ### Form props
 
-Standard form attributes are supported e.g. `required`, `disabled`, etc.
+Standard form attributes are supported for example `required`, `disabled`, etc.
 
 {{"demo": "TextareaFormProps.js"}}
 

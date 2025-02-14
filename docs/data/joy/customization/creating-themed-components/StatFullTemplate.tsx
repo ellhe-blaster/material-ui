@@ -16,7 +16,7 @@ interface StatOwnerState extends StatProps {
 const StatRoot = styled('div', {
   name: 'JoyStat',
   slot: 'root',
-})<{ ownerState: StatOwnerState }>(({ theme, ownerState }) => ({
+})<{ ownerState: StatOwnerState }>(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(0.5),
@@ -24,10 +24,17 @@ const StatRoot = styled('div', {
   backgroundColor: theme.vars.palette.background.surface,
   borderRadius: theme.vars.radius.sm,
   boxShadow: theme.vars.shadow.md,
-  ...(ownerState.variant === 'outlined' && {
-    border: `2px solid ${theme.palette.divider}`,
-    boxShadow: 'none',
-  }),
+  variants: [
+    {
+      props: {
+        variant: 'outlined',
+      },
+      style: {
+        border: `2px solid ${theme.palette.divider}`,
+        boxShadow: 'none',
+      },
+    },
+  ],
 }));
 
 const StatValue = styled('div', {
@@ -45,22 +52,21 @@ const StatUnit = styled('div', {
   color: theme.vars.palette.text.tertiary,
 }));
 
-const Stat = React.forwardRef<HTMLDivElement, StatProps>(function Stat(
-  inProps,
-  ref,
-) {
-  const props = useThemeProps({ props: inProps, name: 'JoyStat' });
-  const { value, unit, variant, ...other } = props;
+const Stat = React.forwardRef<HTMLDivElement, StatProps>(
+  function Stat(inProps, ref) {
+    const props = useThemeProps({ props: inProps, name: 'JoyStat' });
+    const { value, unit, variant, ...other } = props;
 
-  const ownerState = { ...props, variant };
+    const ownerState = { ...props, variant };
 
-  return (
-    <StatRoot ref={ref} ownerState={ownerState} {...other}>
-      <StatValue ownerState={ownerState}>{value}</StatValue>
-      <StatUnit ownerState={ownerState}>{unit}</StatUnit>
-    </StatRoot>
-  );
-});
+    return (
+      <StatRoot ref={ref} ownerState={ownerState} {...other}>
+        <StatValue ownerState={ownerState}>{value}</StatValue>
+        <StatUnit ownerState={ownerState}>{unit}</StatUnit>
+      </StatRoot>
+    );
+  },
+);
 
 export default function StatFullTemplate() {
   return (

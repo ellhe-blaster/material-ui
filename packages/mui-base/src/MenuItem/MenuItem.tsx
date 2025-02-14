@@ -77,6 +77,7 @@ const InnerMenuItem = React.memo(
  *
  * - [MenuItem API](https://mui.com/base-ui/react-menu/components-api/#menu-item)
  */
+
 const MenuItem = React.forwardRef(function MenuItem(
   props: MenuItemProps,
   ref: React.ForwardedRef<Element>,
@@ -114,6 +115,12 @@ MenuItem.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disabled: PropTypes.bool,
+  /**
+   * If `true`, the menu item won't receive focus when the mouse moves over it.
+   *
+   * @default false
+   */
+  disableFocusOnHover: PropTypes.bool,
   /**
    * A text representation of the menu item's content.
    * Used for keyboard text navigation matching.

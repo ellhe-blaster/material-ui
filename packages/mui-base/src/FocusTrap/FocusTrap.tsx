@@ -7,6 +7,7 @@ import {
   elementAcceptingRef,
   unstable_useForkRef as useForkRef,
   unstable_ownerDocument as ownerDocument,
+  unstable_getReactElementRef as getReactElementRef,
 } from '@mui/utils';
 import { FocusTrapProps } from './FocusTrap.types';
 
@@ -37,7 +38,7 @@ function getTabIndex(node: HTMLElement): number {
   }
 
   // Browsers do not return `tabIndex` correctly for contentEditable nodes;
-  // https://bugs.chromium.org/p/chromium/issues/detail?id=661108&q=contenteditable%20tabindex&can=2
+  // https://issues.chromium.org/issues/41283952
   // so if they don't have a tabindex attribute specifically set, assume it's 0.
   // in Chrome, <details/>, <audio controls/> and <video controls/> elements get a default
   //  `tabIndex` of -1 when the 'tabindex' attribute isn't specified in the DOM,
@@ -132,7 +133,7 @@ function defaultIsEnabled(): boolean {
  *
  * - [FocusTrap API](https://mui.com/base-ui/react-focus-trap/components-api/#focus-trap)
  */
-function FocusTrap(props: FocusTrapProps): JSX.Element {
+function FocusTrap(props: FocusTrapProps): React.JSX.Element {
   const {
     children,
     disableAutoFocus = false,
@@ -145,16 +146,15 @@ function FocusTrap(props: FocusTrapProps): JSX.Element {
   const ignoreNextEnforceFocus = React.useRef(false);
   const sentinelStart = React.useRef<HTMLDivElement>(null);
   const sentinelEnd = React.useRef<HTMLDivElement>(null);
-  const nodeToRestore = React.useRef<EventTarget | null>(null);
-  const reactFocusEventTarget = React.useRef<EventTarget | null>(null);
+  const nodeToRestore = React.useRef<EventTarget>(null);
+  const reactFocusEventTarget = React.useRef<EventTarget>(null);
   // This variable is useful when disableAutoFocus is true.
   // It waits for the active element to move into the component to activate.
   const activated = React.useRef(false);
 
   const rootRef = React.useRef<HTMLElement>(null);
-  // @ts-expect-error TODO upstream fix
-  const handleRef = useForkRef(children.ref, rootRef);
-  const lastKeydown = React.useRef<KeyboardEvent | null>(null);
+  const handleRef = useForkRef(getReactElementRef(children), rootRef);
+  const lastKeydown = React.useRef<KeyboardEvent>(null);
 
   React.useEffect(() => {
     // We might render an empty child.
@@ -278,7 +278,7 @@ function FocusTrap(props: FocusTrapProps): JSX.Element {
         return;
       }
 
-      let tabbable: string[] | HTMLElement[] = [];
+      let tabbable: ReadonlyArray<string> | HTMLElement[] = [];
       if (
         doc.activeElement === sentinelStart.current ||
         doc.activeElement === sentinelEnd.current
@@ -313,7 +313,7 @@ function FocusTrap(props: FocusTrapProps): JSX.Element {
     doc.addEventListener('keydown', loopFocus, true);
 
     // With Edge, Safari and Firefox, no focus related events are fired when the focused area stops being a focused area.
-    // e.g. https://bugzilla.mozilla.org/show_bug.cgi?id=559561.
+    // for example https://bugzilla.mozilla.org/show_bug.cgi?id=559561.
     // Instead, we can look if the active element was restored on the BODY element.
     //
     // The whatwg spec defines how the browser should behave but does not explicitly mention any events:

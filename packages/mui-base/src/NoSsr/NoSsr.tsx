@@ -22,7 +22,7 @@ import { NoSsrProps } from './NoSsr.types';
  *
  * - [NoSsr API](https://mui.com/base-ui/react-no-ssr/components-api/#no-ssr)
  */
-function NoSsr(props: NoSsrProps): JSX.Element {
+function NoSsr(props: NoSsrProps): React.JSX.Element {
   const { children, defer = false, fallback = null } = props;
   const [mountedState, setMountedState] = React.useState(false);
 
@@ -38,8 +38,8 @@ function NoSsr(props: NoSsrProps): JSX.Element {
     }
   }, [defer]);
 
-  // We need the Fragment here to force react-docgen to recognise NoSsr as a component.
-  return <React.Fragment>{mountedState ? children : fallback}</React.Fragment>;
+  // TODO casting won't be needed at one point https://github.com/DefinitelyTyped/DefinitelyTyped/pull/65135
+  return (mountedState ? children : fallback) as React.JSX.Element;
 }
 
 NoSsr.propTypes /* remove-proptypes */ = {

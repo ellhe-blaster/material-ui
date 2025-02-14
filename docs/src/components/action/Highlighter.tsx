@@ -43,28 +43,30 @@ export default function Highlighter({
           height: '100%',
           border: '1px solid transparent',
           transitionProperty: 'all',
-          transitionDuration: '150ms',
+          transitionDuration: '100ms',
           color: 'primary.300',
-          overflow: 'auto',
           ...((!disableBorder || selected) && {
             borderColor: 'grey.100',
           }),
           ...(selected && {
             bgcolor: `${alpha(theme.palette.primary[50], 0.5)}`,
             borderColor: 'primary.300',
-            boxShadow: `${alpha(theme.palette.primary[100], 0.4)} 0 -3px 1px inset, ${alpha(
+            boxShadow: `${alpha(theme.palette.primary[100], 0.5)} 0 -3px 1px inset, ${alpha(
               theme.palette.primary[100],
               0.3,
             )} 0 2px 4px 0`,
             color: 'primary.500',
           }),
           ...(!selected && {
-            '&:hover, &:focus': {
+            '&:hover': {
               bgcolor: 'primary.50',
               borderColor: 'primary.100',
               '@media (hover: none)': {
                 bgcolor: 'transparent',
               },
+            },
+            '&:focus': {
+              bgcolor: 'transparent',
             },
           }),
           ...theme.applyDarkStyles({
@@ -73,20 +75,23 @@ export default function Highlighter({
               borderColor: alpha(theme.palette.primaryDark[600], 0.3),
             }),
             ...(!selected && {
-              '&:hover, &:focus': {
-                bgcolor: alpha(theme.palette.primary[800], 0.1),
-                borderColor: alpha(theme.palette.primary[500], 0.3),
+              '&:hover': {
+                bgcolor: alpha(theme.palette.primary[900], 0.1),
+                borderColor: alpha(theme.palette.primary[800], 0.4),
                 '@media (hover: none)': {
                   bgcolor: 'transparent',
                 },
+              },
+              '&:focus': {
+                bgcolor: 'transparent',
               },
             }),
             ...(selected && {
               bgcolor: alpha(theme.palette.primary[800], 0.2),
               borderColor: alpha(theme.palette.primary[700], 0.8),
               color: 'primary.300',
-              boxShadow: `${alpha(theme.palette.common.black, 0.5)} 0 -3px 1px inset, ${
-                theme.palette.common.black
+              boxShadow: `${alpha(theme.palette.common.black, 0.2)} 0 -3px 1px inset, ${
+                theme.palette.primaryDark[900]
               } 0 2px 3px 0`,
             }),
           }),

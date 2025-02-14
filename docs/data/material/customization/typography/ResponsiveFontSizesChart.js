@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import of a small, pure module in a private demo
 // bundle size and module duplication is negligible
-/* eslint-disable-next-line no-restricted-imports */
+// eslint-disable-next-line no-restricted-imports
 import { convertLength } from '@mui/material/styles/cssUtils';
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -67,7 +67,7 @@ export default function ResponsiveFontSizesChart() {
           {
             scaleType: 'linear',
             dataKey: 'viewport',
-            valueFormatter: (v) => v.toString(),
+            valueFormatter: (value) => value.toString(),
             tickNumber: 10,
             max: 1600,
             tickLabelStyle: { fontSize: 15 },
@@ -76,7 +76,7 @@ export default function ResponsiveFontSizesChart() {
         ]}
         yAxis={[
           {
-            valueFormatter: (v) => v.toString(),
+            valueFormatter: (value) => value.toString(),
             tickNumber: 5,
             min: 0,
             max: 100,

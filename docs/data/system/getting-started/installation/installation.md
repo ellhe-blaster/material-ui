@@ -12,12 +12,12 @@ Run one of the following commands to add MUI System to your project:
 npm install @mui/system @emotion/react @emotion/styled
 ```
 
-```bash yarn
-yarn add @mui/system @emotion/react @emotion/styled
-```
-
 ```bash pnpm
 pnpm add @mui/system @emotion/react @emotion/styled
+```
+
+```bash yarn
+yarn add @mui/system @emotion/react @emotion/styled
 ```
 
 </codeblock>
@@ -30,7 +30,7 @@ Please note that [react](https://www.npmjs.com/package/react) is a peer dependen
 
 ```json
 "peerDependencies": {
-  "react": "^17.0.0 || ^18.0.0"
+  "react": "^17.0.0 || ^18.0.0 || ^19.0.0"
 },
 ```
 
@@ -39,18 +39,20 @@ Please note that [react](https://www.npmjs.com/package/react) is a peer dependen
 MUI System uses [Emotion](https://emotion.sh/docs/introduction) as its default styling engine.
 If you want to use [styled-components](https://styled-components.com/) instead, run one of the following commands:
 
+<!-- #npm-tag-reference -->
+
 <codeblock storageKey="package-manager">
 
 ```bash npm
-npm install @mui/system @mui/styled-engine-sc styled-components
-```
-
-```bash yarn
-yarn add @mui/system @mui/styled-engine-sc styled-components
+npm install @mui/system@next @mui/styled-engine-sc@next styled-components
 ```
 
 ```bash pnpm
-pnpm add @mui/system @mui/styled-engine-sc styled-components
+pnpm add @mui/system@next @mui/styled-engine-sc@next styled-components
+```
+
+```bash yarn
+yarn add @mui/system@next @mui/styled-engine-sc@next styled-components
 ```
 
 </codeblock>

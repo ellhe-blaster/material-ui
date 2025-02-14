@@ -1,18 +1,18 @@
 # Next.js App Router
 
-<p class="description">Learn how to use Base UI with the Next.js App Router.</p>
+<p class="description">Learn how to use MUI Base with the Next.js App Router.</p>
 
 ## Example
 
 Starting fresh on a new App Router-based project?
 
-Jump right into the code with [this example: Base UI - Next.js App Router with Tailwind CSS in TypeScript](https://github.com/mui/material-ui/tree/master/examples/base-ui-nextjs-tailwind-ts).
+Jump right into the code with [this example: MUI Base - Next.js App Router with Tailwind CSS in TypeScript](https://github.com/mui/material-ui/tree/master/examples/base-ui-nextjs-tailwind-ts).
 
 ## Next.js and React Server Components
 
 The Next.js App Router implements React Server Components, [an upcoming feature for React](https://github.com/reactjs/rfcs/blob/main/text/0227-server-module-conventions.md).
 
-To support the App Router, the components and hooks from Base UI that need access to browser APIs are exported with the `"use client"` directive.
+To support the App Router, the components and hooks from MUI Base that need access to browser APIs are exported with the `"use client"` directive.
 
 :::warning
 React Server Components should not be conflated with the concept of server-side rendering (SSR).
@@ -21,14 +21,14 @@ So-called Client Components are still server-rendered to HTML.
 For more details, see [this explanation](https://github.com/reactwg/server-components/discussions/4) of Client Components and SSR from the React Working Group.
 :::
 
-## Setting up Base UI with the App Router
+## Setting up MUI Base with the App Router
 
-Base UI gives you the freedom to choose your own styling solution, so setting up a Next.js App Router project largely depends on what you choose.
-This guide covers Tailwind CSS, Emotion, and other CSS-in-JS solutions like styled-components.
+MUI Base gives you the freedom to choose your own styling solution, so setting up a Next.js App Router project largely depends on what you choose.
+This guide covers Tailwind CSS, Emotion, and other CSS-in-JS solutions like styled-components.
 
-### Tailwind CSS
+### Tailwind CSS
 
-Follow the [Tailwind CSS guide on working with Next.js](https://tailwindcss.com/docs/guides/nextjs), and be sure to add the `app` directory and other directories to `tailwind.config.js`, as shown below:
+Follow the [Tailwind CSS guide on working with Next.js](https://tailwindcss.com/docs/guides/nextjs), and be sure to add the `app` directory and other directories to `tailwind.config.js`, as shown below:
 
 ```js
 /** @type {import('tailwindcss').Config} */
@@ -46,7 +46,7 @@ module.exports = {
 };
 ```
 
-Refer to this [example repo](https://github.com/mui/material-ui/tree/master/examples/base-ui-nextjs-tailwind-ts) for a full working demo of a Next.js 13 app using Base UI and Tailwind CSS.
+Refer to this [example repo](https://github.com/mui/material-ui/tree/master/examples/base-ui-nextjs-tailwind-ts) for a full working demo of a Next.js 13 app using MUI Base and Tailwind CSS.
 
 ### Emotion
 
@@ -124,7 +124,7 @@ export default function RootLayout(props) {
 }
 ```
 
-If you need to further override theme styles (e.g. using CSS modules), Emotion provides the `prepend: true` option for `createCache` to reverse the injection order, so custom styles can override the theme without using `!important`.
+If you need to further override theme styles (for example using CSS Modules), Emotion provides the `prepend: true` option for `createCache` to reverse the injection order, so custom styles can override the theme without using `!important`.
 
 Currently, `prepend` does not work reliably with the App Router, but you can work around it by wrapping Emotion styles in a CSS `@layer` with a modification to the snippet above:
 
@@ -153,13 +153,13 @@ Currently, `prepend` does not work reliably with the App Router, but you can wor
 
 ### Other CSS-in-JS libraries
 
-To use Next.js with Base UI and styled-components or other CSS-in-JS solutions, follow the [Next.js doc on CSS-in-JS](https://nextjs.org/docs/app/building-your-application/styling/css-in-js).
+To use Next.js with MUI Base and styled-components or other CSS-in-JS solutions, follow the [Next.js doc on CSS-in-JS](https://nextjs.org/docs/app/building-your-application/styling/css-in-js).
 
 ## Customization
 
 ### Using callbacks for slot props
 
-A common customization method in Base UI is to pass a callback to slots in `slotProps` in order to apply dynamic props. For example, you might want to change the background color by applying a different class when a Button is disabled:
+A common customization method in MUI Base is to pass a callback to slots in `slotProps` in order to apply dynamic props. For example, you might want to change the background color by applying a different class when a Button is disabled:
 
 ```tsx
 // page.tsx

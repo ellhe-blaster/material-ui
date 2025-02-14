@@ -4,20 +4,22 @@ title: React Number Input component and hook
 components: NumberInput
 hooks: useNumberInput
 githubLabel: 'component: number input'
+newUrl: https://base-ui.com/react/components/number-field
+newName: Number Field
 ---
 
 # Number Input
 
 <p class="description">The Number Input component provides users with a field for integer values, and buttons to increment or decrement the value.</p>
 
-{{"component": "modules/components/ComponentLinkHeader.js", "design": false}}
+{{"component": "@mui/docs/ComponentLinkHeader", "design": false}}
 
 {{"component": "modules/components/ComponentPageTabs.js"}}
 
 ## Introduction
 
 A number input is a UI element that accepts numeric values from the user.
-Base UI's Number Input component is a customizable replacement for the native HTML `<input type="number">` that solves common usability issues of its native counterpart, such as:
+MUI Base's Number Input component is a customizable replacement for the native HTML `<input type="number">` that solves common usability issues of its native counterpart, such as:
 
 - Inconsistencies across browsers in the appearance and behavior of the stepper buttons
 - Allowing certain non-numeric characters ('e', '+', '-', '.') and silently discarding others
@@ -41,7 +43,7 @@ The following demo shows how to create a Number Input component, apply some styl
 
 ### Anatomy
 
-The Base UI Number Input component consists of four slots:
+The MUI Base Number Input component consists of four slots:
 
 - `root`: an outer `<div>` containing the other interior slots
 - `input`: an `<input>` element
@@ -137,7 +139,7 @@ If you only define one or the other, the opposite end of the range will be open-
 
 ```
 
-The demo below shows a Number Input with a an accepted range of 1 to 99:
+The demo below shows a Number Input with an accepted range of 1 to 99:
 
 {{"demo": "QuantityInput.js", "defaultCodeOpen": false}}
 
@@ -152,7 +154,7 @@ For example, if `min={0}` and `step={2}`, valid values for the component would b
 ```
 
 :::warning
-Support for decimal values and step sizes isn't available yet, but you can upvote [this GitHub issue](https://github.com/mui/material-ui/issues/38518) to see it arrive sooner.
+Support for decimal values and step sizes isn't available yet, but you can upvote [this GitHub issue](https://github.com/mui/base-ui/issues/41) to see it arrive sooner.
 :::
 
 When the input field is in focus, you can enter values that fall outside the valid range.
@@ -184,7 +186,7 @@ onChange: (
 ) => void;
 ```
 
-It's called when the `<input>` element is blurred, or when the stepper buttons are clicked, after the value has been clamped based on the [`min`, `max`](#minimum-and-maximum), or [`step`](#incremental-steps) props.
+It's called when the `<input>` element is blurred if the value has changed, or when the stepper buttons are clicked. This is after the value has been clamped based on the [`min`, `max`](#minimum-and-maximum), or [`step`](#incremental-steps) props.
 
 :::info
 When using the component, `onChange` can only be passed as a prop on the component—not through `slotProps`.

@@ -4,22 +4,24 @@ title: React Menu component
 components: Menu, MenuItem, MenuList, MenuButton
 githubLabel: 'component: menu'
 waiAria: https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/
-unstyled: /base-ui/react-menu/
+unstyled: https://base-ui.com/react/components/menu
 ---
 
 # Menu
 
 <p class="description">Menus display a list of choices on temporary surfaces.</p>
 
+{{"component": "@mui/docs/ComponentLinkHeader"}}
+
 ## Introduction
 
-Joy UI provides five menu-related components:
+Joy UI provides five menu-related components:
 
-- `MenuButton`: A button that opens a menu. It reuses the styles from [`Button`](/joy-ui/react-button/).
-- `Menu`: A listbox popup for wrapping the menu items which reuses the styles from [`List`](/joy-ui/react-list/).
-- `MenuItem`: A menu item which reuses the styles from [`ListItemButton`](/joy-ui/react-list/).
-- `MenuList`: A standalone listbox for composition usage. It also reuses the styles from [`List`](/joy-ui/react-list/).
-- `Dropdown`: The outermost component that wires a button with a menu. It only provides a context and does not render anything.
+- Menu Button - a button that opens a menu. It reuses the styles from [`Button`](/joy-ui/react-button/).
+- Menu - a listbox popup for wrapping the menu items which reuses the styles from [`List`](/joy-ui/react-list/).
+- Menu Item - a menu item which reuses the styles from [`ListItemButton`](/joy-ui/react-list/).
+- Menu List - a standalone listbox for composition usage. It also reuses the styles from [`List`](/joy-ui/react-list/).
+- Dropdown - the outermost component that wires a button with a menu. It only provides a context and does not render anything.
 
 {{"demo": "MenuUsage.js", "hideToolbar": true, "bg": "gradient"}}
 
@@ -89,7 +91,7 @@ Use `slotProps` to pass props to the IconButton component.
 
 ### Positioned menu
 
-The `Menu` is based on the Base UI `Popper` component, which exposes a few [placement props](/base-ui/react-popper/#placement).
+The `Menu` is based on the MUI Base `Popper` component, which exposes a few [placement props](/base-ui/react-popper/#placement).
 For example, this is how you'd go for displaying the menu on the bottom-end of the anchor button.
 
 {{"demo": "PositionedMenu.js"}}

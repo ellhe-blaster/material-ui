@@ -1,23 +1,17 @@
 import * as ts from 'typescript';
-import { ComponentClassDefinition } from '@mui-internal/docs-utilities';
-import { renderMarkdown } from '@mui/markdown';
+import { ComponentClassDefinition } from '@mui-internal/api-docs-builder';
+import { renderMarkdown } from '../buildApi';
 import { getSymbolDescription, getSymbolJSDocTags } from '../buildApiUtils';
 import { TypeScriptProject } from './createTypeScriptProject';
 import { getPropsFromComponentNode } from './getPropsFromComponentNode';
 import resolveExportSpecifier from './resolveExportSpecifier';
 import { ProjectSettings } from '../ProjectSettings';
+import { Slot } from '../types/utils.types';
 
 interface ClassInfo {
   description: string;
   isDeprecated?: true;
   deprecationInfo?: string;
-}
-
-export interface Slot {
-  class: string | null;
-  name: string;
-  description: string;
-  default?: string;
 }
 
 /**
@@ -53,7 +47,10 @@ export default function parseSlotsAndClasses({
   componentName,
   muiName,
   slotInterfaceName,
-}: ParseSlotsAndClassesParameters): { slots: Slot[]; classes: ComponentClassDefinition[] } {
+}: ParseSlotsAndClassesParameters): {
+  slots: Slot[];
+  classes: ComponentClassDefinition[];
+} {
   // Obtain an array of classes for the given component
   const classDefinitions = extractClasses(
     typescriptProject,
@@ -109,6 +106,10 @@ function extractClassesFromInterface(
   if (classesTypeDeclaration && ts.isInterfaceDeclaration(classesTypeDeclaration)) {
     const classesProperties = classesType.getProperties();
     classesProperties.forEach((symbol) => {
+      const tags = getSymbolJSDocTags(symbol);
+      if (tags.ignore) {
+        return;
+      }
       result.push({
         key: symbol.name,
         className: projectSettings.generateClassName(muiName, symbol.name),
@@ -128,11 +129,14 @@ function extractClassesFromProps(
   componentName: string,
   muiName: string,
 ): ComponentClassDefinition[] | null {
+  const unstableName = `Unstable_${componentName}`;
   const exportedSymbol =
-    typescriptProject.exports[componentName] ??
-    typescriptProject.exports[`Unstable_${componentName}`];
+    typescriptProject.exports[componentName] ?? typescriptProject.exports[unstableName];
+
   if (!exportedSymbol) {
-    throw new Error(`No exported component for the componentName "${componentName}"`);
+    throw new Error(
+      `No export found in "${typescriptProject.rootPath}" for component "${componentName}" or "${unstableName}".`,
+    );
   }
 
   const localeSymbol = resolveExportSpecifier(exportedSymbol, typescriptProject);
@@ -155,6 +159,10 @@ function extractClassesFromProps(
     removeUndefinedFromType(type)
       ?.getProperties()
       .forEach((property) => {
+        const tags = getSymbolJSDocTags(property);
+        if (tags.ignore) {
+          return;
+        }
         const description = getSymbolDescription(property, typescriptProject);
         classes[property.escapedName.toString()] = {
           description,

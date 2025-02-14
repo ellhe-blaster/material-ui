@@ -48,7 +48,7 @@ yarn add @material-ui/core
 ### Update React version
 
 The minimum required version of React was increased from `react@^16.3.0` to `react@^16.8.0`.
-This allows us to rely on [Hooks](https://legacy.reactjs.org/docs/hooks-intro.html) (we no longer use the class API).
+This allows us to rely on [Hooks](https://react.dev/reference/react/hooks) (we no longer use the class API).
 
 ### Update Material UI Styles version
 
@@ -171,7 +171,7 @@ yarn add @material-ui/styles
   +  spacing: PropTypes.oneOf([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
   ```
 
-  Going forward, you can use the theme to implement [a custom Grid spacing transformation function](https://mui.com/system/spacing/#transformation).
+  Going forward, you can use the theme to implement [a custom Grid spacing transformation function](/system/spacing/#transformation).
 
 - [Container] Moved from `@material-ui/lab` to `@material-ui/core`.
 

@@ -1,6 +1,7 @@
+<!-- #host-reference -->
 <!-- markdownlint-disable-next-line -->
 <p align="center">
-  <a href="https://mui.com/material-ui/" rel="noopener" target="_blank"><img width="150" height="133" src="https://mui.com/static/logo.svg" alt="Material UI logo"></a>
+  <a href="https://next.mui.com/material-ui/" rel="noopener" target="_blank"><img width="150" height="133" src="https://mui.com/static/logo.svg" alt="Material UI logo"></a>
 </p>
 
 <h1 align="center">Material UI</h1>
@@ -11,18 +12,20 @@ Material UI is an open-source React component library that implements Google's 
 
 Install the package in your project directory with:
 
+<!-- #npm-tag-reference -->
+
 ```bash
-npm install @mui/material @emotion/react @emotion/styled
+npm install @mui/material@next @emotion/react @emotion/styled
 ```
 
 ## Documentation
 
-Visit [https://mui.com/material-ui/](https://mui.com/material-ui/) to view the full documentation.
+Visit [https://next.mui.com/material-ui/](https://next.mui.com/material-ui/) to view the full documentation.
 
 ## Questions
 
 For how-to questions that don't involve making changes to the code base, please use [Stack Overflow](https://stackoverflow.com/questions/tagged/material-ui) instead of GitHub issues.
-Use the "material-ui" tag on Stack Overflow to make it easier for the community to find your question.
+Use the "material-ui" tag on Stack Overflow to make it easier for the community to find your question.
 
 ## Examples
 
@@ -33,7 +36,7 @@ Our documentation features [a collection of example projects using Material UI]
 Read the [contributing guide](/CONTRIBUTING.md) to learn about our development process, how to propose bug fixes and improvements, and how to build and test your changes.
 
 Contributing to Material UI is about more than just issues and pull requests!
-There are many other ways to [support MUI](https://mui.com/material-ui/getting-started/faq/#mui-is-awesome-how-can-i-support-the-project) beyond contributing to the code base.
+There are many other ways to [support Material UI](https://mui.com/material-ui/getting-started/faq/#mui-is-awesome-how-can-i-support-the-project) beyond contributing to the code base.
 
 ## Changelog
 
@@ -41,7 +44,7 @@ The [changelog](https://github.com/mui/material-ui/releases) is regularly update
 
 ## Roadmap
 
-Future plans and high-priority features and enhancements can be found in our [roadmap](https://mui.com/material-ui/discover-more/roadmap/).
+Future plans and high-priority features and enhancements can be found in the [roadmap](https://mui.com/material-ui/discover-more/roadmap/).
 
 ## License
 
